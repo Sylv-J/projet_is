@@ -5,6 +5,7 @@ class masterDB{
 	private $db;
 	
 	public static function getDB(){
+		// avoid double instantiation 
 		if(is_null(static::$instance)){
 			static::$instance = new masterDB();
 		}

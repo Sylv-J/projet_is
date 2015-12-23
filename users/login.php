@@ -4,6 +4,7 @@ $db = masterDB::getDB();
 $valid = false;
 $error_msg = "";
 
+// check if the couple username,pwd exists in DB
  if(isset($_POST["username"]) AND isset($_POST["pwd"])){
 	if($_POST["username"] != "" AND $_POST["pwd"] != ""){
 		$req = $db->prepare("SELECT id, user_group FROM users WHERE username = ? AND pwd = ?");
@@ -18,12 +19,14 @@ $error_msg = "";
 	}
  }
  
+
  if($valid){
 	session_start();
 	$_SESSION["id"] = $res["id"];
 	$_SESSION["username"] = $_POST["username"];
 	$_SESSION["group"] = $res["user_group"];
 	if(isset($_POST["remember"])){
+		// if the tickbox were ticked -> cookies
 		setcookie("username",$_POST["username"],time()+3600*24*30,null,null,false,true);
 		setcookie("pwd",$pwd,time()+3600*24*30,null,null,false,true);
 	}
@@ -31,6 +34,7 @@ $error_msg = "";
 }
 else{
 	echo $error_msg;
+	// login page again 
 	?>
 	<h3>Connexion :</h3>
 	<form action="login.php" method="post">
