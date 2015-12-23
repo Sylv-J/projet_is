@@ -2,7 +2,7 @@
 include_once("../master_db.php");
 $db = masterDB::getDB();
 $valid = true;
-$num = 0;
+$num = 0; //must be 3 to go
 $error_msg = "";
 if(isset($_POST["username"]) AND $_POST["username"] != ""){
 	$num++;
@@ -30,12 +30,13 @@ if(isset($_POST["mail"]) AND $_POST["mail"] != ""){
 if($num <3){
 	$valid = false;
 	if($num >0){
-		$error_msg = $error_msg."Tout les champs sont obligatoires !<br>";
+		$error_msg = $error_msg."Tous les champs sont obligatoires !<br>";
 	}
 }
 
 if($valid){
 	echo "Votre inscription à bien été prise en compte";
+	// MAJ DB
 	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:group)");
 	$req->execute(array(
 		"username" => strip_tags($_POST["username"]),
