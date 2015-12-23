@@ -13,7 +13,9 @@ class masterDB{
 	
 	private function __construct(){
 		try{
-			$this->db = new PDO("mysql:host=localhost;dbname=projetis;charset=utf8","root","",array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			$this->db = new PDO("mysql:host=localhost","root","",array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			$this->db->query("CREATE DATABASE IF NOT EXISTS projetis");
+			$this->db->query("use projetis");
 		}
 		catch(Exception $e){
 			die("Fatal error while loading database : ".$e->getMessage());
