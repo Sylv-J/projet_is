@@ -4,10 +4,11 @@ $db = masterDB::getDB();
 $valid = false;
 $error_msg = "";
 
-// check if the couple username,pwd exists in DB
+/* Check if the couple username,pwd exists in DB
+If it does, then it's a registered user and we can authenticate them*/
  if(isset($_POST["username"]) AND isset($_POST["pwd"])){
 	if($_POST["username"] != "" AND $_POST["pwd"] != ""){
-		$req = $db->prepare("SELECT id, user_group FROM users WHERE username = ? AND pwd = ?");
+		$req = $db->prepare("SELECT id, user_group FROM users WHERE username = ? AND pwd = ?"); //SQL request
 		$pwd = sha1($_POST["pwd"]);
 		$req->execute(array($_POST["username"],$pwd));
 		if($res = $req->fetch()){
@@ -18,8 +19,8 @@ $error_msg = "";
 		}
 	}
  }
- 
 
+//If the user provided a valid authentication, then start a session to remember that
  if($valid){
 	session_start();
 	$_SESSION["id"] = $res["id"];
@@ -30,21 +31,22 @@ $error_msg = "";
 		setcookie("username",$_POST["username"],time()+3600*24*30,null,null,false,true);
 		setcookie("pwd",$pwd,time()+3600*24*30,null,null,false,true);
 	}
-	echo "Connecté avec succès";
+	echo "ConnectÃ© avec succÃ¨s";
 }
 else{
 	echo $error_msg;
-	// login page again 
+	// login page again
 	?>
+  <!-- Code HTML5 de la page de connexion -->
 	<h3>Connexion :</h3>
 	<form action="login.php" method="post">
 	<p>
 	Nom d'utilisateur : <input type="text" name="username" required><br><br>
 	Mot de passe : <input type="password" name="pwd" required><br><br>
-	<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connecté</label><br><br>
+	<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connectï¿½</label><br><br>
 	<input type="submit" value="Connexion">
 	</p>
 	</form>
-<?php 
-} 
+<?php
+}
 ?>
