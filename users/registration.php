@@ -12,7 +12,7 @@ if(isset($_POST["username"]) AND $_POST["username"] != ""){
 	$res->execute(array($_POST["username"]));
 	if($res->fetch()){
 		$valid = false;
-		$error_msg = $error_msg."Ce nom d'utilisateur existe d√©j√†<br>";
+		$error_msg = $error_msg."Ce nom d'utilisateur existe dÈj‡†<br>";
 	}
 }
 
@@ -21,7 +21,7 @@ if(isset($_POST["pwd1"]) AND isset($_POST["pwd2"]) AND $_POST["pwd1"] != "" AND 
 	$num++;
 	if($_POST["pwd1"] != $_POST["pwd2"]){
 		$valid = false;
-		$error_msg = $error_msg."Les mots de passe entr√©s ne sont pas identiques !<br>";
+		$error_msg = $error_msg."Les mots de passe entrÈs ne sont pas identiques !<br>";
 	}
 }
 
@@ -30,7 +30,7 @@ if(isset($_POST["mail"]) AND $_POST["mail"] != ""){
 	$num++;
 	if(!preg_match("#^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,4}$#",$_POST["mail"])){ //Regular expression to check the mail
 		$valid = false;
-		$error_msg = $error_msg."L'adresse mail entr√©e n'est pas valide<br>";
+		$error_msg = $error_msg."L'adresse mail entrÈe n'est pas valide<br>";
 	}
 }
 
@@ -44,7 +44,7 @@ if($num <3){
 
 //If everything was filled properly, and if so create the user in the database
 if($valid){
-	echo "Votre inscription √† bien √©t√© prise en compte";
+	echo "Votre inscription ‡† bien ÈtÈ prise en compte";
 // Adds the user to the database
 	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:group)");
 	$req->execute(array(

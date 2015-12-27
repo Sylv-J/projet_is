@@ -31,7 +31,7 @@ If it does, then it's a registered user and we can authenticate them*/
 		setcookie("username",$_POST["username"],time()+3600*24*30,null,null,false,true);
 		setcookie("pwd",$pwd,time()+3600*24*30,null,null,false,true);
 	}
-	echo "ConnectÃ© avec succÃ¨s";
+	echo "Connecté avec succès";
 }
 else{
 	echo $error_msg;
@@ -43,7 +43,7 @@ else{
 	<p>
 	Nom d'utilisateur : <input type="text" name="username" required><br><br>
 	Mot de passe : <input type="password" name="pwd" required><br><br>
-	<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connectï¿½</label><br><br>
+	<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connecté</label><br><br>
 	<input type="submit" value="Connexion">
 	</p>
 	</form>
