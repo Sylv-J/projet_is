@@ -1,5 +1,7 @@
 <?php
 session_start();
+include_once("../master_db.php");
+$db = masterDB::getDB();
 //Use cookies to reconnect the user
 if(!isset($_SESSION["id"])){
 	if(isset($_COOKIE["username"]) AND isset($_COOKIE["pwd"])){
