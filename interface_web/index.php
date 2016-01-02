@@ -38,6 +38,11 @@
   }
   else //vous êtes connectés
   {
+    /*
+    importe les bouttons de fonctionalités de chaque type d'utilisateur
+    voir le fuchier users/user_tasks.php pour designer les bouttons
+    */
+    include("../users/user_tasks.php");
     //Bandeau exemple pour un correcteur
     include("bandeau_exemple.php");
   }
