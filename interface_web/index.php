@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="image/MinesNancy_Logo.png">
+    <link rel="icon" href="image/MinesNancy.png">
 
     <title>Concours Mines-Ponts</title>
 
