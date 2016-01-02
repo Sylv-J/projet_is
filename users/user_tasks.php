@@ -28,9 +28,9 @@ Mettre à jour les différents types d'utilisateurs et leurs droits ici.
 *******************************************
 */
 $rights = array(
-'Administrateur' => array('Modifier les droits'),
-'Secrétaire' => array('Scanner'),
-'Correcteur' => array('Corriger', 'Revoir une copie')
+'administrateur' => array('Modifier les droits'),
+'secrétaire' => array('Scanner'),
+"correcteur" => array('Corriger', 'Revoir une copie')
 );
 
 
