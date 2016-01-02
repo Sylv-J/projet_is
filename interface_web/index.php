@@ -25,13 +25,23 @@
 
 <body>
 
+<?php
+  include_once("../users/user_context.php");
 
-<!-- barre de navigation -->
-<?php include("navbar.php") ;?>
-<!-- Bandeau d'acceuil avec le formulaire d'authentification -->
-<?php include("bandeau_connexion.php");?>
-<!--Bandeau exemple pour un correcteur-->
-<?php include("bandeau_exemple.php") ?>
+  // barre de navigation
+  include("navbar.php") ;
+
+  if(!isset($_SESSION["id"])) //vous n'étes pas connecté
+  {
+    // Bandeau d'acceuil avec le formulaire d'authentification
+    include("bandeau_connexion.php");
+  }
+  else //vous êtes connectés
+  {
+    //Bandeau exemple pour un correcteur
+    include("bandeau_exemple.php");
+  }
+?>
 
 
 
