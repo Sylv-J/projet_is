@@ -1,4 +1,6 @@
 <?php
+include_once("user_context.php");
+
 /*
 ce fichier créé des bouttons, associés à chaque têche à réaliser en fonction des
 droits d'accès de l'utilisateur à la tâche en question
@@ -11,7 +13,7 @@ une fois les pages crées, remplacer convenablement les noms de pages dans la
 destination
 *******************************************
 */
-$tasks = array(
+$tasksLinks = array(
   'Modifier les droits' => '__PageDeDestination__',
   'Scanner' => '__PageDeDestination__',
   'Corriger' => '__PageDeDestination__',
@@ -36,7 +38,19 @@ $rights = array(
 Création des bouttons
 ********Méthode générale dépendant des paramètres modifiables ci dessus********
 */
-
-
-
+if(!isset($_SESSION["id"]))
+{
+  echo "Veuillez vous connecter pour accéder à vos fonctionnalitées.";
+}
+else
+{
+  foreach($rights[$_SESSION["group"]] as $tacheAutorisee)
+  {
+    echo "
+    <form action=$tasksLinks[$tacheAutorisee]>
+      <p><input type='submit' value=$tacheAutorisee></p>
+    </form>
+    ";
+  }
+}
 ?>
