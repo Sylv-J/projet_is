@@ -8,11 +8,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="image/MinesNancy_Logo.png" alt="logo mines" /></a>
+            <a class="navbar-brand" href="index.php"><img src="image/MinesNancy_Logo.png" alt="logo mines" /></a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Accueil <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="index.php">Accueil <span class="sr-only">(current)</span></a></li>
                 <li><a href="#">À propos</a></li>
                 <li><a href="#">FAQ</a></li>
                 <li class="dropdown">
