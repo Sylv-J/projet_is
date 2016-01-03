@@ -1,4 +1,11 @@
 <?php
+//on teste si le fichier est lancé seul, ou depuis l'interface
+if(!isset($confirmationPage)) //lancé indépendamment
+{
+  $confirmationPage="users/login.php";
+}
+// si non la $confirmationPage a été définie dans l'interface et sera utilisée pour renvoyer la page après connexion
+
 include_once("../master_db.php");
 $db = masterDB::getDB();
 $valid = false;
@@ -22,7 +29,10 @@ If it does, then it's a registered user and we can authenticate them*/
 
 //If the user provided a valid authentication, then start a session to remember that
  if($valid){
-	session_start();
+   if(!isset($_SESSION))
+   {
+     session_start();
+   }
 	$_SESSION["id"] = $res["id"];
 	$_SESSION["username"] = $_POST["username"];
 	$_SESSION["group"] = $res["user_group"];
@@ -31,21 +41,36 @@ If it does, then it's a registered user and we can authenticate them*/
 		setcookie("username",$_POST["username"],time()+3600*24*30,null,null,false,true);
 		setcookie("pwd",$pwd,time()+3600*24*30,null,null,false,true);
 	}
-	echo "Connect� avec succ�s";
+  if($confirmationPage=="users/login.php") //lancé indépendamment
+  {
+	echo "Connecté avec succés";
+  }
+  else  //lancé depuis l'interface, on doit l'actualiser
+  {
+  header("Location: ../$confirmationPage");
+  }
+
 }
 else{
 	echo $error_msg;
 	// login page again
 	?>
   <!-- Code HTML5 de la page de connexion -->
-	<h3>Connexion :</h3>
-	<form action="login.php" method="post">
-	<p>
-	Nom d'utilisateur : <input type="text" name="username" required><br><br>
-	Mot de passe : <input type="password" name="pwd" required><br><br>
-	<input type="checkbox" name="remember" id="remember"><label for="remember">Rester connect�</label><br><br>
-	<input type="submit" value="Connexion">
-	</p>
+  <h2>Authentification</h2>
+
+  <form action=<?php echo "../$confirmationPage" ?> method="post">
+  <p>
+  <div class="form-group">
+      <input type="text" placeholder="Identifiant" name="username" class="form-control" required>
+  </div>
+
+  <div class="form-group">
+      <input type="password" placeholder="Mot de passe" name="pwd" class="form-control" required>
+  </div>
+
+  <input type="submit" value="Connexion" class="btn btn-success">
+
+  </p>
 	</form>
 <?php
 }
