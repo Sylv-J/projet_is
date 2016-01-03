@@ -6,17 +6,12 @@
         </div>
         <div class="col-md-4">
             <div class="well">
-            <h2>Authentification</h2>
 
-            <div class="form-group">
-                <input type="text" placeholder="Identifiant" class="form-control">
-            </div>
+              <?php
+                $confirmationPage="interface_web/index.php";
+                include("../users/login.php");
+              ?>
 
-            <div class="form-group">
-                <input type="password" placeholder="Mot de passe" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-success">Sign in</button>
             </div>
         </div>
     </div>
