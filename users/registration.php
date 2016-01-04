@@ -67,7 +67,7 @@ echo $error_msg
 	Adresse e-mail : <input type="email" name="mail" required><br><br>
 	Type d'utilisateur : <select name="group">
 		<option value="correcteur">Correcteur</option>
-		<option value="secretaire">Secrétaire</option>
+		<option value="secretaire">Secretaire</option>
 		<option value="jury">Membre du jury</option>
 		<option value="chairman">Chairman</option>
 		<option value="admin">Administrateur</option>

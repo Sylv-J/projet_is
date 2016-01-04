@@ -31,21 +31,26 @@
   // barre de navigation
   include("navbar.php") ;
 
-  if(!isset($_SESSION["id"])) //vous n'étes pas connecté
-  {
-    // Bandeau d'acceuil avec le formulaire d'authentification
-    include("bandeau_connexion.php");
-  }
-  else //vous êtes connectés
-  {
-    /*
-    importe les bouttons de fonctionalités de chaque type d'utilisateur
-    voir le fuchier users/user_tasks.php pour designer les bouttons
-    */
-    include("../users/user_tasks.php");
-    //Bandeau exemple pour un correcteur
-    include("bandeau_page_perso.php");
-  }
+  //Si non connecté
+  if(!isset($_SESSION["id"]))
+	{
+		include("bandeau_connexion.php"); //formulaire de connexion
+	} 
+  
+  //Si connecté
+  else 
+	{
+		//On affiche la page perso
+		if(!isset($_GET["page_to_load"]) || $_GET["page_to_load"] == "page_perso")
+		{
+			include("bandeau_page_perso.php");
+		}
+		//On affiche le bandeau de scan des copies
+		elseif($_GET["page_to_load"]=="Scanner" && $_SESSION["group"]=="secretaire")
+		{
+			include("bandeau_scan.php");
+		}
+	}	
 ?>
 
 

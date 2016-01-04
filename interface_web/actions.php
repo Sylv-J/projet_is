@@ -1,10 +1,8 @@
-<!--Script php décidant du choix de a page perso à afficher -->
+<!--Script affichant les boutons d'actions pour chaque user 
+Une variable "page_to_load" est envoyé en GET à index.php 
+cette variable aura pour valeur le nom de l'action-->
 
 <?php 
-/*get group
-get actions
-pour chaque action, on fait un bouton
-*/
 $user = $_SESSION["group"];
 
 $rights = array(
