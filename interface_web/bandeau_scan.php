@@ -5,9 +5,11 @@
 			<!-- Scan de copies -->
 			<div class="col-md-6">
 				<h2>Scanner</h2>
-				<form>
-					<input type="text" placeholder="id-etudiant">
-					<input type="text" placeholder="nb de copies">
+				<form method="post" action="index.php">
+					<input type="file" accept="image/*" name="copie" placeholder="Choix de l'image">
+					<br>
+					<input type="text" placeholder="Epreuve">
+					<input type="text" placeholder="Nombre d'exercices">
 					<button type="submit">GO</button>
 				</form>
 			</div>
