@@ -30,38 +30,8 @@ Mettre à jour les différents types d'utilisateurs et leurs droits ici.
 $rights = array(
 'administrateur' => array('Modifier les droits'),
 'secrétaire' => array('Scanner'),
-'correcteur' => array('Corriger', 'Revoir une copie')
+'correcteur' => array('Corriger')
 );
 
 
-/*
-Création des bouttons
-********Méthode générale dépendant des paramètres modifiables ci dessus********
-*/
-if(!isset($_SESSION["id"]))
-{
-  echo "Veuillez vous connecter pour accéder à vos fonctionnalitées.";
-}
-else
-{
-  foreach($rights[$_SESSION["group"]] as $tacheAutorisee)
-  {
-
-    /*
-    les 3 sauts de lignes en html servent à compenser l'abscence actuelle de
-    positionnement des bouttons
-
-    *******************TO DO*******************
-    Réaliser le design des bouttons (ligne <p><input ...></p>)
-    Rappel, le echo "consigne" parmet de donner la "consigne" directement en language html
-    *******************************************
-    */
-    echo "
-    <form action=$tasksLinks[$tacheAutorisee]>
-      </br></br></br>
-      <p><input type='submit' value=$tacheAutorisee></p>
-    </form>
-    ";
-  }
-}
 ?>
