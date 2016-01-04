@@ -33,7 +33,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="perso.php">Page perso</a></li>
+                        <li><a href="bandeau_page_perso.php">Page perso</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="../users/logout.php">déconnexion</a></li>
                     </ul>
