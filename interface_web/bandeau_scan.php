@@ -6,7 +6,7 @@
 			<div class="col-md-6">
 				<h2>Scanner</h2>
 				<form method="post" action="index.php">
-					<input type="file" accept="image/*" name="copie" placeholder="Choix de l'image">
+					<input type="file" accept="image/*" name="copie[]" multiple>
 					<br>
 					<input type="text" placeholder="Epreuve">
 					<input type="text" placeholder="Nombre d'exercices">
