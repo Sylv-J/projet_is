@@ -1,7 +1,4 @@
 <body>
-	<!-- barre de navigation -->
-	<?php include("navbar.php") ;?>
-	
 	<!-- Bandeau contenant 3 cases : avancement, actions persos, gestion du compte -->
 	<div class="jumbotron">
 		<div class="container">
