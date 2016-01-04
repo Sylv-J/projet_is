@@ -27,7 +27,7 @@ class UniteDeCorrection
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
-		$_id = getAvailableId() // interaction avec le serveur
+		$_id = getAvailableId(); // interaction avec le serveur
 		if($_id == -1) // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
@@ -39,7 +39,7 @@ class UniteDeCorrection
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
 		
-		$_id = getAvailableId() // interaction avec le serveur
+		$_id = getAvailableId(); // interaction avec le serveur
 		if($_id == -1) // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
