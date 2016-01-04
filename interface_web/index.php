@@ -44,7 +44,7 @@
     */
     include("../users/user_tasks.php");
     //Bandeau exemple pour un correcteur
-    include("perso.php");
+    include("bandeau_page_perso.php");
   }
 ?>
 
