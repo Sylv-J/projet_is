@@ -63,14 +63,12 @@ class UniteDeCorrection
 		$NewSon = new UniteDeCorrection($this->_id);
 		addSon($NewSon);
 		
-		$updateDate(); //Sylvain :est ce bien nécessaire de changer la date? Cette date est utile seulement pour l'attribution des notes 
 	}
 	
 	public function addSon($Son)// Ajouter un fils défini au préalable
 	{
 		array_push(&($this->_idFils),$Son->getId());
 		
-		updateDate();
 	}
 	
 	
@@ -81,7 +79,6 @@ class UniteDeCorrection
 		//$UdC->setNiveau($Pere->getNiveau()+1);
 		//$Pere->
 		
-		updateDate();
 	}
 	
 	public function upload() // Uploader les données locales sur le serveur
@@ -99,7 +96,9 @@ class UniteDeCorrection
 	public function setId($id){$this->_id = $id;}
 	public function setIdFils($idFils){$this->_idFils = $idFils;}
 	public function setNiveau($niveau){$this->_niveau = $niveau;}
-	public function setNote($note){$this->_note = $note;}
+	public function setNote($note){$this->_note = $note;
+	updateDate();
+	}
 	public function setNoteMax($noteMax){$this->_noteMax = $noteMax;}
 	public function setDateModif($dateModif){$this->_dateModif = $dateModif;} // Ne devrait à priori jamais être utilisé
 	
