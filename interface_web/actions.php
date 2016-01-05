@@ -20,7 +20,7 @@ $rights = array(
 
 	//Mise en place du style
 	echo"
-	<div class='col-md-4'>
+	<div class='col-md-6 '>
 		<h2>Actions de $user</h2>
 		<form action='index.php' method='post'>
 		<div class='list-group'>
