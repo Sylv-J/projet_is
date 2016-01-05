@@ -5,4 +5,4 @@ session_destroy();
 //erase cookies
 setcookie("username","");
 setcookie("pwd","");
-echo "Vous avez été déconnecté";
+echo "Vous avez Ã©tÃ© dÃ©connectÃ©";
