@@ -186,7 +186,7 @@ class UniteDeCorrection
 	
 	public function addSon($Son)// Ajouter un fils défini au préalable
 	{
-		array_push(&($this->_idFils),$Son->getId());
+		array_push($this->_idFils,$Son->getId());
 		
 	}
 	
