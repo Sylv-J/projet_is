@@ -12,6 +12,7 @@ $tasksDirectories = array(
   'Scanner' => 'bandeau_scan.php',
   'Corriger' => '__PageDeDestination3__',
 
+  'register' => '../users/registration.php',
   'logout' => '../users/logout.php'
   );
 
