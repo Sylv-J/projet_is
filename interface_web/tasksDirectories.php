@@ -10,7 +10,9 @@ destination
 $tasksDirectories = array(
   'Modifier les droits' => '__PageDeDestination1__',
   'Scanner' => 'bandeau_scan.php',
-  'Corriger' => '__PageDeDestination3__'
+  'Corriger' => '__PageDeDestination3__',
+
+  'logout' => '../users/logout.php'
   );
 
 ?>

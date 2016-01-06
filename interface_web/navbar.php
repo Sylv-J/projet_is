@@ -23,7 +23,13 @@
 						<li><a href="index.php">Aide</a></li>
                         <li role="separator" class="divider"></li>
 						<li><a href="index.php">Paramètres</a></li>
-                        <li><a href="../users/logout.php">Déconnexion</a></li>
+                        <li>
+                          <a href="../users/logout.php">Déconnexion</a>
+                          <form action='index.php' method='post'>
+                          <div class='list-group'>
+                          <button type='submit' name='page_to_load' value='logout' class='btn'>Déconnexion (intégré mais design out)</button>
+                          </div></form>
+                        </li>
                     </ul>
                 </li>
             </ul>
