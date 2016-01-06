@@ -5,6 +5,17 @@ $valid = true;
 $num = 0; //Used to check if all the fields were filled, in that case it must be 3
 $error_msg = ""; //Store the error message to be displayed in case of incorrect form input
 
+// on teste si le fichier a été lancé à la main ou depuis l'interface
+if(!isset($_SESSION)) //lancé indépendamment
+{
+  $confirmationPage="users/registration.php";
+}
+else 		// lancé depuis l'interface
+{
+	$confirmationPage="interface_web/index.php";
+}
+
+
 //Check if the user entered a username, and that it isn't already in use
 if(isset($_POST["username"]) AND $_POST["username"] != ""){
 	$num++;
@@ -53,12 +64,13 @@ if($valid){
 		"mail" => $_POST["mail"],
 		"group" => $_POST["group"]
 	));
+	header("Refresh:0");
 }
 else{
 echo $error_msg
 ?>
 <!-- HMTL code for the registration form -->
-<form action="registration.php" method="post">
+<form action=<?php echo "../$confirmationPage" ?> method="post">
 <h3>Inscription : </h3>
 <p>
 	Nom d'utilisateur : <input type="text" name="username" required><br><br>
@@ -72,7 +84,7 @@ echo $error_msg
 		<option value="chairman">Chairman</option>
 		<option value="admin">Administrateur</option>
 	</select><br><br>
-	<input type="submit" value="Valider"><br>
+	<input type="submit" name='page_to_load' value='register'><br>
 </p>
 </form>
 <?php
