@@ -31,26 +31,28 @@
   // barre de navigation
   include("navbar.php") ;
 
-  //Si non connecté
-  if(!isset($_SESSION["id"]))
+  //Si on est pas connecté, sauf si on a cliqué sur "register"!
+  if(!isset($_SESSION["id"]) && ($_POST["page_to_load"]!='register'))
 	{
 		include("bandeau_connexion.php"); //formulaire de connexion
-	} 
-  
+	}
+
   //Si connecté
-  else 
+  else
 	{
-		//On affiche la page perso
-		if(!isset($_GET["page_to_load"]) || $_GET["page_to_load"] == "page_perso")
+		//aucune tâche n'a été demandé, on charge la page perso
+		if(!isset($_POST["page_to_load"]))
 		{
 			include("bandeau_page_perso.php");
+      include("bandeau_exemple.php");
 		}
-		//On affiche le bandeau de scan des copies
-		elseif($_GET["page_to_load"]=="Scanner" && $_SESSION["group"]=="secretaire")
+		//Sinon, un boutton demandant une page particuliere a été cliqué
+		else
 		{
-			include("bandeau_scan.php");
+      include("tasksDirectories.php");
+      include($tasksDirectories[$_POST["page_to_load"]]);
 		}
-	}	
+	}
 ?>
 
 
