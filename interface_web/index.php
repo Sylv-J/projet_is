@@ -32,7 +32,7 @@
   include("navbar.php") ;
 
   //Si on est pas connecté, sauf si on a cliqué sur "register"!
-  if(!isset($_SESSION["id"]) && ($_POST["page_to_load"]!='register'))
+  if(!isset($_SESSION["id"]) && (!isset($_POST["page_to_load"]) ||$_POST["page_to_load"]!='register'))
 	{
 		include("bandeau_connexion.php"); //formulaire de connexion
 	}
