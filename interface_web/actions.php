@@ -25,6 +25,12 @@ $rights = array(
 		<form action='index.php' method='post'>
 		<div class='list-group'>
 	";
+
+    //Messages de confirmation
+    //Confirmation apparaissant lorsqu'un correcteur valide une note
+    if(isset($_POST["mark_submit"]) and $user == "correcteur"){
+        include("bandeau_validation_note.php");
+    }
 	//Les boutons utilisables
 	foreach($rights[$user] as $actions){
 		echo "
