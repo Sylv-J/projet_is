@@ -178,7 +178,9 @@ void MyWindow::saveFinalImage()
         return;
     }
 
-    QString filePath = QFileDialog::getSaveFileName(this);
+    QString filePath = QFileDialog::getSaveFileName(this,tr("Save File"),
+                                                    "/home/jana/untitled.png",
+                                                    tr("Images (*.png)"));
 
     bool success = finalImage.save(filePath, "PNG", -1);
 
