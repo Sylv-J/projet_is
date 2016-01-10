@@ -19,7 +19,8 @@ void MyWindow::init()
 
 {
 
-    this->setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    //this->setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+    //cette ligne est inutile et non ergonomique : QT fait tout tout seul...
 
     displayLabel = new QLabel(this);
     displayLabel->setAlignment(Qt::AlignCenter);
