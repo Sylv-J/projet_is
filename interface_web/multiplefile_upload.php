@@ -15,7 +15,7 @@
 <?php
 // elements nécessaires pour faire la mise à jour de la base de données
 include_once("../master_db.php");
-include("./multiplefile_upload_DB.php");
+include_once("./multiplefile_upload_DB.php");
 
 $dir = "../images/"; // $dir contient le nom du dossier où seront uploader les images.
 if(!is_dir($dir)){ // On fait un test pour savoir si le dossier exist déjà
