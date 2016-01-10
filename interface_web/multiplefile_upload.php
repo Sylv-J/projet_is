@@ -115,7 +115,7 @@ for ($i = 0; $i < $fileCount; $i++) {
         $msg = "Le fichier ". $fileinfo["filename"]. " existe déjà. Veuillez sélectionner un autre fichier";
         ?>
         <script>
-        // notifier la secrétaire du succès de l'upload du fichier.
+        // notifier la secrétaire que le fichier existe déjà
         $( document ).ready(function() {
           window.parent.$.notify("<?php echo $msg; ?>", "error");
         });
