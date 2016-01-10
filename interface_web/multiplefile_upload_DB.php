@@ -18,24 +18,18 @@ function updateDB($idUnite){
 }
 function find_unset_entry(){
   global $db;
-  /*
-  $req = $db->prepare('SELECT id FROM units ORDER BY id ASC LIMIT 1 ') or die( 'Invalid MySQL query :'.mysql_error());
-  $res = $req->execute();
-  var_dump($res);*/
-  $id =0;
-  echo "find_unset_entry :<br/>";
+  // requête pour se mettre en haut de la table 'units'
   $rq = 'SELECT id FROM units ORDER BY id ASC LIMIT 1 ';
+  // on prépare la requête
   $req = $db->prepare($rq);
+  // on l'exécute
   $data = $req->execute();
-  while ($data)
-  {
+  // on parcourt la table du début jusqu'à trouver une entrée libre (id non assigné)
+  for($id=0;$data;$id++){
     $req = $db->prepare('SELECT id FROM units WHERE id='.$id);
-    var_dump($req);
     $req->execute();
+    // Récupérer l'entrée actuelle sur la table 'units'
     $data = $req->fetch();
-
-    var_dump($data);
-    $id++;
   }
   return (int)$id-1;
 }
