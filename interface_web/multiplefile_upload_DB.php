@@ -1,19 +1,21 @@
 <?php
-include_once("../projet_is/master_db.php");
+include_once("../master_db.php");
 $db = masterDB::getDB();
 function updateDB($idUnite){
   global $db;
-  $req = $db->prepare('INSERT INTO units VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :id_corrector, :date_modif)');
-  $res = $req->execute(array(
+  $req = $db->prepare('INSERT INTO units VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
+  $req->execute(array(
     'id' => $idUnite,
     'id_father' => NULL,
     'id_sons' => NULL,
     'data' => NULL,
     'level' => NULL,
     'mark' => NULL,
+    'max_mark' => NULL,
     'id_corrector' => NULL,
     'date_modif' => NULL
   ));
+
 
 }
 function find_unset_entry(){

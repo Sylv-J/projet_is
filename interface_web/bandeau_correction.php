@@ -9,7 +9,7 @@
             //Connection à la db
             include_once("../master_db.php");
             $db = masterDB::getDB();
-            
+
             //Recherche dans la db d'une unité de correction non assignée
             $req = $db->prepare("SELECT id FROM units WHERE id_corrector is NULL");
             $req->execute();
@@ -57,7 +57,7 @@
 
                 <?php
                 //Mise à jour de la db avec l id du correcteur
-                    
+
                 $req = $db->prepare("SELECT id FROM users WHERE username = ?");
                 $req->execute(array($_SESSION["username"]));
                 $res = $req->fetch();
@@ -65,7 +65,7 @@
                 $req = $db->prepare("UPDATE units SET id_corrector = ? WHERE id = ?");
                 $req->execute(array($res[0], $id));
             }
-                    
+
             //Si toutes les unités sont assignées...
             else{ ?>
                 <div class="col-md-10">

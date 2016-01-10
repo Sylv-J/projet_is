@@ -17,7 +17,7 @@
 include_once("../master_db.php");
 include("./multiplefile_upload_DB.php");
 
-$dir = "../Images/"; // $dir contient le nom du dossier où seront uploader les images.
+$dir = "../images/"; // $dir contient le nom du dossier où seront uploader les images.
 if(!is_dir($dir)){ // On fait un test pour savoir si le dossier exist déjà
   mkdir($dir); // S'il n'éxiste pas on le crée avec mkdir()
 }
@@ -77,10 +77,13 @@ for ($i = 0; $i < $fileCount; $i++) {
       paramètre. Si une erreur survient la fonction retourne false.
       */
       // On test si le fichier existe déjà sur le serveur.
+      $id_copie= $_POST ["id_copie"];
+
       $fileinfo = pathinfo($file);
       // On cherche une entrée libre sur la table "units" dans notre BDD et
       // on récupère son id
-      $idUnite = find_unset_entry();
+      // on ajoute i afin de differencier les differentes copies !
+      $idUnite = $id_copie*10+$i;
       // On fait en sorte que l'id soit le nom de l'unité sur le dossier /Images
       $uploadImageID = $dir.$idUnite.'.'.$fileinfo['extension'];
       if(!file_exists($uploadImageID)){
@@ -89,6 +92,7 @@ for ($i = 0; $i < $fileCount; $i++) {
           // On met à jour la base de donnée en ajoutant l'unité à l'id récupéré
           // par find_unset_entry
           updateDB($idUnite);
+
           $msg = "le fichier ". $fileinfo["filename"]. " a été bien envoyé.";
           ?>
           <script>

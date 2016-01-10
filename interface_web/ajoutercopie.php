@@ -54,7 +54,7 @@
 				</p>
 				<p>
 					<label for="input_id_copie">Identifiant de la copie : </label><br/>
-					<input id="input_id_copie" type="text" name="id_copie"><br/><br/>
+					<input id="input_id_copie" type="int" name="id_copie"><br/><br/>
 				</p>
 				<p>
 					<input formmethod="post" name="submit" type="submit" value="Soumettre" align ="right"><br>

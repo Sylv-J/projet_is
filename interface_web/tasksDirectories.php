@@ -9,7 +9,7 @@ destination
 */
 $tasksDirectories = array(
   'Modifier les droits' => '__PageDeDestination1__',
-  'Scanner' => 'bandeau_scan.php',
+  'Scanner' => 'ajoutercopie.php',
   'Corriger' => 'bandeau_correction.php',
 
   'register' => '../users/registration.php',
