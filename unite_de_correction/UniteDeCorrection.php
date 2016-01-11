@@ -11,6 +11,7 @@ class UniteDeCorrection
 	
 	// ATTRIBUTS
 	
+	// Uploadés
 	private $_idPere = -1;
 	private $_data='';
 	private $_id = -1;
@@ -20,6 +21,10 @@ class UniteDeCorrection
 	private $_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
 	private $_dateModif = "";// La date, en format DD/MM/YYYY h:m:s, de dernière modification
 	private $_idCorrecteur = -1; // Ne sera égal à un ID que pour les plus petites udc
+	
+	// Non uploadés
+	private $_pere = NULL;// Référence vers le père
+	private $_fils = array(NULL); // Référence vers les fils
 	
 	// CONSTRUCTEURS
 	
@@ -48,6 +53,9 @@ class UniteDeCorrection
 		$_idPere = $idPere;
 		$_niveau = $_idPere->getNiveau() + 1;
 		
+		$_pere = getUnitById($_idPere);
+		$_pere.addSon($this);
+		
 	}
 
 	
@@ -66,9 +74,15 @@ class UniteDeCorrection
 		$_idPere = $idPere;
 		$_niveau = $_idPere->getNiveau() + 1;
 		
+		$_fils = getUnitById($_idFils);
+		$_fils.setPere($this);
+		
+		$_pere = getUnitById($_idPere);
+		$_pere.addSon(this);
+		
 	}
 	
-	public function UniteDeCorrection($arrayData) // Constructeur appelé lors d'un getUnitById
+	public function UniteDeCorrection($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
 	{
 		date_default_timezone_set(TIMEZONE);
 		
@@ -81,6 +95,15 @@ class UniteDeCorrection
 		$_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
 		$_idCorrecteur = $arrayData['id_corrector'];
 		
+		if($getAll)
+		{
+			$_pere = getUnitById($_idPere); // Gestion des pointeurs
+			$_pere.addSon($this);
+			for($_idFils as $cur) // Création des pointeurs fils
+			{
+				UniteDeCorrection(getUnitById($cur),true); // Dans le constructeur, le fils est ajouté automatiquement (voir ligne au-dessus)
+			}
+		}
 	}
 	
 	// FONCTIONS (outre getters et setters)
@@ -118,15 +141,20 @@ class UniteDeCorrection
 		return -1;
 	}
 	
-	public function getRoot() // Récupère l'ID du premier des pères
+	public function getRootId() // Récupère l'ID du premier des pères
+	{
+		return getRoot()->getId();
+	}
+	
+	public function getRoot() // Récupère le premier des pères
 	{
 		if($_idPere == -1)
 		{
-			return $this->_id;
+			return $this;
 		} 
 		else
 		{
-			return getUnitById($_idPere)->getRoot();
+			return $this->_pere->getRoot();
 		}
 	}
 	
@@ -184,9 +212,10 @@ class UniteDeCorrection
 		addSon($NewSon);
 	}
 	
-	public function addSon($Son)// Ajouter un fils défini au préalable
-	{
+	public function addSon(&$Son)// Ajouter un fils défini au préalable
+	{// Le "&" est nécessaire pour passer des équivalents de pointeurs.
 		array_push($this->_idFils,$Son->getId());
+		array_push($this->_fils,$Son);
 		
 	}
 	
@@ -203,14 +232,15 @@ class UniteDeCorrection
 	public function uploadAll() // Uploader l'objet et tous ses fils
 	{
 		upload();
-		foreach($_idFils as $cur) // On parcourt tous les fils 
+		foreach($_fils as $cur) // On parcourt tous les fils 
 		{
-			getUnitById($cur)->upload(); // On recommence sur chacun des fils
+			$cur->upload(); // On recommence sur chacun des fils
 		}
 	}
 	
 	// SETTERS
 	
+	public function setPere($pere){$this->_pere = $pere;}
 	public function setIdPere($idPere){$this->_idPere = $idPere;}
 	public function setId($id){$this->_id = $id;}
 	public function setIdFils($idFils){$this->_idFils = $idFils;}
@@ -223,7 +253,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	
+	public function getPere(){return $this->_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
