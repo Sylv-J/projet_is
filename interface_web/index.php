@@ -31,21 +31,28 @@
   // barre de navigation
   include("navbar.php") ;
 
-  if(!isset($_SESSION["id"])) //vous n'étes pas connecté
-  {
-    // Bandeau d'acceuil avec le formulaire d'authentification
-    include("bandeau_connexion.php");
-  }
-  else //vous êtes connectés
-  {
-    /*
-    importe les bouttons de fonctionalités de chaque type d'utilisateur
-    voir le fuchier users/user_tasks.php pour designer les bouttons
-    */
-    include("../users/user_tasks.php");
-    //Bandeau exemple pour un correcteur
-    include("perso.php");
-  }
+  //Si on est pas connecté, sauf si on a cliqué sur "register"!
+  if(!isset($_SESSION["id"]) && (!isset($_POST["page_to_load"]) ||$_POST["page_to_load"]!='register'))
+	{
+		include("bandeau_connexion.php"); //formulaire de connexion
+	}
+
+  //Si connecté
+  else
+	{
+		//aucune tâche n'a été demandé, on charge la page perso
+		if(!isset($_POST["page_to_load"]))
+		{
+			include("bandeau_page_perso.php");
+      include("bandeau_exemple.php");
+		}
+		//Sinon, un boutton demandant une page particuliere a été cliqué
+		else
+		{
+      include("tasksDirectories.php");
+      include($tasksDirectories[$_POST["page_to_load"]]);
+		}
+	}
 ?>
 
 

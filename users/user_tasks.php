@@ -29,7 +29,7 @@ Mettre à jour les différents types d'utilisateurs et leurs droits ici.
 */
 $rights = array(
 'administrateur' => array('Modifier les droits'),
-'secrétaire' => array('Scanner'),
+'secretaire' => array('Scanner'),
 'correcteur' => array('Corriger')
 );
 
