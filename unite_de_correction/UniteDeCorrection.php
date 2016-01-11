@@ -240,7 +240,7 @@ class UniteDeCorrection
 	
 	// SETTERS
 	
-	public function setPere($pere){$this->_pere = $pere;}
+	public function setPere(&$pere){$this->_pere = $pere;}
 	public function setIdPere($idPere){$this->_idPere = $idPere;}
 	public function setId($id){$this->_id = $id;}
 	public function setIdFils($idFils){$this->_idFils = $idFils;}
@@ -253,7 +253,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->_pere;}
+	public function getPere(){return $this->&_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
