@@ -1,17 +1,22 @@
-<body> 
- <div class = "container">
-    <h2> Stats correcteur </h2>
-    <table class ="table">
-      <thead>
-        <tr>
-          <th> ID Correcteur </th>
-          <th> Epreuvre </th>
-          <th> Nombre copies assignées </th>
-          <th> Nombre de copies corrigées </th>
-          <th> Jauge de progression </th>
-          <th> Mail </th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
+<body>
+  <div class ="jumbotron">
+   <div class = "container">
+      <h2> Stats correcteur </h2>
+      <table class ="table">
+        <thead>
+          <tr>
+            <th> Nom </th>
+            <th> ID Correcteur </th>
+            <th> Nombre de copies restantes </th>
+            <th> Mail </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+           include("remplirtableau.php")
+           ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
