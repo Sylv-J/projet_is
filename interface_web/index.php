@@ -49,8 +49,8 @@
 		//Sinon, un boutton demandant une page particuliere a été cliqué
 		else
 		{
-      include("tasksDirectories.php");
-      include($tasksDirectories[$_POST["page_to_load"]]);
+      include("../actions/tasksDirectories.php");
+      include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
 		}
 	}
 ?>

@@ -30,7 +30,7 @@ $rights = array(
     //Messages de confirmation
     //Confirmation apparaissant lorsqu'un correcteur valide une note
     if(isset($_POST["mark_submit"]) and $user == "correcteur"){
-        include("bandeau_validation_note.php");
+        include_once("correcteur/bandeau_validation_note.php");
     }
 	//Les boutons utilisables
 	foreach($rights[$user] as $actions){

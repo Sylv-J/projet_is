@@ -9,10 +9,10 @@ destination
 */
 $tasksDirectories = array(
   'Modifier les droits' => '__PageDeDestination1__',
-  'Scanner' => 'ajoutercopie.php',
-  'Corriger' => 'bandeau_correction.php',
-  'Statistiques' => 'statschairman.php',
-  'Assignation des copies' => 'assignationcopies.php',
+  'Scanner' => 'secretaire/ajoutercopie.php',
+  'Corriger' => 'correcteur/bandeau_correction.php',
+  'Statistiques' => 'chairman/statschairman.php',
+  'Assignation des copies' => 'chairman/assignationcopies.php',
 
   'register' => '../users/registration.php',
   'logout' => '../users/logout.php'

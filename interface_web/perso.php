@@ -26,7 +26,7 @@
 	<body>
 		<!-- barre de navigation -->
 		<?php include("navbar.php") ;?>
-		
+
 		<!-- Bandeau contenant 3 cases : avancement, actions persos, gestion du compte -->
 		<div class="jumbotron">
 			<div class="container">
@@ -46,10 +46,10 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<!-- Case action -- dépend du rôle -->
-				<?php include("actions.php");?>
-				
+				<?php include("../actions/actions.php");?>
+
 				<!-- Case mon_compte -- commune à tous -->
 				<div class="col-md-4">
 					<h2>Mon compte</h2>
@@ -61,7 +61,7 @@
 						<a href="#" class="list-group-item">Déconnexion</a>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
 
@@ -75,5 +75,5 @@
 		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 		<script src="js/ie10-viewport-bug-workaround.js"></script>
 	</body>
-	
+
 </html>
