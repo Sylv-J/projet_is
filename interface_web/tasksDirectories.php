@@ -11,6 +11,7 @@ $tasksDirectories = array(
   'Modifier les droits' => '__PageDeDestination1__',
   'Scanner' => 'ajoutercopie.php',
   'Corriger' => 'bandeau_correction.php',
+  'Voir mes Stats' => 'stats_view.php',
 
   'register' => '../users/registration.php',
   'logout' => '../users/logout.php'

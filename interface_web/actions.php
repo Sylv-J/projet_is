@@ -15,7 +15,7 @@ $user = $_SESSION["group"];
 $rights = array(
 'administrateur' => array('Modifier les droits'),
 'secretaire' => array('Scanner'),
-'correcteur' => array('Corriger')
+'correcteur' => array('Corriger','Voir mes Stats')
 );
 
 	//Mise en place du style

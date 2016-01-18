@@ -7,14 +7,15 @@
 
             <?php
             //Connection à la db
-            include_once("../master_db.php");
-            $db = masterDB::getDB();
+			include("stats.php");
+			include_once("../master_db.php");
+	        $db = masterDB::getDB();
 
             //Recherche dans la db d'une unité de correction non assignée
             $req = $db->prepare("SELECT id FROM units WHERE id_corrector is NULL");
             $req->execute();
             $res = $req->fetch();
-
+			
             //Si une unité n'est pas assignée...
             if ($res[0]!=''){
 
@@ -74,6 +75,8 @@
 
             <?php
             }
+			echo MoyennePersoGlobale();
+			echo MoyennePersoGlissante(2);
             ?>
 
         </div>
