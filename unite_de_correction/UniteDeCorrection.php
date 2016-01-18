@@ -12,13 +12,14 @@ class UniteDeCorrection
 	
 	const TIMEZONE = "Europe/London"; // Date GMT
 	const IDMAX = 2147483646; // 2147483647 = 2^(31) = la taille max d'un int
+	const STRUCTURE = array('Partie','Exercice','Question','Sous-question');
 	
 	// ATTRIBUTS
 	
 	// Uploadés
-	private $_idPere = -1;
+	private $_idPere = "null";
 	private $_data='';
-	private $_id = -1;
+	private $_id = "null";
 	private $_idFils = array();
 	private $_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
 	private $_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
@@ -27,17 +28,19 @@ class UniteDeCorrection
 	private $_idCorrecteur = -1; // Ne sera égal à un ID que pour les plus petites udc
 	
 	// Non uploadés
-	private $_pere = NULL;// Référence vers le père
-	private $_fils = array(NULL); // Référence vers les fils
+	private $_pere = NULL;// DEPRECATED // Référence vers le père
+	private $_fils = array(NULL);// DEPRECATED // Référence vers les fils
 	
 	// CONSTRUCTEURS
+	/* DEPRECATED __________________________________________________________________________________________
 	
 	public function __construct() // Constructeur de base de l'unité de correction
+	public function UniteDeCorrection() // DEPRECATED // Constructeur de base de l'unité de correction
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
 		$_id = getAvailableId(); // interaction avec le serveur
-		if($_id == -1) // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
+		if($_id == "null") // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
 		}
@@ -49,7 +52,7 @@ class UniteDeCorrection
 		$_dateModif = date('d/m/Y h:i:s');
 		
 		$_id = getAvailableId(); // interaction avec le serveur
-		if($_id == -1) // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
+		if($_id == "null") // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
 		}
@@ -69,7 +72,7 @@ class UniteDeCorrection
 		$_dateModif = date('d/m/Y h:i:s');
 		
 		$_id = getAvailableId();
-		if($_id == -1) // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
+		if($_id == "null") // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
 		}
@@ -85,6 +88,38 @@ class UniteDeCorrection
 		$_pere.addSon(this);
 		
 	}
+	__________________________________________________________________________________________
+	*/
+	function __construct($id,$fromScratch=true) // Génère en fonction du barême associé l'UDC qui correspond pour un élève donné (on lui passe juste l'ID de l'élève)
+	{
+		$this->_id = $id;
+		if($fromScratch)
+		{
+			$bareme = getUnitById("0");
+			if($bareme == null)
+			{
+				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
+				return;
+			}
+		}
+		else 
+		{
+			$bareme = getUnitById($id);
+			if($bareme == null)
+			{
+				echo "Erreur : le constructeur s'est perdu (tentative d'accès à une partie du barême qui n'existe pas)";
+				return;
+			}
+		}
+		foreach($bareme->getIdFils() as $cur)
+		{
+			array_push($this->_idFils,replaceFirst($cur,$_id));
+			new UniteDeCorrection($cur,false);
+		}
+		
+		upload();
+	}
+	
 	
 	public function __construct3($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
 	{
@@ -112,6 +147,13 @@ class UniteDeCorrection
 	
 	// FONCTIONS (outre getters et setters)
 	
+	public function replaceFirst($string,$idEleve) // Remplace la première chaîne de caractère de l'ID Eleve_Epreuve_Partie... par l'id de l'élève
+	{
+		$buff = explode('_',$string);
+		$buff[0]=$idEleve;
+		return implode('_',$buff);
+	}
+	
 	public function getUnitById($targetId) // Récupère une unité de correction par son ID
 	{
 		$targetObject = null;
@@ -130,7 +172,24 @@ class UniteDeCorrection
 		return null;
 	}
 	
-	public function getAvailableId() // Algorithme bourrin d'obtention d'un ID non assigné... on les teste tous jusque l'obtention d'un ID valide
+	public function delInts($string) // Retourn la partie lettrée d'une chaîne de type "abcdef123456" (non sensible à la casse)
+	{
+		for($i=0;$i<strlen($string);$i++)
+		{
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+				return intval(substr($string),$i-count($string));
+		}
+	}
+	public function getInts($string)// Retourne les ints d'une chaîne de type "abcdef123456" (non sensible à la casse)
+	{
+		for($i=0;$i<strlen($string);$i++)
+		{
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+				return intval(substr($string),$i);
+		}
+	}
+	
+	public function getAvailableId() // DEPRECATED // Algorithme bourrin d'obtention d'un ID non assigné... on les teste tous jusque l'obtention d'un ID valide
 	{
 		$cur = 0;
 		for($cur = 0;$cur < IDMAX;$cur++) // 2147483647 = 2^(31) = la valeur maximale d'un int
@@ -147,10 +206,13 @@ class UniteDeCorrection
 	
 	public function getRootId() // Récupère l'ID du premier des pères
 	{
-		return getRoot()->getId();
+		if($_idPere == -1)
+			return $this->_id;
+		$pere = getUnitById($_idPere);
+		return $pere->getRootId();
 	}
 	
-	public function getRoot() // Récupère le premier des pères
+	public function getRoot()// DEPRECATED  // Récupère le premier des pères
 	{
 		if($_idPere == -1)
 		{
@@ -162,17 +224,9 @@ class UniteDeCorrection
 		}
 	}
 	
-	public function deleteAll() // Détruit cette unité et ses fils, et fait de même sur le serveur
+	public function deleteAll()// Détruit cette unité et ses fils sur le serveur
 	{
-		$cur = null;
-		
-		while(!empty($this->_fils))
-		{
-			$cur = pop($this->_fils);
-			$cur->deleteAll();
-		}
-		
-		$res = $db->prepare("DELETE * FROM units WHERE id = ? ");
+		$res = $db->prepare("DELETE * FROM units WHERE id LIKE ?% ");
 		$res->execute(array($this->_id));
 	}
 	
@@ -210,31 +264,29 @@ class UniteDeCorrection
 		$_dateModif = date('d/m/Y h:i:s');
 	}
 	
-	public function newSon() // Créer immédiatement un fils vide
+	public function newSon()// DEPRECATED // Créer immédiatement un fils vide
 	{
 		$NewSon = new UniteDeCorrection($this->_id);
 		addSon($NewSon);
 	}
 	
-	public function addSon(&$Son)// Ajouter un fils défini au préalable
+	public function addSon(&$Son)// DEPRECATED // Ajouter un fils défini au préalable
 	{// Le "&" est nécessaire pour passer des équivalents de pointeurs.
 		array_push($this->_idFils,$Son->getId());
 		array_push($this->_fils,$Son);
 		
 	}
 	
-	/* Fonction incomplète
+	/*
 	public function insert($UdC,$idPere) // Insérer une UdC comme fils d'une autre (son niveau est automatiquement recalculé)
-	
 	{
 		$Pere = getUnitById($idPere);
 		$UdC->setNiveau($Pere->getNiveau()+1);
 		$Pere->addSon($UdC);
 		
-	}
-	*/
+	}*/
 	
-	public function uploadAll() // Uploader l'objet et tous ses fils
+	public function uploadAll()// DEPRECATED // Uploader l'objet et tous ses fils
 	{
 		upload();
 		foreach($_fils as $cur) // On parcourt tous les fils 
@@ -258,7 +310,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->_pere;}
+	public function getPere(){return $this->&_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
@@ -267,6 +319,7 @@ class UniteDeCorrection
 	public function getNoteMax(){return $this->_noteMax;}
 	public function getDateModif(){return $this->_dateModif;}
 	public function getIdCorrecteur(){return $this->_idCorrecteur;}
+
 }
 
 ?>
