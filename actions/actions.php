@@ -15,7 +15,8 @@ $user = $_SESSION["group"];
 $rights = array(
 'administrateur' => array('Modifier les droits'),
 'secretaire' => array('Scanner'),
-'correcteur' => array('Corriger')
+'correcteur' => array('Corriger'),
+'chairman' => array ('Statistiques','Assignation des copies')
 );
 
 	//Mise en place du style
@@ -29,7 +30,7 @@ $rights = array(
     //Messages de confirmation
     //Confirmation apparaissant lorsqu'un correcteur valide une note
     if(isset($_POST["mark_submit"]) and $user == "correcteur"){
-        include("bandeau_validation_note.php");
+        include_once("correcteur/bandeau_validation_note.php");
     }
 	//Les boutons utilisables
 	foreach($rights[$user] as $actions){
