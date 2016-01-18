@@ -3,7 +3,7 @@ include_once("../master_db.php");
 $db = masterDB::getDB();
 function updateDB($idUnite){
   global $db;
-  $req = $db->prepare('INSERT INTO units VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
+  $req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
   $req->execute(array(
     'id' => $idUnite,
     'id_father' => NULL,
