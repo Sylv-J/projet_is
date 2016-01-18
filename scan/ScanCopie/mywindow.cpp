@@ -1,7 +1,7 @@
 #include "mywindow.h"
 
-#define WINDOW_HEIGHT 1000
-#define WINDOW_WIDTH 1800
+#define WINDOW_HEIGHT (this->size().height())
+#define WINDOW_WIDTH (this->size().width())
 #define BUTTON_MAX_HEIGHT 50
 #define BUTTON_MAX_WIDTH 150
 #define FORMAT "PNG"
@@ -20,7 +20,9 @@ void MyWindow::init()
 {
 
     //this->setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    //cette ligne est inutile et non ergonomique : QT fait tout tout seul...
+
+    labelsContainer = new QWidget(this);
+    labelsContainer->setMaximumWidth(WINDOW_WIDTH/2);
 
     displayLabel = new QLabel(this);
     displayLabel->setAlignment(Qt::AlignCenter);
@@ -30,8 +32,8 @@ void MyWindow::init()
 
     LscrollArea = new QScrollArea;
     LscrollArea->setBackgroundRole(QPalette::Dark);
-
-    LscrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    LscrollArea->setWidgetResizable(true);
+    LscrollArea->setWidget(labelsContainer);
 
     m_buttonClose = new QPushButton("Fermer");
     m_buttonChooseImages = new QPushButton("Choisir images");
@@ -103,8 +105,15 @@ void MyWindow::chooseImages()
     }
 
     images.clear();
+    displayLabels.clear();
     colNumbers = 0;
     rowNumbers = 0;
+
+    /*if(labelLayout != NULL)
+    {
+        delete labelLayout;
+    }*/
+    labelLayout = new QGridLayout;
 
     QSize currentImageSize = QSize();
     for(int i = 0; i < filenames.size(); ++i)
@@ -119,10 +128,25 @@ void MyWindow::chooseImages()
 
         images.push_back(currentImage);
 
+        QLabel *currentLabel = new QLabel(this);
+        currentLabel->setAlignment(Qt::AlignCenter);
+        currentLabel->setPixmap(QPixmap::fromImage(currentImage));
+        displayLabels.push_back(currentLabel);
+        labelLayout->addWidget(displayLabels[i], 2*i, 0);
+        labelLayout->setRowMinimumHeight(2*i + 1, 100);
+
         currentImageSize = images[i].size();
         colNumbers = fmax(colNumbers, currentImageSize.width());
         rowNumbers += currentImageSize.height();
     }
+
+    windowLayout->removeWidget(displayLabel);
+
+    labelsContainer->setLayout(labelLayout);
+
+    windowLayout->addWidget(LscrollArea, 0, 2, 5, 1);
+    windowLayout->setColumnMinimumWidth(1, (this->size().width() - BUTTON_MAX_WIDTH - labelsContainer->width())/2);
+    windowLayout->setColumnMinimumWidth(3, (this->size().width() - BUTTON_MAX_WIDTH - labelsContainer->width())/2);
 
 }
 
@@ -154,6 +178,10 @@ void MyWindow::assemble()
 
     windowLayout->removeWidget(displayLabel);
 
+    /*if(displayLabel != NULL)
+    {
+        delete displayLabel;
+    }*/
     displayLabel = new QLabel(this);
     displayLabel->setAlignment(Qt::AlignCenter);
     displayLabel->setPixmap(QPixmap::fromImage(finalImage));
@@ -179,9 +207,7 @@ void MyWindow::saveFinalImage()
         return;
     }
 
-    QString filePath = QFileDialog::getSaveFileName(this,tr("Save File"),
-                                                    "/home/jana/untitled.png",
-                                                    tr("Images (*.png)"));
+    QString filePath = QFileDialog::getSaveFileName(this);
 
     bool success = finalImage.save(filePath, "PNG", -1);
 
