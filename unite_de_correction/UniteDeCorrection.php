@@ -161,7 +161,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') )) // C'est un nombre
 				return intval(substr($string),$i-count($string));
 		}
 	}
@@ -169,7 +169,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) )// C'est un nombre
 				return intval(substr($string),$i);
 		}
 	}
@@ -295,7 +295,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->&_pere;}
+	public function getPere(){return $this->_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
