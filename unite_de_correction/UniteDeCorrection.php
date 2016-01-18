@@ -1,5 +1,9 @@
 <?php
-include_once("../master_db.php");
+
+echo "Execution de UniteDeCorrection 
+		";
+
+include_once ("../master_db.php");
 $db = masterDB::getDB();
 
 class UniteDeCorrection
@@ -28,7 +32,7 @@ class UniteDeCorrection
 	
 	// CONSTRUCTEURS
 	
-	public function UniteDeCorrection() // Constructeur de base de l'unité de correction
+	public function __construct() // Constructeur de base de l'unité de correction
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
@@ -39,7 +43,7 @@ class UniteDeCorrection
 		}
 	}
 	
-	public function UniteDeCorrection($idPere) // Constructeur appelé au moment de la création d'un fils
+	public function __construct1($idPere) // Constructeur appelé au moment de la création d'un fils
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
@@ -59,7 +63,7 @@ class UniteDeCorrection
 	}
 
 	
-	public function UniteDeCorrection($idPere,$idFils) // Constructeur appelé si l'on souhaite insérer un noeud
+	public function __construct2($idPere,$idFils) // Constructeur appelé si l'on souhaite insérer un noeud
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
@@ -82,7 +86,7 @@ class UniteDeCorrection
 		
 	}
 	
-	public function UniteDeCorrection($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
+	public function __construct3($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
 	{
 		date_default_timezone_set(TIMEZONE);
 		
@@ -101,7 +105,7 @@ class UniteDeCorrection
 			$_pere.addSon($this);
 			foreach($_idFils as $cur) // Création des pointeurs fils
 			{
-				UniteDeCorrection(getUnitById($cur),true); // Dans le constructeur, le fils est ajouté automatiquement (voir ligne au-dessus)
+				new UniteDeCorrection(getUnitById($cur),true); // Dans le constructeur, le fils est ajouté automatiquement (voir ligne au-dessus)
 			}
 		}
 	}
@@ -264,4 +268,5 @@ class UniteDeCorrection
 	public function getDateModif(){return $this->_dateModif;}
 	public function getIdCorrecteur(){return $this->_idCorrecteur;}
 }
+
 ?>
