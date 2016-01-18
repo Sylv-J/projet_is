@@ -217,3 +217,13 @@ void MyWindow::saveFinalImage()
     }
 }
 
+int MyWindow::getRowNumbers()
+{
+    return this->rowNumbers;
+}
+
+int MyWindow::getColNumbers()
+{
+    return this->colNumbers;
+}
+;

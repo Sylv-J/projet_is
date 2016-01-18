@@ -27,7 +27,8 @@ class MyWindow : public QWidget
     MyWindow();
     void init();
     void openDialog(QWidget *parent, const QString &title, const QString &message);
-
+    int getRowNumbers();
+    int getColNumbers();
     public slots:
 
     void chooseImages();

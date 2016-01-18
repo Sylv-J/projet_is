@@ -3,8 +3,8 @@
 	<div class="jumbotron">
 		<div class="container">
 			<!-- Case action -- dépend du rôle -->
-			<?php include("actions.php");?>
-			
+			<?php include("../actions/actions.php");?>
+
 			<!-- Case mon_compte -- commune à tous -->
 			<div class="col-md-4">
 				<h2>Mon compte</h2>
@@ -16,9 +16,8 @@
 					<a href="#" class="list-group-item">Déconnexion</a>
 				</div>
 			</div>
-			
-			
+
+
 		</div>
 	</div>
 </body>
-

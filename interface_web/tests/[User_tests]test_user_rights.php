@@ -1,7 +1,7 @@
 <?php
 
-	require_once "actions.php";
-	require_once "tasksDirectories.php";
+	require_once "../../actions/actions.php";
+	require_once "../../actions/tasksDirectories.php";
 
 	// déclaration des rôles
 	$administrateur = 'administrateur';
@@ -18,11 +18,11 @@
 
 	// modifier les pages le cas échéant
 	$pageDestModifier = '__PageDeDestination1__';
-	$pageDestScanner = 'ajoutercopie.php';
-	$pageDestCorriger = 'bandeau_correction.php';
+	$pageDestScanner = '../../actions/secretaire/ajoutercopie.php';
+	$pageDestCorriger = '../../actions/correcteur/bandeau_correction.php';
 	$pageDestRevoir = '__PageDeDestination__';
-	$pageDestRegister = '../users/registration.php';
-  $pageDestLogout = '../users/logout.php';
+	$pageDestRegister = '../../users/registration.php';
+  $pageDestLogout = '../../users/logout.php';
 
 
 	/*

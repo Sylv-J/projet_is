@@ -38,7 +38,7 @@
 	<!-- Bandeau contenant 3 champs : Epreuve, Nombre d'exercices, Identifiant de la copie -->
 	<div class="jumbotron">
 		<div class="container">
-			<form action= "multiplefile_upload.php" method="post" enctype="multipart/form-data" target="upload_iframe">
+			<form action= "../database_request/multiplefile_upload.php" method="post" enctype="multipart/form-data" target="upload_iframe">
 				<p>
 					<br/>
 					<label for="fileToUpload">Ajouter image :</label><br/>
