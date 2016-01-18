@@ -2,7 +2,9 @@ QT += widgets
 
 SOURCES += \
     main.cpp \
-    mywindow.cpp
+    mywindow.cpp \
+    Traitement.cpp
 
 HEADERS += \
-    mywindow.h
+    mywindow.h \
+    Traitement.h
