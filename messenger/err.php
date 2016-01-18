@@ -2,6 +2,7 @@
 <head>
   <meta http-equiv="refresh" content="3;URL=../interface_web/index.php">
   <meta charset="utf-8">
+  <title>Erreur d'authentification</title>
 </head>
 <body>
   <center>
