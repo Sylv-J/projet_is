@@ -1,9 +1,5 @@
 <?php
-
-echo "Execution de UniteDeCorrection 
-		";
-
-include_once ("../master_db.php");
+include_once("../master_db.php");
 $db = masterDB::getDB();
 
 class UniteDeCorrection
@@ -16,7 +12,7 @@ class UniteDeCorrection
 	
 	// ATTRIBUTS
 	
-	// UploadésDEPRECATED
+	// Uploadés
 	private $_idPere = "null";
 	private $_data='';
 	private $_id = "null";
@@ -34,7 +30,6 @@ class UniteDeCorrection
 	// CONSTRUCTEURS
 	/* DEPRECATED __________________________________________________________________________________________
 	
-	public function __construct() // Constructeur de base de l'unité de correction
 	public function UniteDeCorrection() // DEPRECATED // Constructeur de base de l'unité de correction
 	{
 		date_default_timezone_set(TIMEZONE);
@@ -46,7 +41,7 @@ class UniteDeCorrection
 		}
 	}
 	
-	public function __construct1($idPere) // Constructeur appelé au moment de la création d'un fils
+	public function UniteDeCorrection($idPere) // Constructeur appelé au moment de la création d'un fils
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
@@ -66,12 +61,12 @@ class UniteDeCorrection
 	}
 
 	
-	public function __construct2($idPere,$idFils) // Constructeur appelé si l'on souhaite insérer un noeud
+	public function UniteDeCorrection($idPere,$idFils) // Constructeur appelé si l'on souhaite insérer un noeud
 	{
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
 		
-		$_id = getAvailableId();DEPRECATED
+		$_id = getAvailableId();
 		if($_id == "null") // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
@@ -121,7 +116,7 @@ class UniteDeCorrection
 	}
 	
 	
-	public function __construct1($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
+	function __construct1($arrayData) // Récupération dans la BDD 
 	{
 		date_default_timezone_set(TIMEZONE);
 		
@@ -133,16 +128,6 @@ class UniteDeCorrection
 		$_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
 		$_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
 		$_idCorrecteur = $arrayData['id_corrector'];
-		
-		if($getAll)
-		{
-			$_pere = getUnitById($_idPere); // Gestion des pointeurs
-			$_pere.addSon($this);
-			foreach($_idFils as $cur) // Création des pointeurs fils
-			{
-				new UniteDeCorrection(getUnitById($cur),true); // Dans le constructeur, le fils est ajouté automatiquement (voir ligne au-dessus)
-			}
-		}
 	}
 	
 	// FONCTIONS (outre getters et setters)
@@ -176,7 +161,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') )) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
 				return intval(substr($string),$i-count($string));
 		}
 	}
@@ -184,7 +169,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') )) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
 				return intval(substr($string),$i);
 		}
 	}
@@ -310,7 +295,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->_pere;}
+	public function getPere(){return $this->&_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
@@ -321,5 +306,4 @@ class UniteDeCorrection
 	public function getIdCorrecteur(){return $this->_idCorrecteur;}
 
 }
-
 ?>
