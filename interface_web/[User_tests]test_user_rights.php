@@ -7,11 +7,13 @@
 	$administrateur = 'administrateur';
 	$secretaire = 'secretaire';
 	$correcteur = 'correcteur';
+  $chairman = 'chairman';
 
 	// déclaration des tâches
 	$modifier = 'Modifier les droits';
 	$scanner = 'Scanner';
   $corriger = 'Corriger';
+  $stats = 'Statistiques';
 	//$revoir = 'Revoir une copie'; droit récemment temporairement révoqué
 	$register = 'register';
 	$logout = 'logout';
@@ -23,6 +25,7 @@
 	$pageDestRevoir = '__PageDeDestination__';
 	$pageDestRegister = '../users/registration.php';
   $pageDestLogout = '../users/logout.php';
+  $pageDestStats = 'statschairman.php';
 
 
 	/*

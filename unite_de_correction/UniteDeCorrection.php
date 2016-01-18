@@ -99,7 +99,7 @@ class UniteDeCorrection
 		{
 			$_pere = getUnitById($_idPere); // Gestion des pointeurs
 			$_pere.addSon($this);
-			for($_idFils as $cur) // Création des pointeurs fils
+			foreach($_idFils as $cur) // Création des pointeurs fils
 			{
 				UniteDeCorrection(getUnitById($cur),true); // Dans le constructeur, le fils est ajouté automatiquement (voir ligne au-dessus)
 			}
@@ -162,9 +162,9 @@ class UniteDeCorrection
 	{
 		$cur = null;
 		
-		while(!empty($this->_idFils))
+		while(!empty($this->_fils))
 		{
-			$cur = pop($this->_idFils);
+			$cur = pop($this->_fils);
 			$cur->deleteAll();
 		}
 		
@@ -175,17 +175,17 @@ class UniteDeCorrection
 	public function upload() // Fonction de mise à jour sur le serveur de l'UdC, peut être appelée aussi si l'entrée n'existe pas encore
 	{
 		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
-		$res->execute(array($targetId));
+		$res->execute(array($this->_id));
 		
 		$rep = $res->fetch();
 		
 		if(!$rep) // Pas d'entrée
 		{
-			$req = $bdd->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_pere, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
+			$req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_pere, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
 		}
 		else // Entrée
 		{
-			$req = $bdd->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
+			$req = $db->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
 		}
 		
 		$req->execute(array(
@@ -219,7 +219,7 @@ class UniteDeCorrection
 		
 	}
 	
-	
+	/* Fonction incomplète
 	public function insert($UdC,$idPere) // Insérer une UdC comme fils d'une autre (son niveau est automatiquement recalculé)
 	
 	{
@@ -228,6 +228,7 @@ class UniteDeCorrection
 		$Pere->addSon($UdC);
 		
 	}
+	*/
 	
 	public function uploadAll() // Uploader l'objet et tous ses fils
 	{
@@ -253,7 +254,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->&_pere;}
+	public function getPere(){return $this->_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}

@@ -37,6 +37,7 @@ class MyWindow : public QWidget
     private:
 
     QGridLayout *windowLayout;
+    QGridLayout *labelLayout;
 
     QPushButton *m_buttonClose;
     QPushButton *m_buttonChooseImages;
@@ -44,11 +45,12 @@ class MyWindow : public QWidget
     QPushButton *m_buttonSave;
 
     QLabel *displayLabel;
-    QVBoxLayout *labelLayout;
     QScrollArea *LscrollArea;
 
     QStringList filenames;
     QVector <QImage> images;
+    QVector <QLabel*> displayLabels;
+    QWidget *labelsContainer;
 
     QImage finalImage;
     int rowNumbers;
