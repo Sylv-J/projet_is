@@ -16,7 +16,7 @@ class UniteDeCorrection
 	
 	// ATTRIBUTS
 	
-	// Uploadés
+	// UploadésDEPRECATED
 	private $_idPere = "null";
 	private $_data='';
 	private $_id = "null";
@@ -71,7 +71,7 @@ class UniteDeCorrection
 		date_default_timezone_set(TIMEZONE);
 		$_dateModif = date('d/m/Y h:i:s');
 		
-		$_id = getAvailableId();
+		$_id = getAvailableId();DEPRECATED
 		if($_id == "null") // On n'a plus d'ID disponible (dépassé le nombre maximal d'ID)
 		{
 			echo "Pas d'ID disponible <br>";
@@ -121,7 +121,7 @@ class UniteDeCorrection
 	}
 	
 	
-	public function __construct3($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
+	public function __construct1($arrayData,$getAll=false) // Constructeur appelé lors d'un getUnitById 
 	{
 		date_default_timezone_set(TIMEZONE);
 		
@@ -176,7 +176,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') )) // C'est un nombre
 				return intval(substr($string),$i-count($string));
 		}
 	}
@@ -184,7 +184,7 @@ class UniteDeCorrection
 	{
 		for($i=0;$i<strlen($string);$i++)
 		{
-			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') ) // C'est un nombre
+			if(in_array($string[$i],array('1','2','3','4','5','6','7','8','9') )) // C'est un nombre
 				return intval(substr($string),$i);
 		}
 	}
@@ -310,7 +310,7 @@ class UniteDeCorrection
 	public function setIdCorrecteur($derCo){$this->_idCorrecteur=$derCo;}
 	
 	// GETTERS
-	public function getPere(){return $this->&_pere;}
+	public function getPere(){return $this->_pere;}
 	public function getIdPere(){return $this->_idPere;}
 	public function getId(){return $this->_id;}
 	public function getIdFils(){return $this->_idFils;}
