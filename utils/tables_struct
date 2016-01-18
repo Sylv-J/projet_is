@@ -1,2 +1,2 @@
-users(id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, pwd VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, user_group VARCHAR(255) NOT NULL);
-units(id INT(11) PRIMARY KEY, id_father INT(11), id_sons SET("0","0"), data TEXT, level TINYINT(1), mark TINYINT(2), max_mark TINYINT(2), id_corrector INT(11), date_modif DATE);
+users(id INT(11) AUTO_INCREMENT PRIMARY KEY, username VARCHAR(255) NOT NULL, pwd VARCHAR(255) NOT NULL, mail VARCHAR(255) NOT NULL, user_group VARCHAR(255) NOT NULL, units_remaining INT(11), current_units VARCHAR(255));
+units(id VARCHAR(255) PRIMARY KEY, id_father VARCHAR(255), id_sons VARCHAR(255), data TEXT, level TINYINT(1), mark TINYINT(2), max_mark TINYINT(2), id_corrector INT(11), date_modif DATE);
