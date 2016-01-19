@@ -8,14 +8,9 @@
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["nbcopiesrestantes"];
        
-       echo "<tr>" .$username . "</tr><tr>" .$id."</tr>";
-       
-       ?>
-       <tr>$username</tr>
-       <tr>$id</tr>
-       <tr> $nbcopiesrestantes </tr>
-       <tr>$mail</tr>
-       <?php    
+       echo "<tr> <td>".$username."</td> <td>".$id."</td> <td>".$nbcopiesrestantes."</td> <td>".$mail."</td></tr>";
+        
   }
+
    $req->closeCursor();
 ?>
