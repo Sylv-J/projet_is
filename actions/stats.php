@@ -20,34 +20,48 @@
 				
 				$compteur = 0;
 				$indice = 0;
-								
-				while($res = $req->fetch() and $indice < $nb_copies){
-					//echo $res[0];
+				$res = $req->fetch();
+				
+				if ($res[0]!= ''){
 					$compteur += $res[0];
 					$indice += 1 ;
+					while($res = $req->fetch() and $indice < $nb_copies){
+						//echo $res[0];
+						$compteur += $res[0];
+						$indice += 1 ;
+					}
+					return $compteur / $indice ;
 				}
-				return $compteur / $indice ;
+				return "le nom de l'exercice est incorrect, veuillez ressayer";
 			}
 
 			function MoyennePersoGlobale($nom_exo){
 				return MoyennePersoGlissante(INF, $nom_exo);
 			}
-						
+			
+			
 			function MoyenneGlobale($nom_exo){
 				$db = masterDB::getDB();
 				$req = $db->prepare("SELECT mark FROM units WHERE id_father = $nom_exo");
 				$req->execute(array($_SESSION["id"]));
 				
-				
+				$res = $req->fetch();
 				$compteur = 0;
 				$indice = 0;
-								
-				while($res = $req->fetch()){
-					//echo $res[0];
+				
+				if ($res[0]!= ''){
 					$compteur += $res[0];
 					$indice += 1 ;
+					
+									
+					while($res = $req->fetch()){
+						//echo $res[0];
+						$compteur += $res[0];
+						$indice += 1 ;
+					}
+					return $compteur / $indice ;
 				}
-				return $compteur / $indice ;
+				return " le nom de l'exo est incorrect, veuillez reessayer";
 			}
 			function MoyenneTresGlobale(){
 				$db = masterDB::getDB();
@@ -56,6 +70,7 @@
 				
 				$compteur = 0;
 				$indice = 0;
+						
 								
 				while($res = $req->fetch()){
 					//echo $res[0];
@@ -72,13 +87,21 @@
 				
 				$compteur = 0;
 				$indice = 0;
-								
-				while($res = $req->fetch()){
-					//echo $res[0];
+				
+				$res = $req->fetch();
+				
+				if ($res[0]!= ''){
 					$compteur += $res[0];
 					$indice += 1 ;
+								
+					while($res = $req->fetch()){
+						//echo $res[0];
+						$compteur += $res[0];
+						$indice += 1 ;
+					}
+					return $compteur / $indice ;
 				}
-				return $compteur / $indice ;
+				return "le correcteur est inconnu, veuillez reessayer";
 			}
 			function MoyenneCorrecteurExo($nom_correcteur, $nom_exo){
 				$db = masterDB::getDB();
@@ -88,13 +111,21 @@
 				
 				$compteur = 0;
 				$indice = 0;
-								
-				while($res = $req->fetch()){
-					//echo $res[0];
+				
+				$res = $req->fetch();
+				
+				if ($res[0]!= ''){
 					$compteur += $res[0];
 					$indice += 1 ;
+								
+					while($res = $req->fetch()){
+						//echo $res[0];
+						$compteur += $res[0];
+						$indice += 1 ;
+					}
+					return $compteur / $indice ;
 				}
-				return $compteur / $indice ;
+				return " le correcteur est inconnu ou le nom de l'exercice n'est pas valide, veuillez reessayer ";
 			}
 						
 			?>
