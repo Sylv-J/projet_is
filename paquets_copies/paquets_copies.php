@@ -14,10 +14,15 @@ echo $test;
 /////////////////////////////////////////////////////////
 */
 
-// Pour le moment, ne prend pas en compte l'épreuve. Retourne juste les unités non assignées.
 function getUnitsUnassigned($unitType){
   $db = masterDB::getDB();
-  $sql = "SELECT id FROM units WHERE id_corrector IS NULL";
+  // utile si le nom est sous la forme 'Eleve_Maths1_Part1'
+  /*
+  $name = explode('_', $unitType);
+  $exam = $name[1];
+  $exam = preg_replace('/[0-9]+/', '', $exam);
+  */
+  $sql = "SELECT id FROM units WHERE id_corrector IS NULL AND id LIKE '%{$unitType}%'";
   $req = $db->query($sql);
   $list = array();
   while($donnees = $req->fetch()){
@@ -32,26 +37,22 @@ function getUnitsUnassigned($unitType){
   }else{
     return array_slice($list, 0, $nbUnits-10);
   }  
-  */
-  //return implode(' ', $list);   
+  */  
   return $list;       
 }
 
 /*
 ///////////TEST//////////////////////////////////////////////
-$test1 = getUnitsUnassigned("Eleve_Maths1_Part3");
-echo $test1;    
+$test1 = getUnitsUnassigned('Maths');
+echo implode(' ', $test1);    
 //////////////////////////////////////////////////////////////
 */
 
 function assignSons($localCorrector, $id_unit) {
   $db = masterDB::getDB();
 	$result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
-  // ou 'SELECT id_sons FROM units WHERE id ="'.$id_unit.'"AND id_corrector IS NULL' ?
 	while($sons = $result->fetch()){
-    echo implode($sons);
     foreach(array_unique($sons) as $son) {
-      echo $son;
       if(strpos($son,'|')){
         $list = explode('|', $son);
         foreach($list as $element){
@@ -82,7 +83,6 @@ function assignFathers($localCorrector, $id_unit) {
 	$db = masterDB::getDB();
 	$result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
 	while($fathers = $result->fetch()){
-	  //if (sizeof($fathers) == 0)  { return false ;}
     foreach(array_unique($fathers) as $father) {
       $req = $db->query('SELECT id_corrector FROM units WHERE id = "'.$father.'"');
       while($correctors = $req->fetch()){
@@ -107,7 +107,6 @@ function assignFathers($localCorrector, $id_unit) {
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id = "'.$father.'"');
 	  }
   }
-	//return true;
 }
 
 /*
@@ -162,32 +161,36 @@ updateDB('test2', 6);
 ///////////////////////////////////////////
 */
 
+// On suppose que unitType est de la forme "Maths" ou "Physics"...
 function assignUnits($unitType) {
   $db = masterDB::getDB();
 
 	$listUNA = getUnitsUnassigned($unitType);
+  // utile si unitType est de la forme 'Eleve_Maths1_Part1' (et dans ce cas il faut remplacer unitType par exam dans la requête sql)
+  /*
   $name = explode('_', $unitType);
   $exam = $name[1];
-	$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$exam}%'");
+  $exam = preg_replace('/[0-9]+/', '', $exam);
+  */
+	$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$unitType}%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
   }
-  /////////TEST
-  //echo implode(' ', $list);
-  
-	foreach ($listUNA as $id_unit) {		
-		$localCorrector = randomCorrector($list);
-    //////////////TEST
-    //echo $id_unit.' :'.$localCorrector;
-		updateDB($id_unit, $localCorrector);
-	}
+
+  while(isset($listUNA[0])){
+      $localCorrector = randomCorrector($list);
+      echo $listUNA[0].' :'.$localCorrector;
+      updateDB($listUNA[0], $localCorrector);
+      $listUNA = getUnitsUnassigned($unitType);
+    }
 }
 
+/*
 ///////////TEST////////////////////////////  
-//assignUnits('Eleve_Maths1_Part2');
+assignUnits('Maths');
 //////////////////////////////////////////
-
+*/
 
 function punctualAssignment($id_corrector, $unitType) {
 	$db = masterDB::getDB();
@@ -208,7 +211,8 @@ function punctualAssignment($id_corrector, $unitType) {
 
 /*
 //////////TEST///////////////////
-punctualAssignment(2, 'Eleve_Maths1_Part2')
+punctualAssignment(2, 'Maths')
 /////////////////////////////////
-*/ 
+*/
+
 ?>
