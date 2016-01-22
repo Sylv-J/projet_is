@@ -13,10 +13,6 @@ Idem pour id_sons qui devait être une liste d'entiers et qui est en réalité d
 	Ex : ['5','7','10'] est en réalité "5*7*10"
 
 
-Il faut également faire la même chose pour id_corrector car certaines unités peuvent avoir plusieurs correcteurs donc le type
-de id_corrector est en fait VARCHAR(255)
-
-
 ///////Veuillez donc en tenir compte à l'ajout et l'utilisation de ces données svp///////
 
 

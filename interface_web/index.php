@@ -40,17 +40,24 @@
   //Si connecté
   else
 	{
+		
+		if(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
+			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
+		}
+		elseif(isset($_POST["id_exo2"]) and $_POST["nb_copies"] and $_SESSION["group"] == "correcteur"){
+			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
+		}
 		//aucune tâche n'a été demandé, on charge la page perso
-		if(!isset($_POST["page_to_load"]))
+		elseif(!isset($_POST["page_to_load"]))
 		{
 			include("bandeau_page_perso.php");
-      include("bandeau_exemple.php");
+			include("bandeau_exemple.php");
 		}
 		//Sinon, un boutton demandant une page particuliere a été cliqué
 		else
 		{
-      include("../actions/tasksDirectories.php");
-      include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
+			include("../actions/tasksDirectories.php");
+			include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
 		}
 	}
 ?>

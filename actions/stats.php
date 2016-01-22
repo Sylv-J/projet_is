@@ -7,6 +7,7 @@
 			<?php
 			//Connection à la db
 			include_once("../master_db.php");
+
 			$db = masterDB::getDB();
 			if(!isset($_SESSION)){session_start();}
 
@@ -166,12 +167,38 @@
 						echo "\n La moyenne globale des correcteurs sur l'exercice " ;
 						echo $_POST["id_exo2"];
 						echo " est de : " ;
-						echo MoyenneGlobale($_POST["id_exo2"]);?> 
+						echo MoyenneGlobale($_POST["id_exo2"]);
+						
+						
+						?> 
 						
 						<?php
 					}
 									
 								?>	
+								
+				<?php 
+				
+				$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? AND id_corrector = ? ORDER BY date_modif DESC ");
+				$req->execute(array($_POST['id_exo2'], $_SESSION["id"]));
+				
+				while($res = $req->fetch()){
+					//echo $res[0];
+					$notes[] = $res[0];
+				}
+				
+				$moyenneGlissante = [];
+				for ($i = 0; $i < sizeof($notes); $i++) {
+					if ($i+$_POST["nb_copies"]<=sizeof($notes)){
+						$sum = 0;
+						for ($j = 0; $j <$_POST["nb_copies"]; $j++){
+							$sum += $notes[$i+$j];
+						}
+					}
+					$moyenneGlissante[] = $sum/$_POST["nb_copies"];
+				}
+				echo '<img src="../actions/graph.php?ydata1='.urlencode(serialize($moyenneGlissante)).'" border="0" alt="img.php" align="left">';
+				?>
 								
 				<?php // CHAIRMAN //traitement si moyenne globale correcteur demandée
 					if(isset($_POST["id_correcteur"])){?>
