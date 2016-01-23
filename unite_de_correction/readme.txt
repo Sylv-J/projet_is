@@ -28,6 +28,8 @@ $arrayData = array('id_father'=>'lolfather',
 		'max_mark'=>5,
 		'date_modif'=>'23-01-2016 15:09:12',
 		'id_corrector'=>'lolcorrector');
+* $udc = UniteDeCorrection::getUnitById('id à trouver') va chercher l'unité sur la BDD en fonction
+de son ID.
  
 # AJOUT DE FILS
 
@@ -44,3 +46,24 @@ instance de l'UdC sur le serveur. Si elle existe déjà, upload() met à jour l'ent
 # DESTRUCTION
 
 On peut détruire une UdC ainsi que tous ses fils sur le serveur en appelant la fonction deleteAll().
+
+# EXEMPLE D'UTILISATION 
+
+Création et upload :
+
+$udc = UniteDeCorrection::fromId('nouvelEleve');
+$udc->setNote(12);
+
+$udc->upload();
+
+Depuis un formulaire :
+
+$arrayData['id'] = $_GET['id'];
+$arrayData['data']=$_GET['data'];
+...
+
+$udc = UniteDeCorrection::fromData($arrayData);
+
+	A noter que dans le cas présent, on n'a rien modifié à l'objet. Il est donc inutile (mais pas
+	une erreur pour autant) d'appeler la méthode upload(), qui est appelée au moment de la création
+	de l'objet.

@@ -26,7 +26,7 @@ class UniteDeCorrection
 	private $_pere = NULL;// DEPRECATED // Référence vers le père
 	private $_fils = array(NULL);// DEPRECATED // Référence vers les fils
 	
-	public function getUnitById($targetId) // Récupère une unité de correction par son ID
+	public static function getUnitById($targetId) // Récupère une unité de correction par son ID
 	{
 		global $db;
 		$targetObject = null;
@@ -124,7 +124,7 @@ class UniteDeCorrection
 		$res->_id = $id;
 		if($fromScratch)
 		{
-			$bareme = $res->getUnitById("0");
+			$bareme = UniteDeCorrection::getUnitById("0");
 			if($bareme == null)
 			{
 				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
@@ -133,7 +133,7 @@ class UniteDeCorrection
 		}
 		else 
 		{
-			$bareme = $res->getUnitById($id);
+			$bareme = UniteDeCorrection::getUnitById($id);
 			if($bareme == null)
 			{
 				echo "Erreur : le constructeur s'est perdu (tentative d'accès à une partie du barême qui n'existe pas)";
@@ -216,7 +216,7 @@ class UniteDeCorrection
 	{
 		if($_idPere == -1)
 			return $this->_id;
-		$pere = $this->getUnitById($_idPere);
+		$pere = UniteDeCorrection::getUnitById($_idPere);
 		return $pere->getRootId();
 	}
 	
@@ -314,7 +314,7 @@ class UniteDeCorrection
 	public function setIdFils($idFils){$this->_idFils = $idFils;}
 	public function setNiveau($niveau){$this->_niveau = $niveau;}
 	public function setNote($note){$this->_note = $note;
-	updateDate();
+	$this->updateDate();
 	}
 	public function setNoteMax($noteMax){$this->_noteMax = $noteMax;}
 	public function setDateModif($dateModif){$this->_dateModif = $dateModif;} // Ne devrait à priori jamais être utilisé
