@@ -26,24 +26,7 @@ class UniteDeCorrection
 	private $_pere = NULL;// DEPRECATED // RÃ©fÃ©rence vers le pÃ¨re
 	private $_fils = array(NULL);// DEPRECATED // RÃ©fÃ©rence vers les fils
 	
-	public static function getUnitById($targetId) // RÃ©cupÃ¨re une unitÃ© de correction par son ID
-	{
-		global $db;
-		$targetObject = null;
 	
-		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
-		$res->execute(array($targetId));
-	
-		$rep = $res->fetch();
-		if($rep) // Si il y a une entrÃ©e
-		{
-			return UniteDeCorrection::fromData($rep);
-		}
-		else
-			echo "Pas d'entrÃ©e d'ID ".$targetId." dans la BDD. ";
-	
-			return null;
-	}
 	
 	// CONSTRUCTEURS
 	/* DEPRECATED __________________________________________________________________________________________
@@ -127,7 +110,7 @@ class UniteDeCorrection
 			$bareme = UniteDeCorrection::getUnitById("0");
 			if($bareme == null)
 			{
-				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
+				echo "Erreur : Le barême pour cette épreuve n'existe pas ! <br>";
 				return;
 			}
 		}
@@ -136,7 +119,7 @@ class UniteDeCorrection
 			$bareme = UniteDeCorrection::getUnitById($id);
 			if($bareme == null)
 			{
-				echo "Erreur : le constructeur s'est perdu (tentative d'accès à  une partie du barême qui n'existe pas)";
+				echo "Erreur : le constructeur s'est perdu (tentative d'accès à  une partie du barême qui n'existe pas) <br>";
 				return;
 			}
 		}
@@ -197,16 +180,75 @@ class UniteDeCorrection
 				
 				if(move_uploaded_file($cur["tmp_name"],$target_file)) // On tente d'upload
 				{
-					echo "Le fichier ".basename($to_upload)." a bien été copié sur le serveur";
+					echo "Le fichier ".basename($to_upload)." a bien été copié sur le serveur <br>";
 				} else {
-					echo "Une erreur s'est produite lors de l'upload de ".basename($to_upload);
+					echo "Une erreur s'est produite lors de l'upload de ".basename($to_upload)."<br>";
 				}
 			}
 		}
 		
-		$res.upload();
+		$res->upload();
 		return $res;
 	} 
+	
+	public static function getUnitById($targetId) // RÃ©cupÃ¨re une unitÃ© de correction par son ID
+	{
+		global $db;
+		$targetObject = null;
+	
+		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
+		$res->execute(array($targetId));
+	
+		$rep = $res->fetch();
+		if($rep) // Si il y a une entrÃ©e
+		{
+			return UniteDeCorrection::fromData($rep);
+		}
+		else
+			echo "Pas d'entrée d'ID ".$targetId." dans la BDD. <br>";
+	
+			return null;
+	}
+	
+	public static function generateBareme($struct) // Génère un barême à partir d'un texte comme celui donné dans "test_bareme.txt"
+	{
+		$toGen = explode("\n",$struct); // tableau contenant les différents ppe
+		//$togen = ['Maths1_Partie1_Exercice1_10','Maths1_Partie1_Exercice2_5',...] par ex
+		foreach($toGen as $cur)
+		{
+			$tmp = explode('_',$cur); // $tmp = ['Maths1','Partie1','Exercice1','10'];
+			for($i=1;$i<count($tmp)-1;$i++)
+			{
+				$toCheck = implode('_',array_slice($tmp,1,$i)); // Réassemble les éléments (ie premier itération 'Maths1', deuxième itération 'Maths1_Partie1'...
+				// Pour pouvoir tester s'ils existent sur la db, et les upload
+				if(null == UniteDeCorrection::getUnitById($toCheck)) // En cas d'existence sur la BDD, rien n'est à faire. En cas de non-existence en revanche, il faut le créer
+				{
+					$udc = new UniteDeCorrection();
+					$udc->setId($toCheck);
+					if($i>1) // On n'est pas la racine du barême
+					{
+						$idPere = implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de vérifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre père c'est Maths1_Epreuve1.
+						$udc->setIdPere($idPere); // Le  père est ajouté comme notre père
+							
+						$pere = UniteDeCorrection::getUnitById($idPere);
+						$pere->addSon($toCheck); // On s'ajoute à la liste des fils de notre père
+						$pere->upload();// On upload dans la BDD
+					}
+						
+					if($i == count($tmp)-2) // On en est au plus petit élément d'UdC
+					{
+						$note = intval(reset(array_slice($tmp,$i+1,$i+1)));
+						echo "La note sera ".$note."<br>";
+						$udc->setNote($note);
+						$udc->setNoteMax($note); // Pourquoi $i+1 ? Car ici, si la taille de $tmp est n, $i = n-2. Donc le dernier élément (la note) est $i+1=n-1
+					}
+					$udc->upload();// On upload dans la BDD
+				}
+			}
+		}
+		unset($pere);
+		unset($udc);
+	}
 	
 	// FONCTIONS (outre getters et setters)
 	
@@ -293,8 +335,20 @@ class UniteDeCorrection
 		}
 		else // EntrÃ©e
 		{
-			echo "Entrée trouvée";
+			echo "Entrée trouvée <br>";
 			$req = $db->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
+		}
+		
+		if(count($this->_idFils)>=2)
+		{
+			for($i = 0;$i<count($this->_idFils);$i++)
+			{
+				if($this->_idFils[$i] == '')
+				{
+					unset($this->_idFils[$i]);
+				}
+			}
+			$idFils = array_values($this->_idFils);
 		}
 		
 		$req->bindValue(':id',$this->_id,PDO::PARAM_STR);

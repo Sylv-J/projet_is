@@ -2,7 +2,7 @@
 include_once("UniteDeCorrection.php");
 
 
-$arrayData = array('id_father'=>'lolfather',
+/*$arrayData = array('id_father'=>'lolfather',
 		'id'=>'lolme',
 		'id_sons'=>'lol_son1,lol_son2,lol_son3',
 		'level'=>2,
@@ -22,5 +22,17 @@ $udc->upload();
 $udc = UniteDeCorrection::getUnitById($udc->getId());
 
 echo $udc->getId();
+*/
+try
+{
+UniteDeCorrection::generateBareme("Maths1_Partie1_Exercice1_petita_3
+Maths1_Partie1_Exercice1_petitb_2
+Maths1_Partie1_Exercice2_5
+Maths1_Partie1_Exercice3_5
+Maths1_Partie2_Exercice1_10
+Maths1_Partie2_Exercice2_10");
+} catch(Exception $e){
+	echo "Erreur au moment de la création du barême :  \n".$e->getTraceAsString();
+}
 
 ?>
