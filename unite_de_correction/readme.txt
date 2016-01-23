@@ -16,6 +16,7 @@ constructeur, tout est uploadé sur le serveur
 # CREER UNE UDC
 
 Quatre choix ici :
+
 * $udc = UniteDeCorrection::fromId('id de l'élève') crée une entrée sur la database à partir de l'ID en se
 basant sur le barême existant. Il génère donc l'arbre associé.
 * $udc = UniteDeCorrection::fromData($arrayData) crée une entrée sur la BDD et en local à partir d'un 
@@ -31,7 +32,7 @@ $arrayData = array('id_father'=>'lolfather',
 * POUR LA SECRETAIRE : $udc = UniteDeCorrection::fromData($arrayData,true) (notez l'importance du true !!)
  où le format de $arrayData est :
 $arrayData = array(
-		'id'=>'id de l'élève',
+		'id'=>'id de l'Ã©lÃ¨ve',
 		'annee'=>'2016',
 		'concours'=>'Mines-Ponts,
 		'filiere'=>'MP',
@@ -71,7 +72,6 @@ $arrayData['data']=$_GET['data'];
 ...
 
 $udc = UniteDeCorrection::fromData($arrayData);
-
 	A noter que dans le cas présent, on n'a rien modifié à l'objet. Il est donc inutile (mais pas
 	une erreur pour autant) d'appeler la méthode upload(), qui est appelée au moment de la création
 	de l'objet.
