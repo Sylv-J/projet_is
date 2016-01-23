@@ -8,7 +8,6 @@ class UniteDeCorrection
 	
 	const TIMEZONE = "Europe/London"; // Date GMT
 	const IDMAX = 2147483646; // 2147483647 = 2^(31) = la taille max d'un int
-	const STRUCTURE = array('Partie','Exercice','Question','Sous-question');
 	
 	// ATTRIBUTS
 	
@@ -20,12 +19,31 @@ class UniteDeCorrection
 	private $_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
 	private $_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
 	private $_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
-	private $_dateModif = "";// La date, en format DD/MM/YYYY h:m:s, de dernière modification
-	private $_idCorrecteur = -1; // Ne sera égal à un ID que pour les plus petites udc
+	private $_dateModif = "";// La date, en format DD-MM-YYYY hh:mm:ss, de dernière modification
+	private $_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
 	
 	// Non uploadés
 	private $_pere = NULL;// DEPRECATED // Référence vers le père
 	private $_fils = array(NULL);// DEPRECATED // Référence vers les fils
+	
+	public function getUnitById($targetId) // Récupère une unité de correction par son ID
+	{
+		global $db;
+		$targetObject = null;
+	
+		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
+		$res->execute(array($targetId));
+	
+		$rep = $res->fetch();
+		if($rep) // Si il y a une entrée
+		{
+			return UniteDeCorrection::fromData($rep);
+		}
+		else
+			echo "Pas d'entrée d'ID ".$targetId." dans la BDD. ";
+	
+			return null;
+	}
 	
 	// CONSTRUCTEURS
 	/* DEPRECATED __________________________________________________________________________________________
@@ -85,12 +103,28 @@ class UniteDeCorrection
 	}
 	__________________________________________________________________________________________
 	*/
-	function __construct($id,$fromScratch=true) // Génère en fonction du barême associé l'UDC qui correspond pour un élève donné (on lui passe juste l'ID de l'élève)
+	function __construct()
 	{
-		$this->_id = $id;
+		date_default_timezone_set(UniteDeCorrection::TIMEZONE);
+		
+		$this->_idPere = "null";
+		$this->_data='';
+		$this->_id = "null";
+		$this->_idFils = array();
+		$this->_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
+		$this->_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
+		$this->_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
+		$this->_dateModif = "";
+		$this->_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
+		
+	}
+	static function fromId($id,$fromScratch=true) // Génère en fonction du barême associé l'UDC qui correspond pour un élève donné (on lui passe juste l'ID de l'élève)
+	{
+		$res = new UniteDeCorrection();
+		$res->_id = $id;
 		if($fromScratch)
 		{
-			$bareme = getUnitById("0");
+			$bareme = $res->getUnitById("0");
 			if($bareme == null)
 			{
 				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
@@ -99,7 +133,7 @@ class UniteDeCorrection
 		}
 		else 
 		{
-			$bareme = getUnitById($id);
+			$bareme = $res->getUnitById($id);
 			if($bareme == null)
 			{
 				echo "Erreur : le constructeur s'est perdu (tentative d'accès à une partie du barême qui n'existe pas)";
@@ -108,27 +142,31 @@ class UniteDeCorrection
 		}
 		foreach($bareme->getIdFils() as $cur)
 		{
-			array_push($this->_idFils,replaceFirst($cur,$_id));
+			array_push($res->_idFils,replaceFirst($cur,$_id));
 			new UniteDeCorrection($cur,false);
 		}
 		
 		upload();
-	}
-	
-	
-	function __construct1($arrayData) // Récupération dans la BDD 
-	{
-		date_default_timezone_set(TIMEZONE);
 		
-		$_idPere = $arrayData['id_father'];
-		$_id = $arrayData['id'];
-		$_idFils = $arrayData['id_sons'];
-		$_niveau = $arrayData['level']; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
-		$_note = $arrayData['mark']; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
-		$_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
-		$_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
-		$_idCorrecteur = $arrayData['id_corrector'];
+		return $res;
 	}
+	
+	
+	static function fromData($arrayData) // Récupération dans la BDD ou depuis un formulaire
+	{	
+		$res = new UniteDeCorrection();
+		
+		$res->_idPere = $arrayData['id_father'];
+		$res->_id = $arrayData['id'];
+		$res->_idFils = explode(',',$arrayData['id_sons']);
+		$res->_niveau = $arrayData['level']; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
+		$res->_note = $arrayData['mark']; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
+		$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
+		$res->_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
+		$res->_idCorrecteur = $arrayData['id_corrector'];
+		
+		return $res;
+	} 
 	
 	// FONCTIONS (outre getters et setters)
 	
@@ -139,23 +177,7 @@ class UniteDeCorrection
 		return implode('_',$buff);
 	}
 	
-	public function getUnitById($targetId) // Récupère une unité de correction par son ID
-	{
-		$targetObject = null;
-		
-		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
-		$res->execute(array($targetId));
-		
-		$rep = $res->fetch();
-		if($rep) // Si il y a une entrée
-		{
-			return new UniteDeCorrection($rep);
-		}
-		else
-			echo "Pas d'entrée d'ID ".$targetId." dans la BDD. ";
-		
-		return null;
-	}
+	
 	
 	public function delInts($string) // Retourn la partie lettrée d'une chaîne de type "abcdef123456" (non sensible à la casse)
 	{
@@ -176,6 +198,7 @@ class UniteDeCorrection
 	
 	public function getAvailableId() // DEPRECATED // Algorithme bourrin d'obtention d'un ID non assigné... on les teste tous jusque l'obtention d'un ID valide
 	{
+		global $db;
 		$cur = 0;
 		for($cur = 0;$cur < IDMAX;$cur++) // 2147483647 = 2^(31) = la valeur maximale d'un int
 		{
@@ -193,7 +216,7 @@ class UniteDeCorrection
 	{
 		if($_idPere == -1)
 			return $this->_id;
-		$pere = getUnitById($_idPere);
+		$pere = $this->getUnitById($_idPere);
 		return $pere->getRootId();
 	}
 	
@@ -211,12 +234,14 @@ class UniteDeCorrection
 	
 	public function deleteAll()// Détruit cette unité et ses fils sur le serveur
 	{
+		global $db;
 		$res = $db->prepare("DELETE * FROM units WHERE id LIKE ?% ");
 		$res->execute(array($this->_id));
 	}
 	
 	public function upload() // Fonction de mise à jour sur le serveur de l'UdC, peut être appelée aussi si l'entrée n'existe pas encore
 	{
+		global $db;
 		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
 		$res->execute(array($this->_id));
 		
@@ -224,29 +249,30 @@ class UniteDeCorrection
 		
 		if(!$rep) // Pas d'entrée
 		{
-			$req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_pere, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
+			$req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
 		}
 		else // Entrée
 		{
+			echo "Entr�e trouv�e";
 			$req = $db->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
 		}
 		
-		$req->execute(array(
-			'id' => $this->_id,
-			'id_father' => $this->_idPere,
-			'id_sons' => $this->_idFils,
-			'data' => $this->_data,
-			'level' => $this->_niveau,
-			'mark' => $this->_note,
-			'max_mark' => $this->_noteMax,
-			'id_corrector' => $this->_idCorrecteur,
-			'date_modif' => $this->_dateModif
-			));
+		$req->bindValue(':id',$this->_id,PDO::PARAM_STR);
+		$req->bindValue(':id_father',$this->_idPere,PDO::PARAM_STR);
+		$req->bindValue(':id_sons',implode(',',$this->_idFils),PDO::PARAM_STR);
+		$req->bindValue(':data',$this->_data,PDO::PARAM_STR);
+		$req->bindValue(':level',$this->_niveau,PDO::PARAM_INT);
+		$req->bindValue(':mark',$this->_note,PDO::PARAM_INT);
+		$req->bindValue(':max_mark',$this->_noteMax,PDO::PARAM_INT);
+		$req->bindValue(':id_corrector',$this->_idCorrecteur,PDO::PARAM_STR);
+		$req->bindValue(':date_modif',$this->_dateModif,PDO::PARAM_STR);
+		
+		$req->execute();
 	}
 	
 	public function updateDate()
 	{
-		$_dateModif = date('d/m/Y h:i:s');
+		$_dateModif = date('dd-mm-YYYY h:i:s');
 	}
 	
 	public function newSon()// DEPRECATED // Créer immédiatement un fils vide
