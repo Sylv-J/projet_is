@@ -15,7 +15,7 @@ constructeur, tout est uploadé sur le serveur
 
 # CREER UNE UDC
 
-Deux choix ici :
+Quatre choix ici :
 * $udc = UniteDeCorrection::fromId('id de l'élève') crée une entrée sur la database à partir de l'ID en se
 basant sur le barême existant. Il génère donc l'arbre associé.
 * $udc = UniteDeCorrection::fromData($arrayData) crée une entrée sur la BDD et en local à partir d'un 
@@ -28,6 +28,14 @@ $arrayData = array('id_father'=>'lolfather',
 		'max_mark'=>5,
 		'date_modif'=>'23-01-2016 15:09:12',
 		'id_corrector'=>'lolcorrector');
+* POUR LA SECRETAIRE : $udc = UniteDeCorrection::fromData($arrayData,true) (notez l'importance du true !!)
+ où le format de $arrayData est :
+$arrayData = array(
+		'id'=>'id de l'élève',
+		'annee'=>'2016',
+		'concours'=>'Mines-Ponts,
+		'filiere'=>'MP',
+		'epreuve'=>'Maths1');
 * $udc = UniteDeCorrection::getUnitById('id à trouver') va chercher l'unité sur la BDD en fonction
 de son ID.
  

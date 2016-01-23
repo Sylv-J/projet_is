@@ -122,28 +122,30 @@ class UniteDeCorrection
 	{
 		$res = new UniteDeCorrection();
 		$res->_id = $id;
-		if($fromScratch)
+		if($fromScratch) // Si l'on n'a encore rien créé (ie on est sur la racine)
 		{
 			$bareme = UniteDeCorrection::getUnitById("0");
 			if($bareme == null)
 			{
-				echo "Erreur : Le barÃªme pour cette Ã©preuve n'existe pas !";
+				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
 				return;
 			}
 		}
-		else 
+		else // Sinon, on est sur une branche
 		{
 			$bareme = UniteDeCorrection::getUnitById($id);
 			if($bareme == null)
 			{
-				echo "Erreur : le constructeur s'est perdu (tentative d'accÃ¨s Ã  une partie du barÃªme qui n'existe pas)";
+				echo "Erreur : le constructeur s'est perdu (tentative d'accès à  une partie du barême qui n'existe pas)";
 				return;
 			}
 		}
-		foreach($bareme->getIdFils() as $cur)
+		foreach($bareme->getIdFils() as $cur) // On parcourt tous les fils de l'UDC du barême où l'on se situe
 		{
+			$res->setNiveau($bareme->getNiveau());
+			$res->setNoteMax(max(array($bareme->getNote(),$bareme->getNoteMax())));
 			array_push($res->_idFils,replaceFirst($cur,$_id));
-			new UniteDeCorrection($cur,false);
+			UniteDeCorrection::fromId($cur,false);
 		}
 		
 		upload();
@@ -152,19 +154,57 @@ class UniteDeCorrection
 	}
 	
 	
-	static function fromData($arrayData) // RÃ©cupÃ©ration dans la BDD ou depuis un formulaire
+	static function fromData($arrayData,$images=false) // RÃ©cupÃ©ration dans la BDD ou depuis un formulaire
 	{	
 		$res = new UniteDeCorrection();
 		
-		$res->_idPere = $arrayData['id_father'];
+		if(!$images) // Remplissage "à la main"
+		{
+			$res->_idPere = $arrayData['id_father'];
+			$res->_idFils = explode(',',$arrayData['id_sons']);
+			$res->_niveau = $arrayData['level'];
+			$res->_note = $arrayData['mark']; // La note attribuÃ©e suite Ã  la correction -1 si l'unitÃ©e n'est pas corrigÃ©e
+			$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (dÃ©finie par le barÃªme)
+			$res->_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de derniÃ¨re modification
+			$res->_idCorrecteur = $arrayData['id_corrector'];
+		}
 		$res->_id = $arrayData['id'];
-		$res->_idFils = explode(',',$arrayData['id_sons']);
-		$res->_niveau = $arrayData['level']; // Les niveaux s'incrÃ©mentent Ã  mesure que l'unitÃ© de correction est basse dans l'arbre
-		$res->_note = $arrayData['mark']; // La note attribuÃ©e suite Ã  la correction -1 si l'unitÃ©e n'est pas corrigÃ©e
-		$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (dÃ©finie par le barÃªme)
-		$res->_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de derniÃ¨re modification
-		$res->_idCorrecteur = $arrayData['id_corrector'];
 		
+		if($images)// Remplissage "secrétaire" // A MODIFIER
+		{
+			// Partie BDD
+			$res = UniteDeCorrection::fromId($arrayData['id']); // On crée l'entrée correspondant à l'élève sur la BDD
+			
+			$res->_idPere = implode('_',array($res->_id,$arrayData['epreuve']));// On récupère l'ID de son père
+			
+			$temp = UniteDeCorrection::getUnitById($res->_idPere); // On signale au père qu'il a un nouveau fils !
+			$temp->addSon($res->_id); // "
+			$temp->upload();// "
+			
+			
+			
+			// Partie fichiers
+			
+			$target_dir = '/'.$arrayData['annee'].'/'.$arrayData['concours'].'/'.$arrayData['filiere'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
+			
+			$to_upload = explode(',',$arrayData['path']);
+			foreach($_FILES as $cur)
+			{
+				$target_file = $cur["name"].basename($cur["name"],'.png'); // On remplace 'path/file_nbr.png' par 'file_nbr'
+				$target_file = explode('_',$target_file);// On récupère un array ['file','nbr']
+				$target_file = end($target_file);// On garde le dernier élément. Ici, $target_file = 'nbr'
+				$target_file = $target_dir.$target_file;// On rajoute le dossier dans lequel il faudra le copier.
+				
+				if(move_uploaded_file($cur["tmp_name"],$target_file)) // On tente d'upload
+				{
+					echo "Le fichier ".basename($to_upload)." a bien été copié sur le serveur";
+				} else {
+					echo "Une erreur s'est produite lors de l'upload de ".basename($to_upload);
+				}
+			}
+		}
+		
+		$res.upload();
 		return $res;
 	} 
 	
@@ -281,11 +321,9 @@ class UniteDeCorrection
 		addSon($NewSon);
 	}
 	
-	public function addSon(&$Son)// DEPRECATED // Ajouter un fils dÃ©fini au prÃ©alable
+	public function addSon($idSon)// Ajouter un fils dÃ©fini au prÃ©alable
 	{// Le "&" est nÃ©cessaire pour passer des Ã©quivalents de pointeurs.
-		array_push($this->_idFils,$Son->getId());
-		array_push($this->_fils,$Son);
-		
+		array_push($this->_idFils,$idSon);
 	}
 	
 	/*
