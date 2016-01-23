@@ -16,8 +16,18 @@ constructeur, tout est uploadé sur le serveur
 # CREER UNE UDC
 
 Deux choix ici :
-* On utilise l'ID de l'élève, et le constructeur génère tous ses fils en se basant sur le barême.
-* On utilise une requête de récupération sur le serveur (getUnitById()).
+* $udc = UniteDeCorrection::fromId('id de l'élève') crée une entrée sur la database à partir de l'ID en se
+basant sur le barême existant. Il génère donc l'arbre associé.
+* $udc = UniteDeCorrection::fromData($arrayData) crée une entrée sur la BDD et en local à partir d'un 
+ensemble de données ($arrayData). Le format doit être le suivant :
+$arrayData = array('id_father'=>'lolfather',
+		'id'=>'lolme',
+		'id_sons'=>'lol_son1,lol_son2,lol_son3',
+		'level'=>2,
+		'mark'=>3,
+		'max_mark'=>5,
+		'date_modif'=>'23-01-2016 15:09:12',
+		'id_corrector'=>'lolcorrector');
  
 # AJOUT DE FILS
 
