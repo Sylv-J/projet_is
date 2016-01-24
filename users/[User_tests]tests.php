@@ -92,9 +92,9 @@ class Results {
 	/*53*/	$arr[]=assert($session["group"]=="admin");
 
 	//Registration test
-		$res=array("valid"=>false  , "error"=>"Ce nom d'utilisateur existe déjà <br>L'adresse mail entrée n'est pas valide<br>"   );
+		$res=array("valid"=>false  , "error"=>"Ce nom d'utilisateur existe déjà<br>L'adresse mail entrée n'est pas valide<br>"   );
 	/*54*/	$arr[]=assert($tests->registration("admin_name","a","a","a","a")==$res);
-		$res=array("valid"=>false  , "error"=>"Ce nom d'utilisateur existe déjà <br>"   );
+		$res=array("valid"=>false  , "error"=>"Ce nom d'utilisateur existe déjà<br>"   );
 	/*55*/	$arr[]=assert($tests->registration("admin_name","a","a","a@a.fr","a")==$res);
 		$res=array("valid"=>false  , "error"=>"Les mots de passe entrés ne sont pas identiques !<br>"   );
 	/*56*/	$arr[]=assert($tests->registration("admin_name_new","pwd1","pwd2","a@a.fr","a")==$res);

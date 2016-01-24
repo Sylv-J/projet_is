@@ -23,17 +23,10 @@ if(!$req->fetch()){
   $req->execute(array($lid));
   $d2 = $req->fetch();
 ?>
-<!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <title><?php echo($data["object"]); ?></title>
-</head>
-<body>
-  <div id="msgbox">
-    <h4>De: <?php echo $d2["mfrom"]; ?></h4>
-    <h4>À: <?php echo $d2["dest"] ?></h4>
-    <h4>Objet: <?php echo $data["object"] ?></h4>
-    <p><?php echo $data["body"] ?></p>
-  </div>
-</body>
+<div id="msgbox">
+  <h4>De: <?php echo $d2["mfrom"]; ?></h4>
+  <h4>À: <?php echo $d2["dest"] ?></h4>
+  <h4>Objet: <?php echo $data["object"] ?></h4>
+  <p><?php echo $data["body"] ?></p>
+</div>
 <?php }} ?>

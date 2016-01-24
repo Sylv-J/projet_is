@@ -8,7 +8,6 @@ class UniteDeCorrection
 	
 	const TIMEZONE = "Europe/London"; // Date GMT
 	const IDMAX = 2147483646; // 2147483647 = 2^(31) = la taille max d'un int
-	const STRUCTURE = array('Partie','Exercice','Question','Sous-question');
 	
 	// ATTRIBUTS
 	
@@ -20,12 +19,14 @@ class UniteDeCorrection
 	private $_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
 	private $_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
 	private $_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
-	private $_dateModif = "";// La date, en format DD/MM/YYYY h:m:s, de dernière modification
-	private $_idCorrecteur = -1; // Ne sera égal à un ID que pour les plus petites udc
+	private $_dateModif = "";// La date, en format DD-MM-YYYY hh:mm:ss, de dernière modification
+	private $_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
 	
 	// Non uploadés
 	private $_pere = NULL;// DEPRECATED // Référence vers le père
 	private $_fils = array(NULL);// DEPRECATED // Référence vers les fils
+	
+	
 	
 	// CONSTRUCTEURS
 	/* DEPRECATED __________________________________________________________________________________________
@@ -85,77 +86,225 @@ class UniteDeCorrection
 	}
 	__________________________________________________________________________________________
 	*/
-	function __construct($id,$fromScratch=true) // Génère en fonction du barême associé l'UDC qui correspond pour un élève donné (on lui passe juste l'ID de l'élève)
+	function __construct()
 	{
-		$this->_id = $id;
-		if($fromScratch)
+		date_default_timezone_set(UniteDeCorrection::TIMEZONE);
+		
+		$this->_idPere = "null";
+		$this->_data='';
+		$this->_id = "null";
+		$this->_idFils = array();
+		$this->_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
+		$this->_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
+		$this->_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
+		$this->_dateModif = "";
+		$this->_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
+		
+	}
+	
+	static function fromId($id,$fromScratch=true) // Génère en fonction du barême associé l'UDC qui correspond pour un élève donné (on lui passe juste l'ID de l'élève)
+	{
+		$res = new UniteDeCorrection();
+		$res->_id = $id;
+		if($fromScratch) // Si l'on n'a encore rien cr�� (ie on est sur la racine)
 		{
-			$bareme = getUnitById("0");
+			$bareme = UniteDeCorrection::getUnitById("0");
 			if($bareme == null)
 			{
-				echo "Erreur : Le barême pour cette épreuve n'existe pas !";
+				echo "Erreur : Le bar�me pour cette �preuve n'existe pas ! <br>";
 				return;
 			}
 		}
-		else 
+		else // Sinon, on est sur une branche
 		{
-			$bareme = getUnitById($id);
+			$bareme = UniteDeCorrection::getUnitById($res->getFirstOut($id));
 			if($bareme == null)
 			{
-				echo "Erreur : le constructeur s'est perdu (tentative d'accès à une partie du barême qui n'existe pas)";
+				echo "Erreur : le constructeur s'est perdu (tentative d'acc�s � une partie du bar�me qui n'existe pas) <br>";
 				return;
 			}
 		}
-		foreach($bareme->getIdFils() as $cur)
+		foreach($bareme->getIdFils() as $cur) // On parcourt tous les fils de l'UDC du bar�me o� l'on se situe
 		{
-			array_push($this->_idFils,replaceFirst($cur,$_id));
-			new UniteDeCorrection($cur,false);
+			$res->setNiveau($bareme->getNiveau());
+			$res->setNoteMax(max(array($bareme->getNote(),$bareme->getNoteMax())));
+			
+			$idPere = $res->getLastOut($res->getId());
+			if($idPere != '')
+				$res->setIdPere($idPere);
+			
+			if($cur != null && $cur != '')
+			{
+				$newIdSon = $res->getFirst($id).'_'.$cur;
+			
+				array_push($res->_idFils,$newIdSon);
+				
+				
+				UniteDeCorrection::fromId($newIdSon,false);
+			}
 		}
 		
-		upload();
+		$res->upload();
+		
+		return $res;
 	}
 	
 	
-	function __construct1($arrayData) // Récupération dans la BDD 
-	{
-		date_default_timezone_set(TIMEZONE);
+	static function fromData($arrayData,$images=false) // Récupération dans la BDD ou depuis un formulaire
+	{	
+		$res = new UniteDeCorrection();
 		
-		$_idPere = $arrayData['id_father'];
-		$_id = $arrayData['id'];
-		$_idFils = $arrayData['id_sons'];
-		$_niveau = $arrayData['level']; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
-		$_note = $arrayData['mark']; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
-		$_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
-		$_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
-		$_idCorrecteur = $arrayData['id_corrector'];
+		if(!$images) // Remplissage "� la main"
+		{
+			$res->_idPere = $arrayData['id_father'];
+			$res->_idFils = explode(',',$arrayData['id_sons']);
+			$res->_niveau = $arrayData['level'];
+			$res->_note = $arrayData['mark']; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
+			$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
+			$res->_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
+			$res->_idCorrecteur = $arrayData['id_corrector'];
+		}
+		$res->_id = $arrayData['id'];
+		
+		if($images)// Remplissage "secr�taire" // A MODIFIER
+		{
+			// Partie BDD
+			$res = UniteDeCorrection::fromId($arrayData['id']); // On cr�e l'entr�e correspondant � l'�l�ve sur la BDD
+			
+			$res->_idPere = implode('_',array($res->_id,$arrayData['epreuve']));// On r�cup�re l'ID de son p�re
+			
+			$temp = UniteDeCorrection::getUnitById($res->_idPere); // On signale au p�re qu'il a un nouveau fils !
+			$temp->addSon($res->_id); // "
+			$temp->upload();// "
+			
+			
+			
+			// Partie fichiers
+			
+			$target_dir = '/'.$arrayData['annee'].'/'.$arrayData['concours'].'/'.$arrayData['filiere'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
+			
+			$to_upload = explode(',',$arrayData['path']);
+			foreach($_FILES as $cur)
+			{
+				$target_file = $cur["name"].basename($cur["name"],'.png'); // On remplace 'path/file_nbr.png' par 'file_nbr'
+				$target_file = explode('_',$target_file);// On r�cup�re un array ['file','nbr']
+				$target_file = end($target_file);// On garde le dernier �l�ment. Ici, $target_file = 'nbr'
+				$target_file = $target_dir.$target_file;// On rajoute le dossier dans lequel il faudra le copier.
+				
+				if(move_uploaded_file($cur["tmp_name"],$target_file)) // On tente d'upload
+				{
+					echo "Le fichier ".basename($to_upload)." a bien �t� copi� sur le serveur <br>";
+				} else {
+					echo "Une erreur s'est produite lors de l'upload de ".basename($to_upload)."<br>";
+				}
+			}
+		}
+		
+		$res->upload();
+		return $res;
+	} 
+	
+	public static function getUnitById($targetId) // Récupère une unité de correction par son ID
+	{
+		global $db;
+		$targetObject = null;
+	
+		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
+		$res->execute(array($targetId));
+	
+		$rep = $res->fetch();
+		if($rep) // Si il y a une entrée
+		{
+			return UniteDeCorrection::fromData($rep);
+		}
+		else
+			echo "Pas d'entr�e d'ID ".$targetId." dans la BDD. <br>";
+	
+			return null;
+	}
+	
+	public static function generateBareme($struct) // G�n�re un bar�me � partir d'un texte comme celui donn� dans "test_bareme.txt"
+	{
+		$toGen = explode("\n",$struct); // tableau contenant les diff�rents ppe
+		
+		// Racine du bar�me :
+		$udc = new UniteDeCorrection();
+		$udc->setId("0");
+		$udc->upload();
+		
+		//$togen = ['Maths1_Partie1_Exercice1_10','Maths1_Partie1_Exercice2_5',...] par ex
+		foreach($toGen as $cur)
+		{
+			$tmp = explode('_',$cur); // $tmp = ['Maths1','Partie1','Exercice1','10'];
+			for($i=1;$i<count($tmp)-1;$i++)
+			{
+				$toCheck = implode('_',array_slice($tmp,1,$i)); // R�assemble les �l�ments (ie premier it�ration 'Maths1', deuxi�me it�ration 'Maths1_Partie1'...
+				// Pour pouvoir tester s'ils existent sur la db, et les upload
+				if(null == UniteDeCorrection::getUnitById($toCheck)) // En cas d'existence sur la BDD, rien n'est � faire. En cas de non-existence en revanche, il faut le cr�er
+				{
+					$udc = new UniteDeCorrection();
+					$udc->setId($toCheck);
+					$udc->setNiveau($i);
+					
+					$idPere = $i == 1 ? "0" : implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de v�rifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre p�re c'est Maths1_Epreuve1.
+					$udc->setIdPere($idPere); // Le  p�re est ajout� comme notre p�re
+							
+					$pere = UniteDeCorrection::getUnitById($idPere);
+					$pere->addSon($toCheck); // On s'ajoute � la liste des fils de notre p�re
+					$pere->upload();// On upload dans la BDD
+					
+						
+					if($i == count($tmp)-2) // On en est au plus petit �l�ment d'UdC
+					{
+						$note = array_slice($tmp,$i+1,$i+1);
+						$note = intval(reset($note));
+						$udc->setNote($note);
+						$udc->setNoteMax($note); // Pourquoi $i+1 ? Car ici, si la taille de $tmp est n, $i = n-2. Donc le dernier �l�ment (la note) est $i+1=n-1
+					}
+					$udc->upload();// On upload dans la BDD
+					
+				}
+			}
+		}
+		unset($pere);
+		unset($udc);
 	}
 	
 	// FONCTIONS (outre getters et setters)
 	
-	public function replaceFirst($string,$idEleve) // Remplace la première chaîne de caractère de l'ID Eleve_Epreuve_Partie... par l'id de l'élève
+	public function getFirstOut($string)
+	{
+		$buff = explode('_',$string);
+		$buff = array_slice($buff,1,count($buff));
+		$buff = implode('_',$buff);
+		
+		return $buff;
+	}
+	
+	public function getFirst($string)
+	{
+		$buff = explode('_',$string);
+		
+		return $buff[0];
+	}
+	
+	public function getLastOut($string)
+	{
+		$buff = explode('_',$string);
+		$buff = array_slice($buff,0,count($buff)-1);
+		$buff = implode('_',$buff);
+		
+		return $buff;
+	}
+	
+	public function replaceFirst($string,$idEleve) // DEPRECATED // Remplace la première chaîne de caractère de l'ID Eleve_Epreuve_Partie... par l'id de l'élève
 	{
 		$buff = explode('_',$string);
 		$buff[0]=$idEleve;
 		return implode('_',$buff);
 	}
 	
-	public function getUnitById($targetId) // Récupère une unité de correction par son ID
-	{
-		$targetObject = null;
-		
-		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
-		$res->execute(array($targetId));
-		
-		$rep = $res->fetch();
-		if($rep) // Si il y a une entrée
-		{
-			return new UniteDeCorrection($rep);
-		}
-		else
-			echo "Pas d'entrée d'ID ".$targetId." dans la BDD. ";
-		
-		return null;
-	}
+	
 	
 	public function delInts($string) // Retourn la partie lettrée d'une chaîne de type "abcdef123456" (non sensible à la casse)
 	{
@@ -176,6 +325,7 @@ class UniteDeCorrection
 	
 	public function getAvailableId() // DEPRECATED // Algorithme bourrin d'obtention d'un ID non assigné... on les teste tous jusque l'obtention d'un ID valide
 	{
+		global $db;
 		$cur = 0;
 		for($cur = 0;$cur < IDMAX;$cur++) // 2147483647 = 2^(31) = la valeur maximale d'un int
 		{
@@ -193,7 +343,7 @@ class UniteDeCorrection
 	{
 		if($_idPere == -1)
 			return $this->_id;
-		$pere = getUnitById($_idPere);
+		$pere = UniteDeCorrection::getUnitById($_idPere);
 		return $pere->getRootId();
 	}
 	
@@ -211,12 +361,14 @@ class UniteDeCorrection
 	
 	public function deleteAll()// Détruit cette unité et ses fils sur le serveur
 	{
+		global $db;
 		$res = $db->prepare("DELETE * FROM units WHERE id LIKE ?% ");
 		$res->execute(array($this->_id));
 	}
 	
 	public function upload() // Fonction de mise à jour sur le serveur de l'UdC, peut être appelée aussi si l'entrée n'existe pas encore
 	{
+		global $db;
 		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
 		$res->execute(array($this->_id));
 		
@@ -224,29 +376,41 @@ class UniteDeCorrection
 		
 		if(!$rep) // Pas d'entrée
 		{
-			$req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_pere, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
+			$req = $db->prepare('INSERT INTO units(id, id_father, id_sons, data, level, mark, max_mark,id_corrector, date_modif) VALUES(:id, :id_father, :id_sons, :data, :level, :mark, :max_mark, :id_corrector, :date_modif)');
 		}
 		else // Entrée
 		{
 			$req = $db->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
 		}
 		
-		$req->execute(array(
-			'id' => $this->_id,
-			'id_father' => $this->_idPere,
-			'id_sons' => $this->_idFils,
-			'data' => $this->_data,
-			'level' => $this->_niveau,
-			'mark' => $this->_note,
-			'max_mark' => $this->_noteMax,
-			'id_corrector' => $this->_idCorrecteur,
-			'date_modif' => $this->_dateModif
-			));
+		if(count($this->_idFils)>=2)
+		{
+			for($i = 0;$i<count($this->_idFils);$i++)
+			{
+				if($this->_idFils[$i] == '')
+				{
+					unset($this->_idFils[$i]);
+				}
+			}
+			$idFils = array_values($this->_idFils);
+		}
+		
+		$req->bindValue(':id',$this->_id,PDO::PARAM_STR);
+		$req->bindValue(':id_father',$this->_idPere,PDO::PARAM_STR);
+		$req->bindValue(':id_sons',implode(',',$this->_idFils),PDO::PARAM_STR);
+		$req->bindValue(':data',$this->_data,PDO::PARAM_STR);
+		$req->bindValue(':level',$this->_niveau,PDO::PARAM_INT);
+		$req->bindValue(':mark',$this->_note,PDO::PARAM_INT);
+		$req->bindValue(':max_mark',$this->_noteMax,PDO::PARAM_INT);
+		$req->bindValue(':id_corrector',$this->_idCorrecteur,PDO::PARAM_STR);
+		$req->bindValue(':date_modif',$this->_dateModif,PDO::PARAM_STR);
+		
+		$req->execute();
 	}
 	
 	public function updateDate()
 	{
-		$_dateModif = date('d/m/Y h:i:s');
+		$_dateModif = date('dd-mm-YYYY h:i:s');
 	}
 	
 	public function newSon()// DEPRECATED // Créer immédiatement un fils vide
@@ -255,11 +419,9 @@ class UniteDeCorrection
 		addSon($NewSon);
 	}
 	
-	public function addSon(&$Son)// DEPRECATED // Ajouter un fils défini au préalable
+	public function addSon($idSon)// Ajouter un fils défini au préalable
 	{// Le "&" est nécessaire pour passer des équivalents de pointeurs.
-		array_push($this->_idFils,$Son->getId());
-		array_push($this->_fils,$Son);
-		
+		array_push($this->_idFils,$idSon);
 	}
 	
 	/*
@@ -288,7 +450,7 @@ class UniteDeCorrection
 	public function setIdFils($idFils){$this->_idFils = $idFils;}
 	public function setNiveau($niveau){$this->_niveau = $niveau;}
 	public function setNote($note){$this->_note = $note;
-	updateDate();
+	$this->updateDate();
 	}
 	public function setNoteMax($noteMax){$this->_noteMax = $noteMax;}
 	public function setDateModif($dateModif){$this->_dateModif = $dateModif;} // Ne devrait à priori jamais être utilisé
