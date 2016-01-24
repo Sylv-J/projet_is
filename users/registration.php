@@ -57,12 +57,12 @@ if($num <3){
 if($valid){
 	echo "Votre inscription à bien été prise en compte";
 // Adds the user to the database
-	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:group)");
+	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:user_group,'','')");
 	$req->execute(array(
 		"username" => strip_tags($_POST["username"]),
 		"pwd" => sha1($_POST["pwd1"]),
 		"mail" => $_POST["mail"],
-		"group" => $_POST["group"]
+		"user_group" => $_POST["group"]
 	));
 	header("Refresh:0");
 }

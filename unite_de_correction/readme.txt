@@ -1,48 +1,100 @@
-##########################################################################################################################################
-###############################	UniteDeCorrection.php			##################################################################
-###############################	11/01/2016				##################################################################
-##########################################################################################################################################
-##########################################################################################################################################
+###########################################################################################################
+###########################################################################################################
+#######################		UniteDeCorrection.php	###################################################
+###########################################################################################################
+#######################		18/01/2016		###################################################
+###########################################################################################################
 
 # OBJECTIF
 
-Ce sont des classes qui permettent l'implÈmentation des diffÈrents ÈlÈments (Èpreuves, parties, exercices...) qui constituent les
-concours
+Ce sont des classes qui permettent l'impl√©mentation des diff√©rents √©l√©ments (√©preuves, parties, 
+exercices...) qui constituent les concours.
 
-NOTE : Toute modification apportÈe ‡ la classe est LOCALE. Pour que ces modifications prennent effectivement effet, il faut appeler
-la mÈthode magique upload() qui gËre la crÈation/modification des UdC. Il n'est donc PAS NECESSAIRE de vÈrifier qu'une UdC existe
-sur le serveur pour utiliser upload(), dans un cas d'utilisation normale. En effet, les constructeurs permettent systÈmatiquement
-de trouver un ID qui n'a pas ÈtÈ attribuÈ sur le serveur.
+Note : la classe ne sert que d'interm√©diaire entre l'utilisateur et le serveur, √† chaque appel du
+constructeur, tout est upload√© sur le serveur
+
+# GENERER UN BAREME
+
+Il existe une m√©thode statique genererBareme($struct) qui se charge de cr√©er un bar√®me sur la BDD. 
+La variable $struct doit avoir la forme pr√©sent√©e dans "test_bareme.txt", √† savoir :
+"U1_V1_W1_NoteMax
+U1_V1_W2_NoteMax
+U1_V2_NoteMax"
+
+Les √©l√©ments capitaux ici sont : * les "_" qui permettent de diff√©rentier les diff√©rentes parties/sous-parties
+etc... de notre √©preuve. Un "_" signale un lien de parent√© "p√®re_fils". Ex : "Partie1_Exercice1".
+* Les sauts de ligne qui permettent d'identifier les diff√©rents plus petits √©l√©ments de notre unit√© de 
+correction. C'est-√†-dire que, lorsque notre fonction rencontre le caract√®re "\n", elle sait qu'elle vient
+d'impl√©menter une des plus petites UdC, et recommence son parcours depuis la racine.
+* le NoteMax, qui doit √™tre de la forme d'un integer. Ex : "Partie1_Exercice1_2.5". Pas de confusion ici,
+cette note est bien la note maximale de son p√®re imm√©diat. Dans l'exemple pr√©c√©dent, d'Exercice1.
 
 # CREER UNE UDC
 
-Pour ce faire, la mÈthode la plus indiquÈe reste encore d'utiliser le constructeur de base, qui va alors s'occuper de crÈer LOCALEMENT
-un objet en se basant sur un ID qui n'est pas encore attribuÈ sur le serveur.
-Les autres constructeurs peuvent Ítre utilisÈs quand :
-* on souhaite crÈer une UdC comme fille d'une autre (encore une fois localement)
-* on souhaite crÈer une UdC comme insÈrÈe dans le noeud d'un autre (localement)
-Le dernier constructeur UniteDeCorrection($arrayData) est un constructeur particulier appelÈ pour recrÈer localement l'objet
-que l'on est allÈ cherche sur le serveur (ie par un getUnitById).
+Quatre choix ici :
 
+* $udc = UniteDeCorrection::fromId('id de l'√©l√®ve') cr√©e une entr√©e sur la database √† partir de l'ID en se
+basant sur le bar√™me existant. Il g√©n√®re donc l'arbre associ√©. Les diff√©rentes unit√©s ont pour ID :
+"IdEleve[_PartieX[_ExerciceY[...]]]". Les crochets n'apparaissent pas dans l'ID des UdC, c'est une notation
+que j'utilise ici pour signaler que ce qui est entre crochet n'est pas toujours pr√©sent.
+Exemple :
+L'unit√© de correction de la partie 1 de l'√©l√®ve "Toto" est "Toto_Partie1", qui aura pour fils √©ventuels
+"Toto_Partie1_Exercice1" et "Toto_Partie1_Exercice2", qui eux-m√™me auront √©ventuellement pour fils 
+"Toto_Partie1_Exercice1_petita" etc jusqu'au plus petit √©l√©ment. La racine est donc "Toto".
+
+* $udc = UniteDeCorrection::fromData($arrayData) cr√©e une entr√©e sur la BDD et en local √† partir d'un 
+ensemble de donn√©es ($arrayData). Le format doit √™tre le suivant :
+$arrayData = array('id_father'=>'lolfather',
+		'id'=>'lolme',
+		'id_sons'=>'lol_son1,lol_son2,lol_son3',
+		'level'=>2,
+		'mark'=>3,
+		'max_mark'=>5,
+		'date_modif'=>'23-01-2016 15:09:12',
+		'id_corrector'=>'lolcorrector');
+* POUR LA SECRETAIRE : $udc = UniteDeCorrection::fromData($arrayData,true) (notez l'importance du true !!)
+o√π le format de $arrayData est :
+$arrayData = array(
+		'id'=>'id de l'√É¬©l√É¬®ve',
+		'annee'=>'2016',
+		'concours'=>'Mines-Ponts,
+		'filiere'=>'MP',
+		'epreuve'=>'Maths1');
+* $udc = UniteDeCorrection::getUnitById('id √† trouver') va chercher l'unit√© sur la BDD en fonction
+de son ID.
+ 
 # AJOUT DE FILS
 
-On n'appelle en fait PRESQUE JAMAIS soi-mÍme les constructeurs d'UniteDeCorrection. Lorsqu'une UdC existe, on appelle plutÙt la mÈthode newSon() 
-dans le cas o˘ l'on souhaite crÈer un fils vierge (cas le plus commun).
-Si, cependant, il semble nÈcessaire d'ajouter un fils existant, la mÈthode addSon() peut Ítre appelÈe ‡ ces fins.
+D√©pr√©ci√©. En r√©alit√©, le constructeur fait tout le travail lui-m√™me en fonction de l'ID de l'√©l√®ve
+et du bar√™me.
 
 # UPLOAD/DOWNLOAD
 
-Pour rÈcupÈrer une UdC sur le serveur et en crÈer une instance locale, il suffit d'utiliser la fonction getUnitById.
-Une fois les diffÈrentes modifications apportÈes, on peut alors :
-* Utiliser uploadAll() : cette fonction va uploader/modifier sur le serveur l'UdC ainsi que TOUS SES FILS.
-* La fonction upload() : se contente d'uploader/modifier sur le serveur l'UdC
-
-Si l'on souhaite par exemple rÈ-enregistrer un arbre entier d'UdC, il suffit donc de faire un $UdC->getRoot()->uploadAll(),
-la fonction getRoot() permettant d'obtenir la PREMIERE UDC DE L'ARBRE 
+Pour r√©cup√©rer une UdC sur le serveur et en cr√©er une instance locale, il suffit d'utiliser la fonction 
+getUnitById().
+Une fois les diff√©rentes modifications apport√©es, on utilise alors la fonction "upload()" qui cr√©e une
+instance de l'UdC sur le serveur. Si elle existe d√©j√†, upload() met √† jour l'entr√©e.
 
 # DESTRUCTION
 
-Pour dÈtruire une UdC, on peut crÈer une instance locale, puis appeler la mÈthode deleteAll(). Celle-ci dÈtruit une UdC ainsi que
-tous ses fils. Il N'EXISTE PAS DE DELETE() pour le moment car il semble Ètrange de vouloir dÈtruire une UdC sans dÈtruire ses fils,
-plutÙt que de vouloir la modifier. Si cela semble nÈcessaire, il est tout de mÍme possible de rÈaliser la manipulation avec la fonction
-insert() qui insËre l'UdC comme fils d'une autre.
+On peut d√©truire une UdC ainsi que tous ses fils sur le serveur en appelant la fonction deleteAll().
+
+# EXEMPLE D'UTILISATION 
+
+Cr√©ation et upload :
+
+$udc = UniteDeCorrection::fromId('nouvelEleve');
+$udc->setNote(12);
+
+$udc->upload();
+
+Depuis un formulaire :
+
+$arrayData['id'] = $_GET['id'];
+$arrayData['data']=$_GET['data'];
+...
+
+$udc = UniteDeCorrection::fromData($arrayData);
+	A noter que dans le cas pr√©sent, on n'a rien modifi√© √† l'objet. Il est donc inutile (mais pas
+	une erreur pour autant) d'appeler la m√©thode upload(), qui est appel√©e au moment de la cr√©ation
+	de l'objet.

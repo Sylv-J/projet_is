@@ -1,0 +1,4 @@
+Explication des pages perso :
+-dossier roles : contient les actions des membres intervenant dans la correction
+-un script action pour tester l'affichage des différents rôles
+-la page perso.php : la page des utilisateurs après leur connexion, inclut action.php, le dossier rôle et navbar.php

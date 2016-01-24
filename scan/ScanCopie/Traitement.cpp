@@ -1,0 +1,77 @@
+#include "Traitement.h"
+
+using namespace cv;
+
+
+// Couleur theorique de la gomette
+int h=60, HTolerance=10;
+int s=255, STolerance=10;
+int v=255, VTolerance=10;
+
+void detectCircle(QImage *qim)
+{
+  h=h/2; //H 0->360 ,n'est informatiquement codé que entre 0 et 180
+  cv::Scalar lowerBoundary(h-HTolerance, s-STolerance, v-VTolerance);
+  cv::Scalar upperBoundary(h+HTolerance, s+STolerance, v+VTolerance);
+
+  cv::Mat originalMat = QImageToCvMat(*qim);
+
+  // Convert analyzedMat image to HSV
+  cv::Mat hsv;
+  cv::cvtColor(originalMat, hsv, cv::COLOR_BGR2HSV);
+  // RGB : 255 255 255
+  // HSV : 360° 255 255, mais 360 dépasse un bit, on utilise donc :
+  // HSV : 180 255 255!!!!
+
+  // nettoye l'image, on ne garde que les pixels selectionnés et on les enregistre dans analyzedMat
+  cv::inRange(hsv, lowerBoundary, upperBoundary, originalMat);
+  // attention le rouge s'étale avant 180 et après 0, il faudrait recopier cette ligne 2 fois pour l'identifier puis combiner l'image ensuite
+
+
+
+
+
+
+
+
+
+  std::vector< std::vector<cv::Point> > contours;
+  std::vector<cv::Point> points;
+  cv::findContours(originalMat, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+
+  int minX[contours.size()], maxX[contours.size()], minY[contours.size()], maxY[contours.size()];
+  for (size_t i=0; i<contours.size(); i++)
+  {
+    minX[i] = contours[i][0].x;
+    maxX[i] = contours[i][0].x;
+    minY[i] = contours[i][0].y;
+    maxY[i] = contours[i][0].y;
+    for (size_t j = 0; j < contours[i].size(); j++)
+    {
+      minX[i] = min(minX[i], contours[i][j].x);
+      minY[i] = min(minY[i], contours[i][j].y);
+      maxX[i] = max(maxX[i], contours[i][j].x);
+      maxY[i] = max(maxY[i], contours[i][j].y);
+    }
+    rectangle(originalMat, Point(minX[i],minY[i]) , Point(maxX[i], maxY[i]), Scalar(255,0,0));
+  }
+
+
+
+
+
+
+
+
+  namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
+  imshow( "Display window", originalMat );                   // Show our image inside it.
+}
+
+
+
+
+
+cv::Mat QImageToCvMat(QImage const& img)
+{
+  return cv::Mat(img.height(), img.width(), CV_8UC4, const_cast<uchar*>(img.bits()), img.bytesPerLine()).clone();
+}

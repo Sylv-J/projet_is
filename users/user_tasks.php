@@ -1,3 +1,6 @@
+<!--Ce fichier me semble désormais désuet car remplacé par ../actions/acions.php
+
+
 <?php
 include_once("user_context.php");
 
@@ -30,7 +33,8 @@ Mettre à jour les différents types d'utilisateurs et leurs droits ici.
 $rights = array(
 'administrateur' => array('Modifier les droits'),
 'secretaire' => array('Scanner'),
-'correcteur' => array('Corriger')
+'correcteur' => array('Corriger'),
+'chairman' => array ('Statistiques','Assignation des copies')
 );
 
 
