@@ -10,8 +10,9 @@
             include_once("../master_db.php");
             $db = masterDB::getDB();
 
+
             //Recherche dans la db d'une unité de correction non assignée
-            $req = $db->prepare("SELECT id FROM units WHERE id_corrector is NULL");
+            $req = $db->prepare('SELECT current_units FROM users WHERE id = "'.$_SESSION["id"].'"');
             $req->execute();
             $res = $req->fetch();
 

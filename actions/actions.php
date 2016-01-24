@@ -13,7 +13,7 @@ $user = $_SESSION["group"];
 	*******************************************
 	*/
 $rights = array(
-'admin' => array('Modifier les droits','Ajouter concours'),
+'admin' => array('Modifier les droits','Ajouter concours','Créer un compte'),
 'secretaire' => array('Scanner'),
 'correcteur' => array('Corriger', 'Voir mes Stats'),
 'chairman' => array('Statistiques','Assignation des copies', 'Stats Correcteur')

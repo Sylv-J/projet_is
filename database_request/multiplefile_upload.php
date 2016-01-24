@@ -83,7 +83,7 @@ for ($i = 0; $i < $fileCount; $i++) {
       // On cherche une entrée libre sur la table "units" dans notre BDD et
       // on récupère son id
       // on ajoute i afin de differencier les differentes copies !
-      $idUnite = $id_copie*10+$i;
+      $idUnite = $id_copie.$i;
       // On fait en sorte que l'id soit le nom de l'unité sur le dossier /Images
       $uploadImageID = $dir.$idUnite.'.'.$fileinfo['extension'];
       if(!file_exists($uploadImageID)){

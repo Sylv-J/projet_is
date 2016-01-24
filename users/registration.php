@@ -1,3 +1,6 @@
+
+	<div class="jumbotron">
+		<div class="container">
 <?php
 include_once("../master_db.php");
 $db = masterDB::getDB();
@@ -55,16 +58,17 @@ if($num <3){
 
 //If everything was filled properly, and if so create the user in the database
 if($valid){
-	echo "Votre inscription à bien été prise en compte";
+	echo "<h2>L'inscription à bien été prise en compte </h2>";
 // Adds the user to the database
-	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:user_group,'','')");
+	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:user_group)");
 	$req->execute(array(
 		"username" => strip_tags($_POST["username"]),
 		"pwd" => sha1($_POST["pwd1"]),
 		"mail" => $_POST["mail"],
 		"user_group" => $_POST["group"]
 	));
-	header("Refresh:0");
+
+
 }
 else{
 echo $error_msg
@@ -90,3 +94,5 @@ echo $error_msg
 <?php
 }
 ?>
+</div>
+</div>

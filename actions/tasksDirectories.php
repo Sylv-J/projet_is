@@ -16,7 +16,8 @@ $tasksDirectories = array(
   'Assignation des copies' => 'chairman/assignationcopies.php',
   'Ajouter concours' => 'administrateur/formulaire_ajout_table.php',
   'register' => '../users/registration.php',
-  'logout' => '../users/logout.php'
+  'logout' => '../users/logout.php',
+  'Créer un compte' => '../users/registration.php'
   );
 
 ?>

@@ -72,11 +72,7 @@ else{
 
   </p>
 	</form>
-  <form action='index.php' method='post'>
-    <div class='list-group'>
-      <button type='submit' name='page_to_load' value='register' class='btn'>S'inscrire</button>
-    </div>
-  </form>
+
 <?php
 }
 ?>
