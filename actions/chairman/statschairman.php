@@ -13,7 +13,11 @@
         </thead>
         <tbody>
           <?php
+<<<<<<< HEAD
            include_once("../database_request/remplirtableau.php")
+=======
+           include("../database_request/remplirtableau.php")
+>>>>>>> origin/Dev-iteration2
            ?>
         </tbody>
       </table>
