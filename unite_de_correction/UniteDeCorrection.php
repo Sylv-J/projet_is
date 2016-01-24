@@ -101,6 +101,7 @@ class UniteDeCorrection
 		$this->_idCorrecteur = "null"; // Ne sera √©gal √† un ID que pour les plus petites udc
 		
 	}
+	
 	static function fromId($id,$fromScratch=true) // G√©n√®re en fonction du bar√™me associ√© l'UDC qui correspond pour un √©l√®ve donn√© (on lui passe juste l'ID de l'√©l√®ve)
 	{
 		$res = new UniteDeCorrection();
@@ -116,7 +117,7 @@ class UniteDeCorrection
 		}
 		else // Sinon, on est sur une branche
 		{
-			$bareme = UniteDeCorrection::getUnitById($id);
+			$bareme = UniteDeCorrection::getUnitById($res->getFirstOut($id));
 			if($bareme == null)
 			{
 				echo "Erreur : le constructeur s'est perdu (tentative d'accËs ‡† une partie du barÍme qui n'existe pas) <br>";
@@ -127,11 +128,23 @@ class UniteDeCorrection
 		{
 			$res->setNiveau($bareme->getNiveau());
 			$res->setNoteMax(max(array($bareme->getNote(),$bareme->getNoteMax())));
-			array_push($res->_idFils,replaceFirst($cur,$_id));
-			UniteDeCorrection::fromId($cur,false);
+			
+			$idPere = $res->getLastOut($res->getId());
+			if($idPere != '')
+				$res->setIdPere($idPere);
+			
+			if($cur != null && $cur != '')
+			{
+				$newIdSon = $res->getFirst($id).'_'.$cur;
+			
+				array_push($res->_idFils,$newIdSon);
+				
+				
+				UniteDeCorrection::fromId($newIdSon,false);
+			}
 		}
 		
-		upload();
+		$res->upload();
 		
 		return $res;
 	}
@@ -213,6 +226,12 @@ class UniteDeCorrection
 	public static function generateBareme($struct) // GÈnËre un barÍme ‡ partir d'un texte comme celui donnÈ dans "test_bareme.txt"
 	{
 		$toGen = explode("\n",$struct); // tableau contenant les diffÈrents ppe
+		
+		// Racine du barËme :
+		$udc = new UniteDeCorrection();
+		$udc->setId("0");
+		$udc->upload();
+		
 		//$togen = ['Maths1_Partie1_Exercice1_10','Maths1_Partie1_Exercice2_5',...] par ex
 		foreach($toGen as $cur)
 		{
@@ -225,24 +244,25 @@ class UniteDeCorrection
 				{
 					$udc = new UniteDeCorrection();
 					$udc->setId($toCheck);
-					if($i>1) // On n'est pas la racine du barÍme
-					{
-						$idPere = implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de vÈrifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre pËre c'est Maths1_Epreuve1.
-						$udc->setIdPere($idPere); // Le  pËre est ajoutÈ comme notre pËre
+					$udc->setNiveau($i);
+					
+					$idPere = $i == 1 ? "0" : implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de vÈrifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre pËre c'est Maths1_Epreuve1.
+					$udc->setIdPere($idPere); // Le  pËre est ajoutÈ comme notre pËre
 							
-						$pere = UniteDeCorrection::getUnitById($idPere);
-						$pere->addSon($toCheck); // On s'ajoute ‡ la liste des fils de notre pËre
-						$pere->upload();// On upload dans la BDD
-					}
+					$pere = UniteDeCorrection::getUnitById($idPere);
+					$pere->addSon($toCheck); // On s'ajoute ‡ la liste des fils de notre pËre
+					$pere->upload();// On upload dans la BDD
+					
 						
 					if($i == count($tmp)-2) // On en est au plus petit ÈlÈment d'UdC
 					{
-						$note = intval(reset(array_slice($tmp,$i+1,$i+1)));
-						echo "La note sera ".$note."<br>";
+						$note = array_slice($tmp,$i+1,$i+1);
+						$note = intval(reset($note));
 						$udc->setNote($note);
 						$udc->setNoteMax($note); // Pourquoi $i+1 ? Car ici, si la taille de $tmp est n, $i = n-2. Donc le dernier ÈlÈment (la note) est $i+1=n-1
 					}
 					$udc->upload();// On upload dans la BDD
+					
 				}
 			}
 		}
@@ -252,7 +272,32 @@ class UniteDeCorrection
 	
 	// FONCTIONS (outre getters et setters)
 	
-	public function replaceFirst($string,$idEleve) // Remplace la premi√®re cha√Æne de caract√®re de l'ID Eleve_Epreuve_Partie... par l'id de l'√©l√®ve
+	public function getFirstOut($string)
+	{
+		$buff = explode('_',$string);
+		$buff = array_slice($buff,1,count($buff));
+		$buff = implode('_',$buff);
+		
+		return $buff;
+	}
+	
+	public function getFirst($string)
+	{
+		$buff = explode('_',$string);
+		
+		return $buff[0];
+	}
+	
+	public function getLastOut($string)
+	{
+		$buff = explode('_',$string);
+		$buff = array_slice($buff,0,count($buff)-1);
+		$buff = implode('_',$buff);
+		
+		return $buff;
+	}
+	
+	public function replaceFirst($string,$idEleve) // DEPRECATED // Remplace la premi√®re cha√Æne de caract√®re de l'ID Eleve_Epreuve_Partie... par l'id de l'√©l√®ve
 	{
 		$buff = explode('_',$string);
 		$buff[0]=$idEleve;
@@ -335,7 +380,6 @@ class UniteDeCorrection
 		}
 		else // Entr√©e
 		{
-			echo "EntrÈe trouvÈe <br>";
 			$req = $db->prepare('UPDATE units SET id_father=:id_father, id_sons=:id_sons, data=:data, level=:level, mark=:mark, max_mark=:max_mark,id_corrector=:id_corrector, date_modif=:date_modif WHERE id = :id');
 		}
 		
