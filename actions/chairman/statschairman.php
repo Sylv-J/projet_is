@@ -13,7 +13,7 @@
         </thead>
         <tbody>
           <?php
-           include("../../database_request/remplirtableau.php")
+           include_once("../database_request/remplirtableau.php")
            ?>
         </tbody>
       </table>

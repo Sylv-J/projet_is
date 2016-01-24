@@ -1,7 +1,7 @@
 <?php
 include_once("../master_db.php");
 $db = masterDB::getDB();
-$tableFile = fopen("tables_struct","r");
+$tableFile = fopen("../utils/tables_struct","r");
 $nomtableusers = $_POST['NomConcours']."users";
 $nomtableunits = $_POST['NomConcours']."units";
 

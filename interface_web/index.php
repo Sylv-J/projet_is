@@ -40,7 +40,7 @@
   //Si connecté
   else
 	{
-		
+
 		if(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
 		}
@@ -57,7 +57,7 @@
 		else
 		{
 			include("../actions/tasksDirectories.php");
-			include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
+			include_once("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
 		}
 	}
 ?>
