@@ -18,7 +18,7 @@
 
 
 
-QVector <int> detectCircles(QImage *qim);
+void detectCircles(QImage *qim, QVector <int> *divisionPoints);
 
 
 cv::Mat QImageToCvMat(QImage const& src);

@@ -98,8 +98,6 @@ void MyWindow::chooseImages()
     colNumbers = 0;
     rowNumbers = 0;
 
-    divisionPoints.push_back(0);
-
     QSize currentImageSize = QSize();
     for(int i = 0; i < filenames.size(); ++i)
     {
@@ -116,23 +114,11 @@ void MyWindow::chooseImages()
         currentImageSize = chosenImages[i]->size();
         colNumbers = fmax(colNumbers, currentImageSize.width());
         rowNumbers += currentImageSize.height();
-
-        divisionPoints.push_back(rowNumbers);
     }
 
     displayer->clean();
     displayer->addImages(chosenImages);
 
-    for(int i = 0; i < divisionPoints.size(); i++)
-    {
-        delete divisionLines[i];
-    }
-    divisionLines.clear();
-
-    for(int i = 0; i < divisionPoints.size() - 2; i++)
-    {
-        divisionLines.push_back(new QLineF(QPointF(0, divisionPoints[i+1]), QPointF(colNumbers, divisionPoints[i+1])));
-    }
 
     hideAllButtons();
     m_buttonAssemble->show();
@@ -160,7 +146,20 @@ void MyWindow::assemble()
     painter.end();
 
     // TODO : mettre a jour divisionPoints
-    divisionPoints = detectCircles(&fusionnedImage);
+    divisionPoints.push_back(0);
+    detectCircles(&fusionnedImage, &divisionPoints);
+    divisionPoints.push_back(rowNumbers);
+
+    for(int i = 0; i < divisionLines.size(); i++)
+    {
+        delete divisionLines[i];
+    }
+    divisionLines.clear();
+
+    for(int i = 0; i < divisionPoints.size() - 2; i++)
+    {
+        divisionLines.push_back(new QLineF(QPointF(0, divisionPoints[i+1]), QPointF(colNumbers, divisionPoints[i+1])));
+    }
 
 
     displayer->clean();

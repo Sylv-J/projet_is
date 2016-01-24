@@ -8,7 +8,7 @@ int h=60, HTolerance=10;
 int s=255, STolerance=10;
 int v=255, VTolerance=10;
 
-QVector <int> detectCircles(QImage *qim)
+void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 {
   h=h/2; //H 0->360 ,n'est informatiquement codé que entre 0 et 180
   cv::Scalar lowerBoundary(h-HTolerance, s-STolerance, v-VTolerance);
@@ -39,7 +39,6 @@ QVector <int> detectCircles(QImage *qim)
   std::vector<cv::Point> points;
   cv::findContours(originalMat, contours, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
 
-  QVector <int> divisionPoints;
   int minX[contours.size()], maxX[contours.size()], minY[contours.size()], maxY[contours.size()];
   for (size_t i=0; i<contours.size(); i++)
   {
@@ -58,18 +57,17 @@ QVector <int> detectCircles(QImage *qim)
 
 
     // la ligne suivante doit être testée attentivement (interface entre le code d'illias et le mien, erreurs de conversions possibles.)
-    divisionPoints[i]=(maxY[i]+minY[i])/2;
+    divisionPoints->push_back((maxY[i]+minY[i])/2);
   }
 
-  return divisionPoints;
 
 
 
 
 
 
-  namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
-  imshow( "Display window", originalMat );                   // Show our image inside it.
+  // namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
+  // imshow( "Display window", originalMat );                   // Show our image inside it.
 }
 
 
