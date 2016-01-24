@@ -40,18 +40,18 @@
   //Si connecté
   else
 	{
-
-        if(isset($_POST["inbox"])){
-            include_once("../messenger/inbox.php");
-        }
-        elseif(isset($_POST["sendbox"])){
-            include_once("../messenger/send_interface.php");
-        }
-		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
+		
+		if(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
 		}
 		elseif(isset($_POST["id_exo2"]) and $_POST["nb_copies"] and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
+		}
+		elseif(isset($_POST["id_correcteur"]) and $_SESSION["group"] == "chairman"){
+			include_once("../actions/chairman/bandeau_stats_chairman.php");
+		}
+		elseif(isset($_POST["id_exo3"]) and isset($_POST["id_correcteur2"]) and $_SESSION["group"] == "chairman"){
+			include_once("../actions/chairman/bandeau_stats_chairman.php");
 		}
 		//aucune tâche n'a été demandé, on charge la page perso
 		elseif(!isset($_POST["page_to_load"]))
@@ -63,7 +63,7 @@
 		else
 		{
 			include("../actions/tasksDirectories.php");
-			include_once("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
+			include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
 		}
 	}
 ?>

@@ -179,32 +179,38 @@
 								
 				<?php 
 				
-				$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? AND id_corrector = ? ORDER BY date_modif DESC ");
-				$req->execute(array($_POST['id_exo2'], $_SESSION["id"]));
-				
-				while($res = $req->fetch()){
-					//echo $res[0];
-					$notes[] = $res[0];
-				}
-				
-				$moyenneGlissante = [];
-				for ($i = 0; $i < sizeof($notes); $i++) {
-					if ($i+$_POST["nb_copies"]<=sizeof($notes)){
-						$sum = 0;
-						for ($j = 0; $j <$_POST["nb_copies"]; $j++){
-							$sum += $notes[$i+$j];
-						}
+				//Création du graph de la moyenne glissante
+				if (isset($_POST['id_exo2'])){
+					$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? AND id_corrector = ? ORDER BY date_modif DESC ");
+					$req->execute(array($_POST['id_exo2'], $_SESSION["id"]));
+					
+					while($res = $req->fetch()){
+						//echo $res[0];
+						$notes[] = $res[0];
 					}
-					$moyenneGlissante[] = $sum/$_POST["nb_copies"];
+					if (isset($notes)){
+						$moyenneGlissante = [];
+						for ($i = 0; $i < sizeof($notes); $i++) {
+							if ($i+$_POST["nb_copies"]<=sizeof($notes)){
+								$sum = 0;
+								for ($j = 0; $j <$_POST["nb_copies"]; $j++){
+									$sum += $notes[$i+$j];
+								}
+							}
+							$moyenneGlissante[] = $sum/$_POST["nb_copies"];
+						}
+						echo "<br/>";
+						echo '<img src="../actions/graph.php?ydata1='.urlencode(serialize($moyenneGlissante)).'" border="0" alt="img.php" align="left">';
+					}
+					
 				}
-				echo '<img src="../actions/graph.php?ydata1='.urlencode(serialize($moyenneGlissante)).'" border="0" alt="img.php" align="left">';
 				?>
-								
+				
 				<?php // CHAIRMAN //traitement si moyenne globale correcteur demandée
 					if(isset($_POST["id_correcteur"])){?>
 						
 						<p> <?php
-						echo "Le moyenne globale de " ;
+						echo "Le moyenne globale du correcteur " ;
 						echo $_POST["id_correcteur"];
 						echo " est de : " ;
 						echo MoyenneCorrecteur($_POST["id_correcteur"]);

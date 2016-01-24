@@ -6,7 +6,7 @@
 
 			
 			<h2> Moyenne globale : veuillez entrer le nom du correcteur </h2>
-					<form method="post" action = "../actions/stats.php" role="form">
+					<form method="post" action = "../interface_web/index.php" role="form">
 
                         <div class="form-group">
                             <input type="number" placeholder="Nom correcteur" name="id_correcteur" class="form-control" required>
@@ -16,7 +16,7 @@
                     </form>
 					
 			<h2> Moyenne ciblée, veuillez indiquer le nom de l'exercice et le nom du correcteur </h2>
-					<form method="post" action = "../actions/stats.php" role="form">
+					<form method="post" action = "../interface_web/index.php" role="form">
 
                         <div class="form-group">
                             <input type="number" placeholder="No de l'exercice" name="id_exo3" class="form-control" required>
@@ -28,7 +28,11 @@
 						
                     </form>
 					
-					
+			<?php 
+			
+				include("../actions/stats.php");
+				
+			?>
 			
 			
         </div>
