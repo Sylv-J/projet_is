@@ -1,3 +1,6 @@
+<!--Ce fichier me semble désormais désuet car remplacé par ../actions/acions.php
+
+
 <?php
 include_once("user_context.php");
 
