@@ -1,3 +1,7 @@
+<body>
+	<div class="jumbotron">
+		<div class="container">
+
 <?php
 include_once("../users/user_context.php");
 if(!isset($_SESSION["id"])){
@@ -86,3 +90,6 @@ if(!isset($_SESSION["id"])){
   </html>
 
 <?php } ?>
+</div>
+</div>
+</body>

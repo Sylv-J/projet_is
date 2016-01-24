@@ -1,3 +1,6 @@
+<body>
+	<div class="jumbotron">
+		<div class="container">
 <?php
 include_once("../users/user_context.php");
 if(!isset($_SESSION["id"])){
@@ -37,3 +40,6 @@ $req->execute(array($_SESSION["username"]));
 <?php } ?>
 </table>
 <?php } ?>
+</div>
+</div>
+</body>
