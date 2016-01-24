@@ -2,7 +2,7 @@
 	<div class="jumbotron">
 		<div class="container">
 <?php
-
+include_once("../master_db.php");
 $db = masterDB::getDB();
 $valid = true;
 $num = 0; //Used to check if all the fields were filled, in that case it must be 3
