@@ -40,7 +40,13 @@
   //Si connecté
   else
 	{
-        if(isset($_POST["inbox"])){
+        if(isset($_POST["unitType"]) and isset($_POST["idcorr"])){
+            include_once("../paquets_copies/paquets_copies.php");
+            punctualAssignment($_POST["idcorr"],$_POST["unitType"]);
+            unset($_POST["unitType"]);
+            unset($_POST["idcorr"]);
+        }
+        elseif(isset($_POST["inbox"])){
             include_once("../messenger/inbox.php");
         }
         elseif(isset($_POST["sendbox"])){

@@ -28,23 +28,23 @@ function getUnitsUnassigned($unitType){
   while($donnees = $req->fetch()){
     array_push($list, $donnees[0]);
   }
-  
+
   // pas utilisé pour le moment car tests avec petit nombre d'unités
   /*
-  $nbUnits = sizeof($list); 
+  $nbUnits = sizeof($list);
   if($nbUnits<=10){
     return null;
   }else{
     return array_slice($list, 0, $nbUnits-10);
-  }  
-  */  
-  return $list;       
+  }
+  */
+  return $list;
 }
 
 /*
 ///////////TEST//////////////////////////////////////////////
 $test1 = getUnitsUnassigned('Maths');
-echo implode(' ', $test1);    
+echo implode(' ', $test1);
 //////////////////////////////////////////////////////////////
 */
 
@@ -89,7 +89,7 @@ function assignFathers($localCorrector, $id_unit) {
         foreach(array_unique($correctors) as $correctorlist) {
           $list = $correctorlist;
         }
-      } 
+      }
       // Remarque : il faut changer le type du paramètre id_corrector en VARCHAR(255) (car possibilité de plusieurs correcteurs)
       // ici, on suppose que les id des correcteurs sont séparés par le caractère '|'
       if(isset($list)&&strpos($list,'|')){
@@ -139,19 +139,20 @@ function updateDB($id_unit, $localCorrector) {
   $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$id_unit.'"');
   $dateModif = date('Y/m/d h:i:s');
   $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$id_unit.'"');
-  
+  $db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
+
   // appliquer les changements aux fils
-	assignSons($localCorrector, $id_unit); 
-  
+	assignSons($localCorrector, $id_unit);
+
   // appliquer les changements au père et au père du père etc... jusqu'à ce qu'on arrive au plus au niveau (plus de père)
   $unit = $id_unit;
-  $father = $db->query('SELECT id_father FROM units WHERE id = "'.$unit.'"') -> fetch();
-  $father = array_unique($father);
-  $father = implode($father);
-  do{
-    assignFathers($localCorrector, $unit);
-    $unit = findFather($unit);
-  } while ($unit);
+  //$father = $db->query('SELECT id_father FROM units WHERE id = "'.$unit.'"') -> fetch();
+  //$father = array_unique($father);
+  //$father = implode($father);
+  //do{
+  //  assignFathers($localCorrector, $unit);
+  //  $unit = findFather($unit);
+  //} while ($unit);
 }
 
 /*
@@ -172,7 +173,7 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
-	$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$unitType}%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$unitType}%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
@@ -187,7 +188,7 @@ function assignUnits($unitType) {
 }
 
 /*
-///////////TEST////////////////////////////  
+///////////TEST////////////////////////////
 assignUnits('Maths');
 //////////////////////////////////////////
 */
@@ -199,7 +200,7 @@ function punctualAssignment($id_corrector, $unitType) {
 	while($donnees = $req->fetch()){
     array_push($list, $donnees[0]);
   }
-  $nbUnits = sizeof($list); 
+  $nbUnits = sizeof($list);
 
   if ($nbUnits >=0) {
     $unit = $list[0];
