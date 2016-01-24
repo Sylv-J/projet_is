@@ -15,32 +15,25 @@ $req = $db->prepare($requests[$box]);
 $req->execute(array($_SESSION["username"]));
 ?>
 
-<!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <title><?php echo($names[$box]);?></title>
-</head>
-<body>
-  <h1><?php echo($names[$box]); ?></h1>
-  <table id="mailbox" style="width:50%">
-    <tr>
-      <th><?php echo($box = "inbox" ? "De:" : "À:"); ?></th>
-      <th>Object</th>
-      <th>Date</th>
+<h1><?php echo($names[$box]); ?></h1>
+<table id="mailbox" style="width:50%">
+  <tr>
+    <th><?php echo($box = "inbox" ? "De:" : "À:"); ?></th>
+    <th>Object</th>
+    <th>Date</th>
+  </tr>
+  <?php if($data = $req->fetch()){
+    do{?>
+    <tr onclick="location.href='msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'">
+      <td><?php echo $data["c1"];  ?></td>
+      <td><?php  echo $data["obj"]; ?></td>
+      <td><?php  echo $data["dated"]; ?></td>
     </tr>
-    <?php if($data = $req->fetch()){
-      do{?>
-      <tr onclick="location.href='msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'">
-        <td><?php echo $data["c1"];  ?></td>
-        <td><?php  echo $data["obj"]; ?></td>
-        <td><?php  echo $data["dated"]; ?></td>
-      </tr>
-    <?php }while($data = $req->fetch());
+  <?php }while($data = $req->fetch());
   }else{ ?>
-    <tr>
-      <td colspan="3" style="text-align:center">Pas de messages !</td>
-    </tr>
-  <?php } ?>
-  </table>
-</body>
+  <tr>
+    <td colspan="3" style="text-align:center">Pas de messages !</td>
+  </tr>
+<?php } ?>
+</table>
 <?php } ?>
