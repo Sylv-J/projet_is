@@ -40,8 +40,13 @@
   //Si connecté
   else
 	{
-		
-		if(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
+        if(isset($_POST["inbox"])){
+            include_once("../messenger/inbox.php");
+        }
+        elseif(isset($_POST["sendbox"])){
+            include_once("../messenger/send_interface.php");
+        }
+		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
 		}
 		elseif(isset($_POST["id_exo2"]) and $_POST["nb_copies"] and $_SESSION["group"] == "correcteur"){
