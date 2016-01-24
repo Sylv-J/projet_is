@@ -93,7 +93,10 @@ if(isset($_POST["submit"])){
         <?php
       }
     }
-  }
+}else{
+    $nb_cc = 0;
+}
+
 
   $msg_content = $_POST["msg_content"];
   // Vérification si le message et non vide

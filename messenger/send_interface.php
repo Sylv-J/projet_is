@@ -40,7 +40,7 @@ if(!isset($_SESSION["id"])){
 
   </head>
   <body>
-    <form action="send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
+    <form action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
       <p>
         <label for="msg_object">Objet : </label>
         <input id="msg_object" type="text" cols="50" name="msg_object"><br/>
@@ -75,7 +75,7 @@ if(!isset($_SESSION["id"])){
       ifrm.style.border = "0";
       // On ajoute cet iframe à la page actuelle.
       document.body.appendChild(ifrm);
-      
+
       // Fonction pour "activer" le boutton 'Envoyer'
       function show_button(){
         var elem = document.getElementById('submit');

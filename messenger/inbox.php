@@ -1,7 +1,7 @@
 <?php
 include_once("../users/user_context.php");
 if(!isset($_SESSION["id"])){
-  include("err.php");
+  include("../messenger/err.php");
 }else{
 $box = isset($_POST["box"]) ? $_POST["box"] : "inbox";
 $names = array("inbox" => "Boîte de réception", "sendbox" => "Boîte d'envoi");
@@ -24,7 +24,7 @@ $req->execute(array($_SESSION["username"]));
   </tr>
   <?php if($data = $req->fetch()){
     do{?>
-    <tr onclick="location.href='msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'">
+    <tr onclick="location.href='../messenger/msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'">
       <td><?php echo $data["c1"];  ?></td>
       <td><?php  echo $data["obj"]; ?></td>
       <td><?php  echo $data["dated"]; ?></td>

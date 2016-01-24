@@ -14,6 +14,26 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="index.php">Accueil <span class="sr-only">(current)</span></a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Messagerie<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                          <form action='index.php' method='post'>
+                          <div class='list-group'>
+                          <button type='submit' name='inbox' value='inbox' class='btn'>Boite de reception</button>
+                          </div></form>
+                        </li>
+                        <li>
+                          <form action='index.php' method='post'>
+                          <div class='list-group'>
+                          <button type='submit' name='sendbox' value='sendbox' class='btn'>Envoyer message</button>
+                          </div></form>
+                        </li>
+                    </ul>
+                </ul>
+            </li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="http://www.depinfonancy.net/" target="_blank">Dep'Info</a></li>
                 <li class="dropdown">
