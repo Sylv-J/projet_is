@@ -8,7 +8,7 @@
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["units_remaining"];
        echo "<tr> <td>'$username'</td> <td>'$id'</td> <td>'$nbcopiesrestantes'</td> <td>'$mail'</td></tr>";
-    
+
   }
 
    $req->closeCursor();
