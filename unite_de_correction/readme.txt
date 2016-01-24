@@ -7,20 +7,43 @@
 
 # OBJECTIF
 
-Ce sont des classes qui permettent l'implémentation des différents éléments (épreuves, parties, 
+Ce sont des classes qui permettent l'implÃ©mentation des diffÃ©rents Ã©lÃ©ments (Ã©preuves, parties, 
 exercices...) qui constituent les concours.
 
-Note : la classe ne sert que d'intermédiaire entre l'utilisateur et le serveur, à chaque appel du
-constructeur, tout est uploadé sur le serveur
+Note : la classe ne sert que d'intermÃ©diaire entre l'utilisateur et le serveur, Ã  chaque appel du
+constructeur, tout est uploadÃ© sur le serveur
+
+# GENERER UN BAREME
+
+Il existe une mÃ©thode statique genererBareme($struct) qui se charge de crÃ©er un barÃ¨me sur la BDD. 
+La variable $struct doit avoir la forme prÃ©sentÃ©e dans "test_bareme.txt", Ã  savoir :
+"U1_V1_W1_NoteMax
+U1_V1_W2_NoteMax
+U1_V2_NoteMax"
+
+Les Ã©lÃ©ments capitaux ici sont : * les "_" qui permettent de diffÃ©rentier les diffÃ©rentes parties/sous-parties
+etc... de notre Ã©preuve. Un "_" signale un lien de parentÃ© "pÃ¨re_fils". Ex : "Partie1_Exercice1".
+* Les sauts de ligne qui permettent d'identifier les diffÃ©rents plus petits Ã©lÃ©ments de notre unitÃ© de 
+correction. C'est-Ã -dire que, lorsque notre fonction rencontre le caractÃ¨re "\n", elle sait qu'elle vient
+d'implÃ©menter une des plus petites UdC, et recommence son parcours depuis la racine.
+* le NoteMax, qui doit Ãªtre de la forme d'un integer. Ex : "Partie1_Exercice1_2.5". Pas de confusion ici,
+cette note est bien la note maximale de son pÃ¨re immÃ©diat. Dans l'exemple prÃ©cÃ©dent, d'Exercice1.
 
 # CREER UNE UDC
 
 Quatre choix ici :
 
-* $udc = UniteDeCorrection::fromId('id de l'élève') crée une entrée sur la database à partir de l'ID en se
-basant sur le barême existant. Il génère donc l'arbre associé.
-* $udc = UniteDeCorrection::fromData($arrayData) crée une entrée sur la BDD et en local à partir d'un 
-ensemble de données ($arrayData). Le format doit être le suivant :
+* $udc = UniteDeCorrection::fromId('id de l'Ã©lÃ¨ve') crÃ©e une entrÃ©e sur la database Ã  partir de l'ID en se
+basant sur le barÃªme existant. Il gÃ©nÃ¨re donc l'arbre associÃ©. Les diffÃ©rentes unitÃ©s ont pour ID :
+"IdEleve[_PartieX[_ExerciceY[...]]]". Les crochets n'apparaissent pas dans l'ID des UdC, c'est une notation
+que j'utilise ici pour signaler que ce qui est entre crochet n'est pas toujours prÃ©sent.
+Exemple :
+L'unitÃ© de correction de la partie 1 de l'Ã©lÃ¨ve "Toto" est "Toto_Partie1", qui aura pour fils Ã©ventuels
+"Toto_Partie1_Exercice1" et "Toto_Partie1_Exercice2", qui eux-mÃªme auront Ã©ventuellement pour fils 
+"Toto_Partie1_Exercice1_petita" etc jusqu'au plus petit Ã©lÃ©ment. La racine est donc "Toto".
+
+* $udc = UniteDeCorrection::fromData($arrayData) crÃ©e une entrÃ©e sur la BDD et en local Ã  partir d'un 
+ensemble de donnÃ©es ($arrayData). Le format doit Ãªtre le suivant :
 $arrayData = array('id_father'=>'lolfather',
 		'id'=>'lolme',
 		'id_sons'=>'lol_son1,lol_son2,lol_son3',
@@ -30,35 +53,35 @@ $arrayData = array('id_father'=>'lolfather',
 		'date_modif'=>'23-01-2016 15:09:12',
 		'id_corrector'=>'lolcorrector');
 * POUR LA SECRETAIRE : $udc = UniteDeCorrection::fromData($arrayData,true) (notez l'importance du true !!)
- où le format de $arrayData est :
+oÃ¹ le format de $arrayData est :
 $arrayData = array(
-		'id'=>'id de l'Ã©lÃ¨ve',
+		'id'=>'id de l'ÃƒÂ©lÃƒÂ¨ve',
 		'annee'=>'2016',
 		'concours'=>'Mines-Ponts,
 		'filiere'=>'MP',
 		'epreuve'=>'Maths1');
-* $udc = UniteDeCorrection::getUnitById('id à trouver') va chercher l'unité sur la BDD en fonction
+* $udc = UniteDeCorrection::getUnitById('id Ã  trouver') va chercher l'unitÃ© sur la BDD en fonction
 de son ID.
  
 # AJOUT DE FILS
 
-Déprécié. En réalité, le constructeur fait tout le travail lui-même en fonction de l'ID de l'élève
-et du barême.
+DÃ©prÃ©ciÃ©. En rÃ©alitÃ©, le constructeur fait tout le travail lui-mÃªme en fonction de l'ID de l'Ã©lÃ¨ve
+et du barÃªme.
 
 # UPLOAD/DOWNLOAD
 
-Pour récupérer une UdC sur le serveur et en créer une instance locale, il suffit d'utiliser la fonction 
+Pour rÃ©cupÃ©rer une UdC sur le serveur et en crÃ©er une instance locale, il suffit d'utiliser la fonction 
 getUnitById().
-Une fois les différentes modifications apportées, on utilise alors la fonction "upload()" qui crée une
-instance de l'UdC sur le serveur. Si elle existe déjà, upload() met à jour l'entrée.
+Une fois les diffÃ©rentes modifications apportÃ©es, on utilise alors la fonction "upload()" qui crÃ©e une
+instance de l'UdC sur le serveur. Si elle existe dÃ©jÃ , upload() met Ã  jour l'entrÃ©e.
 
 # DESTRUCTION
 
-On peut détruire une UdC ainsi que tous ses fils sur le serveur en appelant la fonction deleteAll().
+On peut dÃ©truire une UdC ainsi que tous ses fils sur le serveur en appelant la fonction deleteAll().
 
 # EXEMPLE D'UTILISATION 
 
-Création et upload :
+CrÃ©ation et upload :
 
 $udc = UniteDeCorrection::fromId('nouvelEleve');
 $udc->setNote(12);
@@ -72,6 +95,6 @@ $arrayData['data']=$_GET['data'];
 ...
 
 $udc = UniteDeCorrection::fromData($arrayData);
-	A noter que dans le cas présent, on n'a rien modifié à l'objet. Il est donc inutile (mais pas
-	une erreur pour autant) d'appeler la méthode upload(), qui est appelée au moment de la création
+	A noter que dans le cas prÃ©sent, on n'a rien modifiÃ© Ã  l'objet. Il est donc inutile (mais pas
+	une erreur pour autant) d'appeler la mÃ©thode upload(), qui est appelÃ©e au moment de la crÃ©ation
 	de l'objet.
