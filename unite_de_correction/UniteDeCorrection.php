@@ -213,6 +213,12 @@ class UniteDeCorrection
 	public static function generateBareme($struct) // Génère un barême à partir d'un texte comme celui donné dans "test_bareme.txt"
 	{
 		$toGen = explode("\n",$struct); // tableau contenant les différents ppe
+		
+		// Racine du barème :
+		$udc = new UniteDeCorrection();
+		$udc->setId("0");
+		$udc->upload();
+		
 		//$togen = ['Maths1_Partie1_Exercice1_10','Maths1_Partie1_Exercice2_5',...] par ex
 		foreach($toGen as $cur)
 		{
@@ -225,24 +231,25 @@ class UniteDeCorrection
 				{
 					$udc = new UniteDeCorrection();
 					$udc->setId($toCheck);
-					if($i>1) // On n'est pas la racine du barême
-					{
-						$idPere = implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de vérifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre père c'est Maths1_Epreuve1.
-						$udc->setIdPere($idPere); // Le  père est ajouté comme notre père
+					
+					$idPere = $i == 1 ? "0" : implode('_',array_slice($tmp,1,$i-1));// Pourquoi $i-1 ? Car on est en train de vérifier si Maths1_Epreuve1_Exercice1 existe par ex. Alors notre père c'est Maths1_Epreuve1.
+					$udc->setIdPere($idPere); // Le  père est ajouté comme notre père
 							
-						$pere = UniteDeCorrection::getUnitById($idPere);
-						$pere->addSon($toCheck); // On s'ajoute à la liste des fils de notre père
-						$pere->upload();// On upload dans la BDD
-					}
+					$pere = UniteDeCorrection::getUnitById($idPere);
+					$pere->addSon($toCheck); // On s'ajoute à la liste des fils de notre père
+					$pere->upload();// On upload dans la BDD
+					
 						
 					if($i == count($tmp)-2) // On en est au plus petit élément d'UdC
 					{
-						$note = intval(reset(array_slice($tmp,$i+1,$i+1)));
+						$note = array_slice($tmp,$i+1,$i+1);
+						$note = intval(reset($note));
 						echo "La note sera ".$note."<br>";
 						$udc->setNote($note);
 						$udc->setNoteMax($note); // Pourquoi $i+1 ? Car ici, si la taille de $tmp est n, $i = n-2. Donc le dernier élément (la note) est $i+1=n-1
 					}
 					$udc->upload();// On upload dans la BDD
+					
 				}
 			}
 		}
