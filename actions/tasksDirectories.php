@@ -14,7 +14,7 @@ $tasksDirectories = array(
   'Statistiques' => 'chairman/statschairman.php',
   'Stats Correcteur' => 'correcteur/bandeau_stats_correcteur.php',
   'Assignation des copies' => 'chairman/assignationcopies.php',
-  'Ajouter concours' => 'administrateur/ajout_concours.php',
+  'Ajouter concours' => 'administrateur/formulaire_ajout_table.php',
   'register' => '../users/registration.php',
   'logout' => '../users/logout.php'
   );

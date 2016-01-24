@@ -11,5 +11,6 @@ while($line = fgets($tableFile)){
 
 }
 
+header('Location: ../interface_web/index.php')
 
 ?>
