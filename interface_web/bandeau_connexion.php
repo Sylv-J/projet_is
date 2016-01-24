@@ -8,8 +8,9 @@
             <div class="well">
 
               <?php
+                include_once("../users/login.php");
                 $confirmationPage="interface_web/index.php";
-                include("../users/login.php");
+
               ?>
 
             </div>

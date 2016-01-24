@@ -43,7 +43,7 @@ If it does, then it's a registered user and we can authenticate them*/
 	}
   if($confirmationPage=="users/login.php") //lancé indépendamment
   {
-	echo "Connecté avec succés";
+    header("Location: ../interface_web/index.php");
   }
   else  //lancé depuis l'interface, on doit l'actualiser
   {
