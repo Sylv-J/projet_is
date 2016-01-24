@@ -19,7 +19,7 @@ class UniteDeCorrection
 	private $_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
 	private $_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
 	private $_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
-	private $_dateModif = "";// La date, en format DD-MM-YYYY hh:mm:ss, de dernière modification
+	private $_dateModif = false;// a-t-on corrig�/modifi� l'UdC ?
 	private $_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
 	
 	// Non uploadés
@@ -97,7 +97,7 @@ class UniteDeCorrection
 		$this->_niveau = 0; // Les niveaux s'incrémentent à mesure que l'unité de correction est basse dans l'arbre
 		$this->_note = -1; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
 		$this->_noteMax = 0; // La note maximale que l'on peut obtenir (définie par le barême)
-		$this->_dateModif = "";
+		$this->_dateModif = false;
 		$this->_idCorrecteur = "null"; // Ne sera égal à un ID que pour les plus petites udc
 		
 	}
@@ -161,7 +161,7 @@ class UniteDeCorrection
 			$res->_niveau = $arrayData['level'];
 			$res->_note = $arrayData['mark']; // La note attribuée suite à la correction -1 si l'unitée n'est pas corrigée
 			$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (définie par le barême)
-			$res->_dateModif = $arrayData['date_modif'];// La date, en format DD/MM/YYYY h:m:s, de dernière modification
+			$res->_dateModif = $arrayData['date_modif'];
 			$res->_idCorrecteur = $arrayData['id_corrector'];
 		}
 		$res->_id = $arrayData['id'];
@@ -403,14 +403,17 @@ class UniteDeCorrection
 		$req->bindValue(':mark',$this->_note,PDO::PARAM_INT);
 		$req->bindValue(':max_mark',$this->_noteMax,PDO::PARAM_INT);
 		$req->bindValue(':id_corrector',$this->_idCorrecteur,PDO::PARAM_STR);
-		$req->bindValue(':date_modif',$this->_dateModif,PDO::PARAM_STR);
+		if($this->_dateModif || !$rep)
+			$req->bindValue(':date_modif',date('Y-m-d H:i:s'),PDO::PARAM_STR);
+		else
+			$req->bindValue(':date_modif',$rep['date_modif'],PDO::PARAM_STR);
 		
 		$req->execute();
 	}
 	
 	public function updateDate()
 	{
-		$_dateModif = date('dd-mm-YYYY h:i:s');
+		$_dateModif = true;
 	}
 	
 	public function newSon()// DEPRECATED // Créer immédiatement un fils vide
