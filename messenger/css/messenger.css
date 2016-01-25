@@ -42,3 +42,7 @@ td {
   .msgbox div{
     padding-left: 7px;
   }
+
+  .msgbox form {
+      display: inline;
+  }
