@@ -1,7 +1,7 @@
 <div class ="jumbotron">
     <div class = "container">
       <?php
-      include("../../paquets_copies/paquets_copies.php");
+      include("../paquets_copies/paquets_copies.php");
       ?>
       <h2> Assignation Copies </h2>
 
@@ -37,13 +37,14 @@
           <tbody>
             
             <?php 
-            //include("../../paquets_copies/paquets_copies.php");
-            //$list = listCorrectors();
+            $list = listCorrectors();
             
-            //for ($i=0;$i <= sizeof($list);$i++){
-              //$corrector = $list[$i];
+            for ($i=0;$i <= sizeof($list);$i++){
+              $corrector = $list[$i];
               
-              //echo "<tr> <td>$corrector</td> <td></td> <td></td></tr>"; } ?>
+              echo "<tr> <td>$corrector</td> <td></td> <td></td></tr>"; } 
+            ?>
+            
           </tbody>
 
         </table>
