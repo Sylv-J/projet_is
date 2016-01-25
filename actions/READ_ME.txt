@@ -1,4 +1,5 @@
-﻿#AJOUTER UNE ACTION 
+25/01/2016 (Bao) : 
+#AJOUTER UNE ACTION 
   - Dans le fichier "action.php" : ajouter l'action désirée dans la liste des actions associeés à chaque rôle.
       Ex : pour ajouter "Parler" à "secrétaire" : 'secretaire' => array('Scanner', 'Parler')
 
