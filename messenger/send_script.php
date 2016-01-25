@@ -44,6 +44,7 @@ if(isset($_POST["submit"])){
     });
     </script>
     <?php
+    exit();
   }
   else{
     // On enlève les eventuels espaces entrés par l'utilisateur lors de la
@@ -109,6 +110,7 @@ if(isset($_POST["submit"])){
     });
     </script>
     <?php
+    exit();
   }
   if($check){
     // On commence par insérer le message dans la table dédiée à contenir les messages
@@ -121,6 +123,7 @@ if(isset($_POST["submit"])){
     if(!$res){
       $check = 0;
       $error_msg = "L'envoi du message a échoué. Merci de Réessayer.";
+      exit();
       ?>
       <script>
       $( document ).ready(function() {
@@ -137,8 +140,8 @@ if(isset($_POST["submit"])){
         $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
         $res = $req->execute(array(
           'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_cc,
-          'dest'=>$msg_cc_array[$i],
+          'mto' =>$msg_cc_array[$i],
+          'dest'=>$msg_cc,
           'id_msg'=>$msg_id,
         ));
         // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur
@@ -159,8 +162,8 @@ if(isset($_POST["submit"])){
         $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
         $res = $req->execute(array(
           'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_dests.$msg_cc,
-          'dest'=>$msg_dests_array[$i],
+          'mto' =>$msg_dests_array[$i],
+          'dest'=>$msg_dests.';'.$msg_cc,
           'id_msg'=>$msg_id,
         ));
         // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur
@@ -177,15 +180,15 @@ if(isset($_POST["submit"])){
         }
       }
     }
+    // Si on arrive à ce point c'est que les messages ce sont bien envoyés
+    // Alors on fait un petit message pour notre utilisateur
+    ?>
+    <script>
+    $( document ).ready(function() {
+      window.parent.$.notify("Votre message a été bien envoyé !", "success");
+    });
+    </script>
+    <?php
   }
-  // Si on arrive à ce point c'est que les messages ce sont bien envoyés
-  // Alors on fait un petit message pour notre utilisateur
-  ?>
-  <script>
-  $( document ).ready(function() {
-    window.parent.$.notify("Votre message a été bien envoyé !", "success");
-  });
-  </script>
-  <?php
 }
 ?>

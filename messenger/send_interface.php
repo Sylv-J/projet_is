@@ -36,15 +36,13 @@ if(!isset($_SESSION["id"])){
 
     <!-- Alignement des cases sur la page-->
     <style type="text/css">
-    form  { display: table;      }
-    p     { display: table-row;  }
-    label { display: table-cell; }
-    input { display: table-cell; }
+    <?php include_once("css/messenger.css") ;?>
     </style>
 
   </head>
   <body>
-    <form action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
+	</br>
+    <form class="sendbox" action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
       <p>
         <label for="msg_object">Objet : </label>
         <input id="msg_object" type="text" cols="50" name="msg_object"><br/>
@@ -62,7 +60,7 @@ if(!isset($_SESSION["id"])){
     </br>
       <p>
         <label for="msg_content">Message : </label><br/>
-        <textarea id="msg_content" rows="10" cols="50" name="msg_content" onchange="show_button()"> Veuillez entrer votre message dans cette zone texte.</textarea>
+        <textarea id="msg_content" rows="10" cols="50" name="msg_content" onfocus="show_button()"> Veuillez entrer votre message dans cette zone texte.</textarea>
       </p>
       <p>
         <input id ="submit" formmethod="post" name="submit" type="submit" value="Envoyer" disabled=true><br>
@@ -74,8 +72,8 @@ if(!isset($_SESSION["id"])){
       ifrm.setAttribute("name","send_script_frame");
       // les dimensions (ci-dessous) de l'iframe sont mise toutes à 0 pour
       // que cette iframe ne soit pas visible à l'utilisateur
-      ifrm.style.width = "3000px";
-      ifrm.style.height = "500px";
+      ifrm.style.width = "0px";
+      ifrm.style.height = "0px";
       ifrm.style.border = "0";
       // On ajoute cet iframe à la page actuelle.
       document.body.appendChild(ifrm);

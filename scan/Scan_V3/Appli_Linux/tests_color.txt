@@ -1,0 +1,21 @@
+Fore further information, ask Alexis Lartigue.
+
+Color tests : 
+Those tests show the variation of the color when a sheet of paper with a
+yellow point is scanned multiple times with different devices.
+
+
+Original Color ( RGB ) : 255 255 0 (yellow)
+Scanner number one : 
+252 220 0
+252 221 0
+252 220 1
+254 223 1
+Scanner number two : 
+248 219 1
+253 221 0
+255 219 0
+255 222 0
+254 220 8
+254 222 0
+

@@ -1,0 +1,16 @@
+Fore further information, ask Alexis Lartigue.
+
+Compatibility tests : 
+Those tests states the libraries and types of data that the ScanCopie program
+uses.
+
+V3 : Computer that has no QT no OpenCV	-> Doesn't work
+V3 : Computer that has QT but no OpenCV -> Doesn't work
+V3 : QT and Open CV -> png 		-> It works
+V3 : QT and Open CV -> jpg/jpeg 	-> Doesn't work
+
+V3.1 : Computer that has no QT no OpenCV  -> Doesn't work
+V3.1 : Computer that has QT but no OpenCV -> Doesn't work
+V3.1 : QT and Open CV -> png 		  -> It works
+V3.1 : QT and Open CV -> jpg/jpeg 	  -> It works
+
