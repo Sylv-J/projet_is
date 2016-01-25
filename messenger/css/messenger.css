@@ -1,3 +1,7 @@
+form  { display: table;      }
+p     { display: table-row;  }
+label { display: table-cell; padding-right: 20px;}
+input { display: table-cell;}
 
 .mailbox{
   border-collapse: collapse;
@@ -19,11 +23,22 @@
 .msgbox{
   padding-top: 30px;
 }
-
-form  { display: table;      }
-p     { display: table-row;  }
-label { display: table-cell; padding-right: 20px;}
-input { display: table-cell;}
+td {
+  column-span: all;
+}
 .msgbox input { display: table-cell;
+  border: 0;
+  background-color: #e8e8e8;
+  width:100%
+}
+.msgbox textarea{
+  width:100%;
   border: 0;}
-.msgbox textarea{ border: 0;}
+
+  .msgbox button{
+    padding-right: 10px;
+  }
+
+  .msgbox div{
+    padding-left: 7px;
+  }
