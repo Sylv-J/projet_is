@@ -4,8 +4,6 @@ $db = masterDB::getDB();
 
 
 $nomconcours = $_POST['nom_concours'];
-$annee = $_POST['annee'];
-$filiere = $_POST['filiere'];
 $nomtableusers = $_POST['eleve'];
 $tab = preg_split("/[\n]/",$nomtableusers); // convertit les données rentrées en une table triée par ligne.
 
@@ -22,7 +20,7 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 	
 	$ligne = $tab[$i];
 	$ligne = trim($ligne);
-	$path = "../../$annee/$nomconcours/$filiere/";
+	$path = "../../$nomconcours/";
 	for($k = 0; $k<strlen($tab[$i]) ; $k++){  // on parcourt chaque caractère de notre ligne
 		if($tab[$i][$k] == "@"){					
 			$flag = 1;
