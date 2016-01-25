@@ -8,7 +8,7 @@
 			<h2> Moyenne globale </h2>
 			
 			<p>Veuillez indiquer le nom de l'exercice : </p>
-					<form method="post" action = "../interface_web/index.php" role="form">
+					<form method="post" action = "index.php" role="form">
 
                         <div class="form-group">
                             <input type="number" placeholder="No de l'exercice" name="id_exo" class="form-control" required>
@@ -28,9 +28,8 @@
                         <div class="form-group">
                             <input type="number" placeholder="No de l'exercice" name="id_exo2" class="form-control" required>
                         </div>
-						<div class="form-group">
-                            <input type="number" placeholder="Nb de copies" name="nb_copies" class="form-control" required>
-                        </div>
+						
+						<input type="hidden" name="nb_copies" value="10">
                         <input type="submit" value="Valider" class="btn btn-success">
 						
                     </form>
