@@ -8,7 +8,7 @@ class UniteDeCorrection
 	
 	const TIMEZONE = "Europe/London"; // Date GMT
 	const IDMAX = 2147483646; // 2147483647 = 2^(31) = la taille max d'un int
-	const SEPARATOR = ';';
+	//const SEPARATOR = ";";
 	
 	// ATTRIBUTS
 	
@@ -151,14 +151,15 @@ class UniteDeCorrection
 	}
 	
 	
-	static function fromData($arrayData,$images=false) // RÃ©cupÃ©ration dans la BDD ou depuis un formulaire
+	static function fromData($arrayData,$images=false,$publish = true) // RÃ©cupÃ©ration dans la BDD ou depuis un formulaire
 	{	
 		$res = new UniteDeCorrection();
+		$sep = ";";
 		
 		if(!$images) // Remplissage "à la main"
 		{
 			$res->_idPere = $arrayData['id_father'];
-			$res->_idFils = explode(SEPARATOR,$arrayData['id_sons']);
+			$res->_idFils = explode($sep,$arrayData['id_sons']);
 			$res->_niveau = $arrayData['level'];
 			$res->_note = $arrayData['mark']; // La note attribuÃ©e suite Ã  la correction -1 si l'unitÃ©e n'est pas corrigÃ©e
 			$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (dÃ©finie par le barÃªme)
@@ -184,7 +185,7 @@ class UniteDeCorrection
 			
 			$target_dir = '/'.$arrayData['annee'].'/'.$arrayData['concours'].'/'.$arrayData['filiere'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
 			
-			$to_upload = explode(SEPARATOR,$arrayData['path']);
+			$to_upload = explode($sep,$arrayData['path']);
 			foreach($_FILES as $cur)
 			{
 				$target_file = $cur["name"].basename($cur["name"],'.png'); // On remplace 'path/file_nbr.png' par 'file_nbr'
@@ -201,7 +202,7 @@ class UniteDeCorrection
 			}
 		}
 		
-		$res->upload();
+		$publish ? $res->upload() : '';
 		return $res;
 	} 
 	
@@ -305,6 +306,38 @@ class UniteDeCorrection
 		return implode('_',$buff);
 	}
 	
+	public static function getAllSmallest($id = '') // Récupère toutes les unités de correction qu'il faut donc assigner (ie utile pour le chairman par ex)
+	{
+		$allSmallest = array();
+		
+		global $db;
+		if($id == '')
+		{
+			$res = $db->prepare("SELECT * FROM units WHERE (id_sons ='' OR id_sons is null)");  // On récupère les ppe
+		}
+		else
+		{
+			$res = $db->prepare("SELECT * FROM units WHERE (id_sons ='' OR id_sons is null) AND (id REGEXP :id_#)");
+			$res->bindValue(":id",$id,PDO::PARAM_STR);
+		}
+		
+		$res->execute();
+		$rep = $res->fetch();
+		
+		while($rep != null && $rep != false)
+		{
+			$buff = UniteDeCorrection::fromData($rep,false,false);
+			if($buff->getRootId() != '0') // Pas un barême
+			{
+				array_push($allSmallest,$buff);
+			}
+			
+			$rep = $res->fetch();
+		}
+		
+		return $allSmallest;
+	}
+	
 	public function getImage() // Récupère l'image correspondant à l'unité. Si elle n'existe pas, on notifie l'utilisateur par une erreur.
 	{
 		
@@ -345,9 +378,9 @@ class UniteDeCorrection
 	
 	public function getRootId() // RÃ©cupÃ¨re l'ID du premier des pÃ¨res
 	{
-		if($_idPere == -1)
+		if($this->_idPere == "null")
 			return $this->_id;
-		$pere = UniteDeCorrection::getUnitById($_idPere);
+		$pere = UniteDeCorrection::getUnitById($this->_idPere);
 		return $pere->getRootId();
 	}
 	
@@ -373,6 +406,7 @@ class UniteDeCorrection
 	public function upload() // Fonction de mise Ã  jour sur le serveur de l'UdC, peut Ãªtre appelÃ©e aussi si l'entrÃ©e n'existe pas encore
 	{
 		global $db;
+		$sep = ";";
 		$res = $db->prepare("SELECT * FROM units WHERE id = ?");
 		$res->execute(array($this->_id));
 		
@@ -401,7 +435,7 @@ class UniteDeCorrection
 		
 		$req->bindValue(':id',$this->_id,PDO::PARAM_STR);
 		$req->bindValue(':id_father',$this->_idPere,PDO::PARAM_STR);
-		$req->bindValue(':id_sons',implode(SEPARATOR,$this->_idFils),PDO::PARAM_STR);
+		$req->bindValue(':id_sons',implode($sep,$this->_idFils),PDO::PARAM_STR);
 		$req->bindValue(':data',$this->_data,PDO::PARAM_STR);
 		$req->bindValue(':level',$this->_niveau,PDO::PARAM_INT);
 		$req->bindValue(':mark',$this->_note,PDO::PARAM_INT);
