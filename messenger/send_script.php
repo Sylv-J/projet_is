@@ -3,6 +3,29 @@
 include_once("../master_db.php");
 $db = masterDB::getDB();
 ?>
+<?php
+function parseMailingList($destArray){
+  $newArray = array('');
+
+  $nb_dest = count($destArray);
+  for($i=0;$i<$nb_dest;$i++){
+    switch ($destArray[$i]) {
+      case 'chairman':
+      // TODO : function to fetch chairman from database
+      array_push($newArray,$destArray[$i]);
+      break;
+      case 'secretaire':
+      // TODO : function to fetch secretaire from database
+      array_push($newArray,$destArray[$i]);
+      break;
+      default:
+      array_push($newArray,$destArray[$i]);
+      break;
+    }
+  }
+  return $newArray;
+}
+?>
 <!DOCTYPE html>
 <html>
 <body>
@@ -33,8 +56,8 @@ if(isset($_POST["submit"])){
     </script>
     <?php
   }
-  $msg_dests = $_POST["msg_dests"];
   // Vérification si l'utilisateur a saisi au moins un destinataire dans le champs dédié
+  $msg_dests=$_POST["msg_dests"];
   if(strlen($msg_dests)==0){;
     $check = 0;
     ?>
@@ -70,34 +93,6 @@ if(isset($_POST["submit"])){
       }
     }
   }
-
-  $msg_cc =$_POST["msg_cc"];
-  // Si il y a des destinatiares en CC (Copie Carbone) on vérifie que ceux-ci
-  // sont bien dans notre base de données
-  if(strlen($msg_cc)!=0){
-    $msg_cc = str_replace(' ', '', $msg_cc);
-    $msg_cc_array = explode(";", $msg_cc);
-    $nb_cc = count($msg_cc_array);
-    // On parcourt la liste des destinatiares en CC
-    for($i=0;$i<$nb_cc;$i++){
-      $req = $db->prepare('SELECT username FROM `users` WHERE username=?');
-      $req->execute(array($msg_cc_array[$i]));
-      if(!$req->fetch()){
-        $error_msg = "L'utilisateur '".$msg_cc_array[$i]."' est introuvable";
-        $check = 0;
-        ?>
-        <script>
-        $( document ).ready(function() {
-          window.parent.$.notify("<?php echo $error_msg; ?>", "error");
-        });
-        </script>
-        <?php
-      }
-    }
-}else{
-    $nb_cc = 0;
-}
-
 
   $msg_content = $_POST["msg_content"];
   // Vérification si le message et non vide
@@ -135,41 +130,41 @@ if(isset($_POST["submit"])){
     else{
       // On récupère l'indice du message qu'on vient d'insérer dans la table 'msg'
       $msg_id = $db->lastInsertId();
-      // Boucle pour l'envoi aux utilisateurs en CC (Copie Carbone)
-      for($i=0;$i<$nb_cc;$i++){
-        $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
-        $res = $req->execute(array(
-          'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_cc_array[$i],
-          'dest'=>$msg_cc,
-          'id_msg'=>$msg_id,
-        ));
-        // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur
-        if(!$res){
-          $check = 0;
-          $error_msg = "Une erreur est survenue lors de l'envoi à".$msg_cc_array[$i].". Merci de Réessayer.";
-          ?>
-          <script>
-          $( document ).ready(function() {
-            window.parent.$.notify("<?php echo $error_msg;?>", "error");
-          });
-          </script>
-          <?php
-        }
-      }
-      // Boucle pour l'envoi aux utilisateurs en CCi (Copie Carbone invisible)
+      $destsArray = parseMailingList($msg_dests_array);
+      $nb_dest=count($destsArray);
+      // Boucle pour l'envoi aux utilisateurs
       for($i=0;$i<$nb_dest;$i++){
         $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
-        $res = $req->execute(array(
-          'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_dests_array[$i],
-          'dest'=>$msg_dests.';'.$msg_cc,
-          'id_msg'=>$msg_id,
-        ));
+        switch ($_POST["usergroup"]) {
+          case 'chairman':
+            $res = $req->execute(array(
+              'mfrom' => "chairman" ,
+              'mto' =>$destsArray[$i],
+              'dest'=>$msg_dests,
+              'id_msg'=>$msg_id,
+            ));
+            break;
+          case 'secretaire':
+            $res = $req->execute(array(
+              'mfrom' => "secretaire" ,
+              'mto' =>$destsArray[$i],
+              'dest'=>$msg_dests,
+              'id_msg'=>$msg_id,
+            ));
+            break;
+          default:
+            $res = $req->execute(array(
+              'mfrom' => $_SESSION["username"] ,
+              'mto' =>$destsArray[$i],
+              'dest'=>$msg_dests,
+              'id_msg'=>$msg_id,
+            ));
+            break;
+        }
         // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur
         if(!$res){
           $check = 0;
-          $error_msg = "Une erreur est survenue lors de l'envoi à".$msg_dests_array[$i].". Merci de Réessayer.";
+          $error_msg = "Une erreur est survenue lors de l'envoi du message. Merci de Réessayer.";
           ?>
           <script>
           $( document ).ready(function() {

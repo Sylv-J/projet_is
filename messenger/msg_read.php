@@ -41,7 +41,7 @@
 					</div>
 						<table>
 							<tr>
-								<td colspan="2">
+								<td>
 									<textarea  rows="10" cols="100" style="width:100%" name="msg_content" readonly="readonly" style="" > <?php echo $data["body"] ?></textarea>
 								</td>
 							</tr>
@@ -56,7 +56,7 @@
 									<form action="../interface_web/index.php" method="post">
 										<input type="hidden" name="sendbox" value="sendbox">
 										<input type="hidden" name="msg_object_res" value="<?php echo("Re : ".$data["object"]); ?>">
-										<input type="hidden" name="msg_dests_res" value="<?php echo($d2["mfrom"].";".$d2["dest"]); ?>">
+										<input type="hidden" name="msg_dests_res" value="<?php echo($d2["dest"]); ?>">
 										<button name="respondToAll" type="submit" style="padding-left:5px">Répondre à tous</button>
 									</form>
 									</td>

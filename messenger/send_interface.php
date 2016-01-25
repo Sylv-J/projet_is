@@ -54,17 +54,13 @@ if(!isset($_SESSION["id"])){
       </p>
     </br>
       <p>
-        <label for="msg_cc">CC : </label>
-        <input id="msg_cc" type="text" name="msg_cc"><br/>
-      </p>
-    </br>
-      <p>
         <label for="msg_content">Message : </label><br/>
         <textarea id="msg_content" rows="10" cols="50" name="msg_content" onfocus="show_button()"> Veuillez entrer votre message dans cette zone texte.</textarea>
       </p>
       <p>
         <input id ="submit" formmethod="post" name="submit" type="submit" value="Envoyer" disabled=true><br>
       </p>
+			<input type="hidden" name='usergroup' value="<?php echo $_SESSION['group'];?>">
     </form>
 		<?php
 			if(isset($_POST["msg_object_res"])){
@@ -88,8 +84,8 @@ if(!isset($_SESSION["id"])){
       ifrm.setAttribute("name","send_script_frame");
       // les dimensions (ci-dessous) de l'iframe sont mise toutes à 0 pour
       // que cette iframe ne soit pas visible à l'utilisateur
-      ifrm.style.width = "0px";
-      ifrm.style.height = "0px";
+      ifrm.style.width = "3000px";
+      ifrm.style.height = "300px";
       ifrm.style.border = "0";
       // On ajoute cet iframe à la page actuelle.
       document.body.appendChild(ifrm);
