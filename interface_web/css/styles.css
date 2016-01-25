@@ -2,3 +2,9 @@ form  { display: table;      }
 p     { display: table-row;  }
 label { display: table-cell; }
 input { display: table-cell; }
+div.spacer
+{
+    font-size: 0; 
+    height: 10px;
+    line-height: 0;
+}
