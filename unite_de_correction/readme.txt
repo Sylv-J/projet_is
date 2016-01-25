@@ -102,3 +102,12 @@ $udc = UniteDeCorrection::fromData($arrayData);
 	A noter que dans le cas présent, on n'a rien modifié à l'objet. Il est donc inutile (mais pas
 	une erreur pour autant) d'appeler la méthode upload(), qui est appelée au moment de la création
 	de l'objet.
+	
+# Les tests
+
+Les tests se font à l'aide du fichier Test_UdC.php.
+Par défaut, le fichier ne conduit aucun test car tout est en commentaire.
+Il faut aller dans le fichier et enlever les commentaires (/* = début, */ = fin) du bloc correspondant pour le tester.
+
+Le premier bloc crée une unité de correction à partir d'un tableau (fonction fromData).
+Le deuxième bloc teste la génération du barême, la création d'une unité de correction avec ID, et la récupération d'une unité de correction à partir de son ID
