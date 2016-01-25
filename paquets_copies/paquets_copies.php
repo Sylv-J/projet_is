@@ -287,4 +287,25 @@ echo implode(' ', $test);
 //////////////////////////////////////
 */
 
+// tableau des correcteurs ayant au moins une unité assignée
+function listCorrectors(){
+  $db = masterDB::getDB();
+  $result = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND current_units IS NOT NULL") ;
+  $res = array();
+  while($correctors = $result->fetch()){
+    $correctors = array_unique($correctors);
+    foreach($correctors as $corrector){
+      array_push($res, $corrector);
+    }
+  }
+  return $res;
+}
+
+/*
+////////TEST///////////////////////////////////
+$liste_correcteurs = listCorrectors();
+echo implode($liste_correcteurs);
+///////////////////////////////////////////////
+*/
+
 ?>
