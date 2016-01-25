@@ -1,6 +1,7 @@
 <?php
 /// tests en cours (pour le moment, tests locaux)
 include_once("../master_db.php");
+$separator = ';';
 
 function randomCorrector($correctors){
   $rand = rand(0,sizeof($correctors)-1);
@@ -50,25 +51,27 @@ echo implode(' ', $test1);
 
 function assignSons($localCorrector, $id_unit) {
   $db = masterDB::getDB();
-	$result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
-	while($sons = $result->fetch()){
+  global $separator;
+  
+  $result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
+  while($sons = $result->fetch()){
     foreach(array_unique($sons) as $son) {
-      if(strpos($son,'|')){
-        $list = explode('|', $son);
+      if(strpos($son,$separator)){
+        $list = explode($separator, $son);
         foreach($list as $element){
-        	$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
+          $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
           $dateModif = date('Y/m/d h:i:s');
           $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$element.'"');
         }
 
       } else {
 
-			// pas besoin de concaténer pour les fils : un seul correcteur a priori
-			$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
+      // pas besoin de concaténer pour les fils : un seul correcteur a priori
+      $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$son.'"');
       }
-	  }
+    }
   }
 }
 
@@ -81,6 +84,8 @@ assignSons(2, "test1");
 
 function assignFathers($localCorrector, $id_unit) {
 	$db = masterDB::getDB();
+  global $separator;
+  
 	$result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
 	while($fathers = $result->fetch()){
     foreach(array_unique($fathers) as $father) {
@@ -92,13 +97,13 @@ function assignFathers($localCorrector, $id_unit) {
       }
       // Remarque : il faut changer le type du paramètre id_corrector en VARCHAR(255) (car possibilité de plusieurs correcteurs)
       // ici, on suppose que les id des correcteurs sont séparés par le caractère '|'
-      if(isset($list)&&strpos($list,'|')){
-        $correctors = explode('|', $list);
+      if(isset($list)&&strpos($list,$separator)){
+        $correctors = explode($separator, $list);
         array_push($correctors, $localCorrector);
         $correctors = array_unique($correctors);
-        $res = implode('|',$correctors);
+        $res = implode($separator,$correctors);
       } else if(isset($list)&&$list!=NULL&&$list!=$localCorrector){
-        $res = $list."|".$localCorrector;
+        $res = $list.$separator.$localCorrector;
       } else {
         $res = $localCorrector;
       }
@@ -136,23 +141,45 @@ echo findFather('test3');
 
 function updateDB($id_unit, $localCorrector) {
 	$db = masterDB::getDB();
+  global $separator;
+  
   $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$id_unit.'"');
   $dateModif = date('Y/m/d h:i:s');
   $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$id_unit.'"');
-  $db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
+  
+  
+  // mettre à jour la liste des unités assignées au correcteur
+  $req = $db->query('SELECT current_units FROM users WHERE id = "'.$localCorrector.'"');
+  while($unit = $req->fetch()){
+    foreach(array_unique($unit) as $assigned_unit) {
+      $list = $assigned_unit;
+    }
+  }
+  if(isset($list)&&strpos($list,$separator)){
+    $units = explode($separator, $list);
+    array_push($id_unit, $localCorrector);
+    $units = array_unique($units);
+    $res = implode($separator,$units);
+  }else{
+    $res =  $id_unit;
+  }
+  $db->query('UPDATE users SET current_units = "'.$res.'" WHERE id="'.$localCorrector.'"');
+  
+  //$db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
+
 
   // appliquer les changements aux fils
-	assignSons($localCorrector, $id_unit);
+  assignSons($localCorrector, $id_unit);
 
   // appliquer les changements au père et au père du père etc... jusqu'à ce qu'on arrive au plus au niveau (plus de père)
   $unit = $id_unit;
-  //$father = $db->query('SELECT id_father FROM units WHERE id = "'.$unit.'"') -> fetch();
-  //$father = array_unique($father);
-  //$father = implode($father);
-  //do{
-  //  assignFathers($localCorrector, $unit);
-  //  $unit = findFather($unit);
-  //} while ($unit);
+  $father = $db->query('SELECT id_father FROM units WHERE id = "'.$unit.'"') -> fetch();
+  $father = array_unique($father);
+  $father = implode($father);
+  do{
+    assignFathers($localCorrector, $unit);
+    $unit = findFather($unit);
+  } while ($unit);
 }
 
 /*
@@ -173,6 +200,8 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
+  // ici, on suppose que le nom de l'épreuve est contenu quelque part dans user_group
+  // Par exemple, 'CorrectorMaths' ou 'CorrectorPhysics' (différents types de correcteurs pour différentes matières)
   $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$unitType}%'");
   $list = array();
   while($correctors = $res->fetch()){
@@ -181,21 +210,22 @@ function assignUnits($unitType) {
 
   while(isset($listUNA[0])){
       $localCorrector = randomCorrector($list);
-      echo $listUNA[0].' :'.$localCorrector;
+      //////TEST//////////////////////////
+      //echo $listUNA[0].' :'.$localCorrector;
       updateDB($listUNA[0], $localCorrector);
       $listUNA = getUnitsUnassigned($unitType);
     }
 }
 
-/*
+
 ///////////TEST////////////////////////////
 assignUnits('Maths');
 //////////////////////////////////////////
-*/
+
 
 function punctualAssignment($id_corrector, $unitType) {
 	$db = masterDB::getDB();
-  $req = $db->query('SELECT id FROM units WHERE id_corrector IS NULL');
+  $req = $db->query("SELECT id FROM units WHERE id_corrector IS NULL AND id LIKE '%{$unitType}%'");
   $list = array();
 	while($donnees = $req->fetch()){
     array_push($list, $donnees[0]);
