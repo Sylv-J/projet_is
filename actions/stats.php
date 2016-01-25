@@ -7,7 +7,6 @@
 			<?php
 			//Connection à la db
 			include_once("../master_db.php");
-
 			$db = masterDB::getDB();
 			if(!isset($_SESSION)){session_start();}
 
@@ -44,7 +43,7 @@
 			function MoyenneGlobale($nom_exo){
 				$db = masterDB::getDB();
 				$req = $db->prepare("SELECT mark FROM units WHERE id_father = $nom_exo");
-				$req->execute(array($_SESSION["id"]));
+				$req->execute();
 				
 				$res = $req->fetch();
 				$compteur = 0;
@@ -66,25 +65,25 @@
 			}
 			function MoyenneTresGlobale(){
 				$db = masterDB::getDB();
-				$req = $db->prepare("SELECT id_corrector FROM units");
-				$req->execute(array($_SESSION["id"]));
+				$req = $db->prepare("SELECT mark FROM units");
+				$req->execute();
 				
 				$compteur = 0;
 				$indice = 0;
 						
 								
 				while($res = $req->fetch()){
-					//echo $res[0];
-					$compteur += MoyenneCorrecteur($res[0]);
+					$compteur += $res[0];
 					$indice += 1 ;
 				}
-				return $compteur / $indice ;
+				if($indice != 0){
+					return $compteur / $indice ;
+				}else{return "pas d'exercice dans la banque de donnees";}
 			}
 			function MoyenneCorrecteur($nom_correcteur){
 				$db = masterDB::getDB();
 				$req = $db->prepare("SELECT mark FROM units WHERE id_corrector = $nom_correcteur");
-				$req->execute(array($_SESSION["id"]));
-				
+				$req->execute();
 				
 				$compteur = 0;
 				$indice = 0;
@@ -107,7 +106,7 @@
 			function MoyenneCorrecteurExo($nom_correcteur, $nom_exo){
 				$db = masterDB::getDB();
 				$req = $db->prepare("SELECT mark FROM units WHERE id_corrector = $nom_correcteur AND id_father = $nom_exo");
-				$req->execute(array($_SESSION["id"]));
+				$req->execute();
 				
 				
 				$compteur = 0;
@@ -167,16 +166,12 @@
 						echo "\n La moyenne globale des correcteurs sur l'exercice " ;
 						echo $_POST["id_exo2"];
 						echo " est de : " ;
-						echo MoyenneGlobale($_POST["id_exo2"]);
-						
-						
-						?> 
+						echo MoyenneGlobale($_POST["id_exo2"]);?> 
 						
 						<?php
 					}
 									
 								?>	
-								
 				<?php 
 				
 				//Création du graph de la moyenne glissante
@@ -191,8 +186,9 @@
 					if (isset($notes)){
 						$moyenneGlissante = [];
 						for ($i = 0; $i < sizeof($notes); $i++) {
+							$sum = 0;
 							if ($i+$_POST["nb_copies"]<=sizeof($notes)){
-								$sum = 0;
+								
 								for ($j = 0; $j <$_POST["nb_copies"]; $j++){
 									$sum += $notes[$i+$j];
 								}
@@ -205,12 +201,12 @@
 					
 				}
 				?>
-				
+								
 				<?php // CHAIRMAN //traitement si moyenne globale correcteur demandée
 					if(isset($_POST["id_correcteur"])){?>
 						
 						<p> <?php
-						echo "Le moyenne globale du correcteur " ;
+						echo "Le moyenne globale de " ;
 						echo $_POST["id_correcteur"];
 						echo " est de : " ;
 						echo MoyenneCorrecteur($_POST["id_correcteur"]);
