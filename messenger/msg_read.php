@@ -30,7 +30,6 @@
 				$d2 = $req->fetch();
 				?>
 				<div class="msgbox">
-					<form>
 						<div>
 						<h3>
 							<?php echo $data["object"]; ?>
@@ -48,12 +47,21 @@
 							</tr>
 							<tr>
 								<td>
-									<button  name="respond" formmethod="post"  type="submit" > Répondre</button>
-									<button name="respondToAll" formmethod="post"  type="submit" style="padding-left:5px">Répondre à tous</button>
+									<form action="../interface_web/index.php" method="post">
+										<input type="hidden" name="sendbox" value="sendbox">
+										<input type="hidden" name="msg_object_res" value=<?php echo("Re : ".$data["object"]); ?>>
+										<input type="hidden" name="msg_dests_res" value=<?php echo($d2["mfrom"]); ?>>
+										<button  name="respond"  type="submit" > Répondre</button>
+									</form>
+									<form>
+										<input type="hidden" name="sendbox" value="sendbox">
+										<input type="hidden" name="msg_object_res" value=<?php echo("Re : ".$data["object"]); ?>>
+										<input type="hidden" name="msg_dests_res" value=<?php echo($d2["mfrom"].";".$d2["dest"]); ?>>
+										<button name="respondToAll" type="submit" style="padding-left:5px">Répondre à tous</button>
+									</form>
 									</td>
 								</tr>
 							</table>
-						</form>
 					</div>
 					<?php }} ?>
 				</div>
