@@ -35,4 +35,23 @@ Test copie 7 (Pastille allongee verticale) : Encore une decoupe.
 Test copie 8 (Fond forme rondes)  : Valide.
 Test copie 9 (Grosse pastille) : Valide.
 Test copie 10 (Pas de pastille) : Valide.
+Test copie 11 (Grosse pastille - Ronds ) : Valide.
+Test copie 12 (pastilles sous fonds de ronds) : Valide.
+Test copie 13 (Header,Copie quadrillées) : Header vert découpé-> Tolérance couleur trop grande.
+Test copie 14 (copie test) : Valide
+Test copie 15 (sans pastille) : Valide
+Test copie 16 (Pastille déformée) : Valide
+Test copie 17 (header, copie quadrillée avec pastille) : Header vert découpé : tolérance couleur trop grande?
+Test copie 18 (Copie type) : Valide
+Test copie 19 (Bulles) : Valide
+Test copie 20 (Disposition horizontale) : Valide
+Test copie 21 (Pastille sur sable) : Séparations dans le sable
+Test copie 22 (Sable seul) : Séparations dans le sable
+Test copie 23 (Multicolore + Sombre jaune) : Pastille sombre jaune Non acceptée (voir si elle devrait l'être)
+Test copie 24 (Trait Diagonal) : Pris en compte : Changer le rapport Hauteur/largeur
+Test copie 25 (Test pierre jaunatre + pastille) : Valide
+Test copie 26 (Test pastills assez sombres) : Seulement quelques endroits pris en compte
+
+
+
 
