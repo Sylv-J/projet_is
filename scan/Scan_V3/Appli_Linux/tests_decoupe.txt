@@ -1,3 +1,5 @@
+Fore further information, ask Alexis Lartigue.
+
 Tests de Decoupe : 
 Le but de ces tests est de garantir le bon fonctionnement du programme ScanCopie, qui est de : 
 Assembler les images donnees (les coller les unes aux autres verticalement)
