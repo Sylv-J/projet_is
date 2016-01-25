@@ -42,7 +42,8 @@
 	{
         if(isset($_POST["unitType"]) and isset($_POST["idcorr"])){
             include_once("../paquets_copies/paquets_copies.php");
-            punctualAssignment($_POST["idcorr"],$_POST["unitType"]);
+            //punctualAssignment($_POST["idcorr"],$_POST["unitType"]);
+            assignUnits($_POST["unitType"]);
             unset($_POST["unitType"]);
             unset($_POST["idcorr"]);
         }
