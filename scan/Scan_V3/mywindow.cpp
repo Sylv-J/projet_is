@@ -82,7 +82,7 @@ void MyWindow::chooseImages()
 
 {
 
-    filenames = QFileDialog::getOpenFileNames(this, "Choix des images", QString(), "Images (*.png)");
+    filenames = QFileDialog::getOpenFileNames(this, "Choix des images", QString(), "Images (*.png *.jpg *.bmp *.tif *.gif *.pct *.jpeg)");
 
     if(filenames.isEmpty())
     {
@@ -101,7 +101,7 @@ void MyWindow::chooseImages()
     QSize currentImageSize = QSize();
     for(int i = 0; i < filenames.size(); ++i)
     {
-        QImage currentImage(filenames.at(i), FORMAT);
+        QImage currentImage(filenames.at(i));
 
         if(currentImage.isNull())
         {
