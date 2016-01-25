@@ -17,20 +17,27 @@ $requests = array(
 $req = $db->prepare($requests[$box]);
 $req->execute(array($_SESSION["username"]));
 ?>
-
+<style>
+	<?php include_once("css/messenger.css") ;?>
+</style>
 <h1><?php echo($names[$box]); ?></h1>
-<table id="mailbox" style="width:50%">
+<table class="mailbox" style="width:60%">
   <tr>
-    <th><?php echo($box = "inbox" ? "De:" : "À:"); ?></th>
-    <th>Object</th>
-    <th>Date</th>
+    <th ><?php echo($box = "inbox" ? "De" : "À:"); ?></th>
+    <th >Objet</th>
+    <th >Date</th>
   </tr>
   <?php if($data = $req->fetch()){
     do{?>
-    <tr onclick="location.href='../messenger/msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'">
-      <td><?php echo $data["c1"];  ?></td>
-      <td><?php  echo $data["obj"]; ?></td>
-      <td><?php  echo $data["dated"]; ?></td>
+			<form id=<?php echo($data["mid"].$data["lid"]); ?> action="../interface_web/index.php" method="post">
+				<input type="hidden" name="msg_read" value="msg_read">
+				<input type="hidden" name="mid" value=<?php echo($data["mid"]); ?>>
+				<input type="hidden" name="lid" value= <?php echo($data["lid"]); ?>>
+			</form>
+    <tr onclick="document.getElementById(<?php echo($data["mid"].$data["lid"]); ?>).submit()" onmouseover="style='background-color:#3498db'" onmouseout="style='background-color=#a0f9f9'">
+      <td ><?php echo $data["c1"];  ?></td>
+      <td ><?php  echo $data["obj"]; ?></td>
+      <td ><?php  echo $data["dated"]; ?></td>
     </tr>
   <?php }while($data = $req->fetch());
   }else{ ?>
