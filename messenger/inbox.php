@@ -17,17 +17,9 @@ $requests = array(
 $req = $db->prepare($requests[$box]);
 $req->execute(array($_SESSION["username"]));
 ?>
-<!DOCTYPE html>
-<head>
-	<meta charset="utf-8">
-	<link rel= "stylesheet" type="text/css" href="css/messenger.css">
-	<style>
-		<?php include_once("css/messenger.css") ;?>
-	</style>
-
-	<title><?php echo($names[$box]);?></title>
-</head>
-<body>
+<style>
+	<?php include_once("css/messenger.css") ;?>
+</style>
 <h1><?php echo($names[$box]); ?></h1>
 <table id="mailbox" style="width:60%">
   <tr>
@@ -37,7 +29,12 @@ $req->execute(array($_SESSION["username"]));
   </tr>
   <?php if($data = $req->fetch()){
     do{?>
-    <tr id="mailbox_row" onclick="location.href='../messenger/msg_read.php?<?php echo("mid=".$data["mid"]."&lid=".$data["lid"]); ?>'" onmouseover="style='background-color:#3498db'" onmouseout="style='background-color=#a0f9f9'">
+			<form id=<?php echo($data["mid"].$data["lid"]); ?> action="../interface_web/index.php" method="post">
+				<input type="hidden" name="msg_read" value="msg_read">
+				<input type="hidden" name="mid" value=<?php echo($data["mid"]); ?>>
+				<input type="hidden" name="lid" value= <?php echo($data["lid"]); ?>>
+			</form>
+    <tr id="mailbox_row" onclick="document.getElementById(<?php echo($data["mid"].$data["lid"]); ?>).submit()" onmouseover="style='background-color:#3498db'" onmouseout="style='background-color=#a0f9f9'">
       <td id="mailbox_case"><?php echo $data["c1"];  ?></td>
       <td id="mailbox_case"><?php  echo $data["obj"]; ?></td>
       <td id="mailbox_case"><?php  echo $data["dated"]; ?></td>
