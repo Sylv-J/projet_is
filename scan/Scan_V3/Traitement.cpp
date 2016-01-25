@@ -5,8 +5,8 @@ using namespace cv;
 
 // Couleur theorique de la gomette
 int h=60, HTolerance=10;
-int s=255, STolerance=10;
-int v=255, VTolerance=10;
+int s=255, STolerance=50;
+int v=255, VTolerance=70;
 
 void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 {
@@ -55,12 +55,14 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
     }
     // pour l'instant on utilise que max et min Y pour découper la page, max et min X pourront etre utilisées à l'avenir pour augmenter la précision de l'analyse
 
-
-    // la ligne suivante doit être testée attentivement (interface entre le code d'illias et le mien, erreurs de conversions possibles.)
-    divisionPoints->push_back((maxY[i]+minY[i])/2);
+    if(isValable(minX[i], minY[i], maxX[i], maxY[i]))
+    {
+      // la ligne suivante doit être testée attentivement (interface entre le code d'illias et le mien, erreurs de conversions possibles.)
+      divisionPoints->push_back((maxY[i]+minY[i])/2);
+    }
   }
 
-
+  std::sort(divisionPoints->begin(), divisionPoints->end());
 
 
 
@@ -68,6 +70,27 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
   // namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
   // imshow( "Display window", originalMat );                   // Show our image inside it.
+}
+
+
+bool isValable(int minX, int minY, int maxX, int maxY)
+{
+  bool res=true;
+
+  int diffX = maxX-minX;
+  int diffY = maxY-minY;
+
+  // largeur hauteur disproportionnés
+  if(!(diffX/diffY>1/1.2 && diffX/diffY<1.2/1))
+  {
+    res=false;
+  }
+
+  //si l'aire correspond
+  
+
+
+  return res;
 }
 
 

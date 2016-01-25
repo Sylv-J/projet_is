@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 #include <QApplication>
@@ -19,6 +20,7 @@
 
 
 void detectCircles(QImage *qim, QVector <int> *divisionPoints);
+bool isValable(int minX, int minY, int maX, int maxY);
 
 
 cv::Mat QImageToCvMat(QImage const& src);

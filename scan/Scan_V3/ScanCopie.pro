@@ -1,5 +1,7 @@
 QT += widgets
 
+CONFIG += static
+
 QMAKE_LIBS += `pkg-config opencv --cflags pkg-config opencv --libs`
 
 SOURCES += \
