@@ -127,11 +127,28 @@
 				}
 				return " le correcteur est inconnu ou le nom de l'exercice n'est pas valide, veuillez reessayer ";
 			}
-						
+			
+			function getNombreCopies($totCopies){
+				
+				$nb_cop = $totCopies/5;
+				$nb_cop = (int) $nb_cop;
+				
+				if ($nb_cop>10){
+					return 10;
+				}
+				elseif($nb_cop == 0 and $totCopies!=0){return 1;}
+				else{
+					return $nb_cop ;
+				}
+			}
+			
 			?>
 
 
 			<?php // CORRECTEUR //traitement si moyenne globale demandée
+			
+
+					
 					if(isset($_POST["id_exo"])){?>
 						
 						
@@ -152,13 +169,30 @@
 					}?>	
 
 			<?php // CORRECTEUR //traitement si moyenne glissante demandée
-					if(isset($_POST["id_exo2"]) AND isset($_POST["nb_copies"])){?>
+			
+				if (isset($_POST['id_exo2'])){
+			
+					$db = masterDB::getDB();
+					$req = $db->prepare("SELECT COUNT(mark) FROM units WHERE id_corrector = ? AND id_father = ?");
+					$req->execute(array($_SESSION["id"], $_POST["id_exo2"]));
+					$res = $req->fetch();
+					
+										
+					$nb_copies = getNombreCopies($res[0]);
+						
+				
+				
+					?>
+						
 						
 						<p> <?php
-						echo "Votre moyenne glissante sur l'exercice " ;
+						echo "Votre moyenne glissante ";
+						echo "sur ";
+						echo $nb_copies;
+						echo " copie(s) sur l'exercice " ;
 						echo $_POST["id_exo2"];
 						echo " est de : " ;
-						echo MoyennePersoGlissante($_POST["nb_copies"], $_POST["id_exo2"]);
+						echo MoyennePersoGlissante($nb_copies, $_POST["id_exo2"]);
 						?>
 						
 						<p>
@@ -169,13 +203,13 @@
 						echo MoyenneGlobale($_POST["id_exo2"]);?> 
 						
 						<?php
-					}
+					
 									
 								?>	
 				<?php 
 				
 				//Création du graph de la moyenne glissante
-				if (isset($_POST['id_exo2'])){
+				
 					$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? AND id_corrector = ? ORDER BY date_modif DESC ");
 					$req->execute(array($_POST['id_exo2'], $_SESSION["id"]));
 					
@@ -187,19 +221,20 @@
 						$moyenneGlissante = [];
 						for ($i = 0; $i < sizeof($notes); $i++) {
 							$sum = 0;
-							if ($i+$_POST["nb_copies"]<=sizeof($notes)){
+							if ($i+$nb_copies<=sizeof($notes)){
 								
-								for ($j = 0; $j <$_POST["nb_copies"]; $j++){
+								for ($j = 0; $j <$nb_copies; $j++){
 									$sum += $notes[$i+$j];
 								}
 							}
-							$moyenneGlissante[] = $sum/$_POST["nb_copies"];
+							$moyenneGlissante[] = $sum/$nb_copies;
 						}
 						echo "<br/>";
 						echo '<img src="../actions/graph.php?ydata1='.urlencode(serialize($moyenneGlissante)).'" border="0" alt="img.php" align="left">';
 					}
-					
 				}
+					
+				
 				?>
 								
 				<?php // CHAIRMAN //traitement si moyenne globale correcteur demandée

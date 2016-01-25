@@ -12,11 +12,16 @@
 	<!-- Titre de la page -->
 	<title>Secrétaire</title>
 
+	<!-- Alignement des cases sur la page-->
+	<style type="text/css">
+	form  { display: table;      }
+	p     { display: table-row;  }
+	label { display: table-cell; }
+	input { display: table-cell; }
+	</style>
+
 	<!-- Bootstrap core CSS -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
-
-	<!-- Alignement des cases sur la page-->
-	<link href="css/styles.css" rel="stylesheet">
 
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -40,6 +45,10 @@
 					<input id="file" type="file" name="my_files[]" multiple><br/>
 				</p>
 				<p>
+					<label for="input_epreuve">AnnéeConcoursFilière : </label><br/>
+					<input id="input_epreuve" type="text" name="anneeconcoursfiliere"><br/>
+				</p>
+				<p>
 					<label for="input_epreuve">Epreuve : </label><br/>
 					<input id="input_epreuve" type="text" name="epreuve"><br/>
 				</p>
@@ -49,7 +58,7 @@
 				</p>
 				<p>
 					<label for="input_id_copie">Identifiant de la copie : </label><br/>
-					<input id="input_id_copie" type="text" name="id_copie"><br/><br/>
+					<input id="input_id_copie" type="int" name="id_copie"><br/><br/>
 				</p>
 				<p>
 					<input formmethod="post" name="submit" type="submit" value="Soumettre" align ="right"><br>

@@ -14,10 +14,3 @@ V3.1 : Computer that has QT but no OpenCV -> Doesn't work
 V3.1 : QT and Open CV -> png 		  -> It works
 V3.1 : QT and Open CV -> jpg/jpeg 	  -> It works
 
-V3.4 : Computer that has no QT no OpenCV  -> Doesn't work well (some crashes)
-V3.4 : Computer that has QT but no OpenCV -> Doesn't work well (some crashes)
-V3.4 : QT and Open CV -> png 		  -> It works
-V3.4 : QT and Open CV -> jpg/jpeg 	  -> It works
-
-
-
