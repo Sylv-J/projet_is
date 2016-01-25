@@ -1,0 +1,18 @@
+Pour l'ajout élève c'est un peu lourd de devoir taper la hierarchie d'épreuves. Je vous propose donc de copié coller cette hiérarchie type :
+
+Math
+*Math1
+**Math1_sousepreuve1@
+**Math1_sousepreuve2@
+*Math2@
+Français@
+Physique
+*Physique1
+**Physique1_sousepreuve1@
+**Physique1_sousepreveur2@
+*Physique2
+**Physique2_sousepreuve1@
+**Physique2_sousepreveur2@
+**Physique2_sousepreveur3@
+
+Vous n'avez plus qu'à vérifier que l'arborescence a bien été créé dans votre projet_IS
