@@ -5,7 +5,7 @@
 <?php
 include_once("../users/user_context.php");
 if(!isset($_SESSION["id"])){
-  include("err.php");
+  include("../error/err.php");
 }else{
   ?>
   <!DOCTYPE html>
@@ -29,20 +29,16 @@ if(!isset($_SESSION["id"])){
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../interface_web/image/MinesNancy.png">
-
+    <link rel="icon" href="../../interface_web/image/MinesNancy.png">
+		<!-- Alignement des cases sur la page-->
+		<link type="text/css" href="../messenger/css/messenger.css" rel="stylesheet">
     <!-- Titre de la page -->
-    <title>Messagerie</title>
-
-    <!-- Alignement des cases sur la page-->
-    <style type="text/css">
-    <?php include_once("css/messenger.css") ;?>
-    </style>
+    <title>Messagerie</title>  
 
   </head>
   <body>
 	</br>
-    <form class="sendbox" action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
+    <form class="sendbox" action="../send/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
       <p>
         <label for="msg_object">Objet : </label>
         <input id="msg_object" type="text" cols="50" name="msg_object"><br/>
@@ -84,8 +80,8 @@ if(!isset($_SESSION["id"])){
       ifrm.setAttribute("name","send_script_frame");
       // les dimensions (ci-dessous) de l'iframe sont mise toutes à 0 pour
       // que cette iframe ne soit pas visible à l'utilisateur
-      ifrm.style.width = "3000px";
-      ifrm.style.height = "300px";
+      ifrm.style.width = "0px";
+      ifrm.style.height = "0px";
       ifrm.style.border = "0";
       // On ajoute cet iframe à la page actuelle.
       document.body.appendChild(ifrm);

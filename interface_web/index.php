@@ -51,9 +51,9 @@
             include_once("../messenger/inbox.php");
         }
         elseif(isset($_POST["sendbox"])){
-            include_once("../messenger/send_interface.php");
+            include_once("../messenger/send/send_interface.php");
         }elseif(isset($_POST["msg_read"])){
-          include_once("../messenger/msg_read.php");
+          include_once("../messenger/read/msg_read.php");
         }
 		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
@@ -78,9 +78,9 @@
 			$arrayData['id'] = $_POST["id_eleve"];
 			$arrayData['anneeconcoursfiliere'] = $_POST['anneeconcoursfiliere'];
 			$arrayData['epreuve']=$_POST['epreuve'];
-			
+
 			UniteDeCorrection::fromData($arrayData,true); // On upload les images
-			
+
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 
 <?php
-include_once("../master_db.php");
+include_once("../../master_db.php");
 $db = masterDB::getDB();
 ?>
 <?php

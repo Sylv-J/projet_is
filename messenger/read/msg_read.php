@@ -1,9 +1,9 @@
+<head>
+	<link type="text/css" href="../messenger/css/messenger.css" rel="stylesheet">
+</head>
 <body>
 	<div class="jumbotron">
 		<div class="container">
-		<style>
-		<?php include_once("css/messenger.css") ;?>
-		</style>
 		<?php
 		include_once("../users/user_context.php");
 		if(!isset($_SESSION["id"])){
@@ -34,9 +34,9 @@
 						<h3>
 							<?php echo $data["object"]; ?>
 						</h3>
-						<i>De :</i>
+						<i><strong>De :</strong></i>
 						<?php echo $d2["mfrom"]; ?>
-						<i> &nbsp; À :</i>
+						<i> &nbsp;<strong>À :</strong></i>
 						<?php echo $d2["dest"] ?>
 					</div>
 						<table>

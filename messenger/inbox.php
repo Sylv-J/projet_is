@@ -1,10 +1,13 @@
+<head>
+	<link type="text/css" href="../messenger/css/messenger.css" rel="stylesheet">
+</head>
 <body>
 	<div class="jumbotron">
 		<div class="container">
 <?php
 include_once("../users/user_context.php");
 if(!isset($_SESSION["id"])){
-  include("../messenger/err.php");
+  include("../messenger/error/err.php");
 }else{
 $box = isset($_POST["box"]) ? $_POST["box"] : "inbox";
 $names = array("inbox" => "Boîte de réception", "sendbox" => "Boîte d'envoi");
@@ -17,9 +20,6 @@ $requests = array(
 $req = $db->prepare($requests[$box]);
 $req->execute(array($_SESSION["username"]));
 ?>
-<style>
-	<?php include_once("css/messenger.css") ;?>
-</style>
 <h1><?php echo($names[$box]); ?></h1>
 <table class="mailbox" style="width:60%">
   <tr>
