@@ -17,7 +17,7 @@
 					</div>
 
 					<div class="form-group has-feedback">
-						<input class="form-control" type="text" name="anneeconcoursfiliere" placeholder="Epreuve">
+						<input class="form-control" type="text" name="anneeconcoursfiliere" placeholder="anneeconcoursfiliere">
 						<i class="glyphicon glyphicon-education form-control-feedback"></i>
 					</div>
 					
