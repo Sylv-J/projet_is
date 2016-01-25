@@ -173,7 +173,7 @@ class UniteDeCorrection
 			// Partie BDD
 			$res = UniteDeCorrection::fromId($arrayData['id']); // On crée l'entrée correspondant à l'élève sur la BDD
 			
-			$idPere = explode('_',$res->_id);
+			/*$idPere = explode('_',$res->_id);
 			$idPere = array_slice(0,count($idPere)-1);
 			$idPere = implode('_',$idPere);
 			
@@ -182,12 +182,12 @@ class UniteDeCorrection
 			$temp = UniteDeCorrection::getUnitById($res->_idPere); // On signale au père qu'il a un nouveau fils !
 			$temp->addSon($res->_id); // "
 			$temp->upload();// "
-			
+			*/
 			
 			
 			// Partie fichiers
 			
-			$target_dir = '/'.$arrayData['concoursfiliereannee'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
+			$target_dir = '/'.$arrayData['anneeconcoursfiliere'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
 			
 			foreach($_FILES as $cur)
 			{

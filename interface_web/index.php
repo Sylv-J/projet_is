@@ -72,8 +72,16 @@
 		{
 			include("bandeau_page_perso.php");
 			include("bandeau_exemple.php");
+		} elseif(isset($_FILES["image"])) {
+			include_once("../unite_de_correction/UniteDeCorrection.php");
+			$arrayData = array();
+			$arrayData['id'] = $_POST["id_eleve"];
+			$arrayData['anneeconcoursfiliere'] = $_POST['anneeconcoursfiliere'];
+			$arrayData['epreuve']=$_POST['epreuve'];
+			
+			UniteDeCorrection::fromData($arrayData,true); // On upload les images
+			
 		}
-		//Sinon, un boutton demandant une page particuliere a été cliqué
 		else
 		{
 			include("../actions/tasksDirectories.php");
