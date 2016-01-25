@@ -140,8 +140,8 @@ if(isset($_POST["submit"])){
         $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
         $res = $req->execute(array(
           'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_cc,
-          'dest'=>$msg_cc_array[$i],
+          'mto' =>$msg_cc_array[$i],
+          'dest'=>$msg_cc,
           'id_msg'=>$msg_id,
         ));
         // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur
@@ -162,8 +162,8 @@ if(isset($_POST["submit"])){
         $req = $db->prepare('INSERT INTO msg_link(mfrom, mto, dest, id_msg) VALUES(:mfrom, :mto, :dest, :id_msg)');
         $res = $req->execute(array(
           'mfrom' => $_SESSION["username"] ,
-          'mto' =>$msg_dests.$msg_cc,
-          'dest'=>$msg_dests_array[$i],
+          'mto' =>$msg_dests_array[$i],
+          'dest'=>$msg_dests.';'.$msg_cc,
           'id_msg'=>$msg_id,
         ));
         // Si un erreur parvient lors de l'envoi du message à un destinataire particulier on le signale à l'utilisateur

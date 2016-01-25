@@ -29,11 +29,28 @@ if(!$req->fetch()){
   $req->execute(array($lid));
   $d2 = $req->fetch();
 ?>
-<div id="msgbox">
-  <h4>De: <?php echo $d2["mfrom"]; ?></h4>
-  <h4>À: <?php echo $d2["dest"] ?></h4>
-  <h4>Objet: <?php echo $data["object"] ?></h4>
-  <p id="msgbody"><?php echo $data["body"] ?></p>
+<div class="msgbox">
+	<form>
+		<p>
+			<label for="msg_object">De  </label>
+			<input type="text" cols="50" name="msg_object" readonly="readonly" value = "<?php echo $d2["mfrom"]; ?>"><br/>
+		</p>
+		<br/>
+		<p>
+			<label for="msg_object">Objet  </label>
+			<input type="text" cols="50" name="msg_object" readonly="readonly" value = "<?php echo $data["object"]; ?>"><br/>
+		</p>
+	</br>
+		<p>
+			<label for="msg_dests">Destinataire(s)  </label>
+			<input type="text" name="msg_dests" readonly="readonly" value="<?php echo $d2["dest"] ?>"><br/>
+		</p>
+	</br>
+		<p>
+			<label for="msg_content">Message </label><br/>
+			<textarea rows="10" cols="50" name="msg_content" readonly="readonly" > <?php echo $data["body"] ?></textarea>
+		</p>
+	</form>
 </div>
 <?php }} ?>
 </div>

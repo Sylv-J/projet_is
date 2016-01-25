@@ -21,11 +21,11 @@ $req->execute(array($_SESSION["username"]));
 	<?php include_once("css/messenger.css") ;?>
 </style>
 <h1><?php echo($names[$box]); ?></h1>
-<table id="mailbox" style="width:60%">
+<table class="mailbox" style="width:60%">
   <tr>
-    <th id="mailbox_label"><?php echo($box = "inbox" ? "De" : "À:"); ?></th>
-    <th id="mailbox_label">Objet</th>
-    <th id="mailbox_label">Date</th>
+    <th ><?php echo($box = "inbox" ? "De" : "À:"); ?></th>
+    <th >Objet</th>
+    <th >Date</th>
   </tr>
   <?php if($data = $req->fetch()){
     do{?>
@@ -34,10 +34,10 @@ $req->execute(array($_SESSION["username"]));
 				<input type="hidden" name="mid" value=<?php echo($data["mid"]); ?>>
 				<input type="hidden" name="lid" value= <?php echo($data["lid"]); ?>>
 			</form>
-    <tr id="mailbox_row" onclick="document.getElementById(<?php echo($data["mid"].$data["lid"]); ?>).submit()" onmouseover="style='background-color:#3498db'" onmouseout="style='background-color=#a0f9f9'">
-      <td id="mailbox_case"><?php echo $data["c1"];  ?></td>
-      <td id="mailbox_case"><?php  echo $data["obj"]; ?></td>
-      <td id="mailbox_case"><?php  echo $data["dated"]; ?></td>
+    <tr onclick="document.getElementById(<?php echo($data["mid"].$data["lid"]); ?>).submit()" onmouseover="style='background-color:#3498db'" onmouseout="style='background-color=#a0f9f9'">
+      <td ><?php echo $data["c1"];  ?></td>
+      <td ><?php  echo $data["obj"]; ?></td>
+      <td ><?php  echo $data["dated"]; ?></td>
     </tr>
   <?php }while($data = $req->fetch());
   }else{ ?>

@@ -1,21 +1,29 @@
 
-#mailbox{
+.mailbox{
   border-collapse: collapse;
   align-self: center;
   width: 50%;
 }
 
-#mailbox_label, #mailbox_case {
+.mailbox th , td {
   text-align: left;
   padding: 8px;
 }
-#mailbox_row:nth-child(even){background-color: #f9f9f9}
+.mailbox tr:nth-child(even){background-color: #f9f9f9}
 
-#mailbox_label {
+.mailbox th {
   background-color: #3F3F3F;
   color: white;
 }
 
-#msgbox{
-  padding-top: 15px;
+.msgbox{
+  padding-top: 30px;
 }
+
+form  { display: table;      }
+p     { display: table-row;  }
+label { display: table-cell; padding-right: 20px;}
+input { display: table-cell;}
+.msgbox input { display: table-cell;
+  border: 0;}
+.msgbox textarea{ border: 0;}

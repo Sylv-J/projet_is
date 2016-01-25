@@ -36,16 +36,13 @@ if(!isset($_SESSION["id"])){
 
     <!-- Alignement des cases sur la page-->
     <style type="text/css">
-    form  { display: table;      }
-    p     { display: table-row;  }
-    label { display: table-cell; }
-    input { display: table-cell; }
+    <?php include_once("css/messenger.css") ;?>
     </style>
 
   </head>
   <body>
 	</br>
-    <form action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
+    <form class="sendbox" action="../messenger/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
       <p>
         <label for="msg_object">Objet : </label>
         <input id="msg_object" type="text" cols="50" name="msg_object"><br/>
