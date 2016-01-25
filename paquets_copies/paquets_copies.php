@@ -53,25 +53,25 @@ function assignSons($localCorrector, $id_unit) {
   $db = masterDB::getDB();
   global $separator;
   
-  $result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
-  while($sons = $result->fetch()){
+	$result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
+	while($sons = $result->fetch()){
     foreach(array_unique($sons) as $son) {
       if(strpos($son,$separator)){
         $list = explode($separator, $son);
         foreach($list as $element){
-          $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
+        	$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
           $dateModif = date('Y/m/d h:i:s');
           $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$element.'"');
         }
 
       } else {
 
-      // pas besoin de concaténer pour les fils : un seul correcteur a priori
-      $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
+			// pas besoin de concaténer pour les fils : un seul correcteur a priori
+			$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$son.'"');
       }
-    }
+	  }
   }
 }
 
@@ -155,21 +155,24 @@ function updateDB($id_unit, $localCorrector) {
       $list = $assigned_unit;
     }
   }
+  //////TEST//////////
+  //echo $list;
   if(isset($list)&&strpos($list,$separator)){
     $units = explode($separator, $list);
     array_push($id_unit, $localCorrector);
     $units = array_unique($units);
     $res = implode($separator,$units);
-  }else{
-    $res =  $id_unit;
+  } else if(isset($list)&&$list!=NULL&&$list!=$id_unit){
+        $res = $list.$separator.$id_unit;
+  } else {
+        $res = $id_unit;
   }
   $db->query('UPDATE users SET current_units = "'.$res.'" WHERE id="'.$localCorrector.'"');
   
   //$db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
 
-
   // appliquer les changements aux fils
-  assignSons($localCorrector, $id_unit);
+	assignSons($localCorrector, $id_unit);
 
   // appliquer les changements au père et au père du père etc... jusqu'à ce qu'on arrive au plus au niveau (plus de père)
   $unit = $id_unit;
@@ -220,6 +223,7 @@ function assignUnits($unitType) {
 
 ///////////TEST////////////////////////////
 assignUnits('Maths');
+assignUnits('Physics');
 //////////////////////////////////////////
 
 
