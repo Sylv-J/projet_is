@@ -5,7 +5,7 @@ $separator = ';';
 
 function randomCorrector($correctors){
   $rand = rand(0,sizeof($correctors)-1);
-  return $correctors[$rand];
+  return $correctors[$rand];          
 }
 /*
 ///////////////TEST///////////////////////////////////////
