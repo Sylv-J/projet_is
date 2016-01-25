@@ -15,8 +15,9 @@ constructeur, tout est uploadé sur le serveur
 
 # GENERER UN BAREME
 
-Il existe une méthode statique genererBareme($struct) qui se charge de créer un barème sur la BDD. 
-La variable $struct doit avoir la forme présentée dans "test_bareme.txt", à savoir :
+Il existe une méthode statique UniteDeCorrection::genererBareme($struct) qui se charge de créer 
+un barème sur la BDD. La variable $struct doit avoir la forme présentée dans "test_bareme.txt", 
+à savoir :
 "U1_V1_W1_NoteMax
 U1_V1_W2_NoteMax
 U1_V2_NoteMax"
