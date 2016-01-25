@@ -59,9 +59,11 @@ function assignSons($localCorrector, $id_unit) {
       if(strpos($son,$separator)){
         $list = explode($separator, $son);
         foreach($list as $element){
-        	$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
+          $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$element.'"');
           $dateModif = date('Y/m/d h:i:s');
           $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$element.'"');
+          // assigner aux fils du fils...
+          assignSons($localCorrector, $element);
         }
 
       } else {
@@ -70,6 +72,8 @@ function assignSons($localCorrector, $id_unit) {
       $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$son.'"');
+      // assigner aux fils du fils...
+      assignSons($localCorrector, $son);
       }
 	  }
   }
@@ -110,7 +114,7 @@ function assignFathers($localCorrector, $id_unit) {
       $db->query('UPDATE units SET id_corrector = "'.$res.'" WHERE id = "'.$father.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id = "'.$father.'"');
-	  }
+    }
   }
 }
 
@@ -260,7 +264,7 @@ freeUnit('Eleve1_Maths1_Part1');
 //////////////////////////////////////
 */
 
-// récupérer les différentes matières d'une épreuve (sous forme de tabeleau)
+// récupérer les différentes matières d'une épreuve (sous forme de tableau)
 function getSubjects(){
   $db = masterDB::getDB();
   
@@ -268,6 +272,7 @@ function getSubjects(){
   $res = array();
   while($units = $result->fetch()){
     foreach(array_unique($units) as $unit) {
+      // on suppose que le nom de l'unité est de la forme "Eleve1_Maths1_Part1..." (la matière est donc après le premier '_')
       $name = explode('_', $unit);
       $exam = $name[1];
       $exam = preg_replace('/[0-9]+/', '', $exam);
