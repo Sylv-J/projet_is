@@ -29,3 +29,11 @@ projet_is > anneeconcoursfiliere > id eleve > Math > Math1 > Math1_sousepreuve1
 						    > Math2 
 					    > Français 
 					    > Physique > Physique1
+
+
+######################## Marion et Philippe le 25/01/2016
+dans bandeau_stats_chairman : 
+	premier formulaire : rentrer l'id du correcteur
+	deuxième partie : rentrer id du correcteur et l'id_father de l'exo 
+
+
