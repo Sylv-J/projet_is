@@ -42,6 +42,10 @@ L'unité de correction de la partie 1 de l'élève "Toto" est "Toto_Partie1", qu
 "Toto_Partie1_Exercice1" et "Toto_Partie1_Exercice2", qui eux-même auront éventuellement pour fils 
 "Toto_Partie1_Exercice1_petita" etc jusqu'au plus petit élément. La racine est donc "Toto".
 
+* POUR LE CHAIRMAN : $plusieursUdc = UniteDeCorrection::getAllSmallest($id) va chercher sur le serveur toutes
+les udc à corriger. $id est facultatif : il permet de discriminer par élève (on cherche les udc par élève qui
+les a produites).
+
 * $udc = UniteDeCorrection::fromData($arrayData) crée une entrée sur la BDD et en local à partir d'un 
 ensemble de données ($arrayData). Le format doit être le suivant :
 $arrayData = array('id_father'=>'lolfather',
