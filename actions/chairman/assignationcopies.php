@@ -1,23 +1,28 @@
-<body>
-  <div class ="jumbotron">
+<div class ="jumbotron">
     <div class = "container">
       <h2> Assignation Copies </h2>
-        <thead>
-        </thead>
-        <tbody>
-            <form action="index.php" method="post">
-            <p>
-            <div class="form-group">
-                <input type="text" placeholder="UniteCorrection" name="unitType" class="form-control" required>
+      <form action="index.php" method="post">
+            <div class="form-group col-md-5">
+                <div class="checkbox">
+                    <input type="checkbox" name="units[]" value="1"/>Exercice 1
+                    
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="units[]" value="1"/>Exercice 2
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="units[]" value="1"/>Exercice 3
+                    
+                </div>
+                <div class="checkbox">
+                    <input type="checkbox" name="units[]" value="1"/>Exercice 4
+                </div>
             </div>
 
-            <div class="form-group">
-                <input type="int" placeholder="IdentifiantCorrecteur" name="idcorr" class="form-control" required>
-            </div>
-            <input type="submit" value="Assigner" class="btn btn-success">
-            </p>
-              </form>
-        </tbody>
+        </form>
     </div>
-  </div>
-</body>
+</div>
+
+
+
+<!-- 2 listes déroulantes : une recuperant les ids des correcteurs, l'autre récupérant les unités à assigner -->
