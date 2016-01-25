@@ -1,0 +1,36 @@
+Tests de Decoupe : 
+Le but de ces tests est de garantir le bon fonctionnement du programme ScanCopie, qui est de : 
+Assembler les images donnees (les coller les unes aux autres verticalement)
+Les decouper selon des pastilles de couleur jaunes.
+Renvoyer les images decoupees separement avec le numero de la partie decoupee en nom.
+
+Base de donnee :
+26 Images ayant chacune ayant des pastilles, pas de pastilles, des elements ressemblant ( pastilles allongees, petites pastilles, pastilles sales ).
+
+Version de ScanCopie 3.1
+Tests sur 5 copies differentes : Apres Assemblage+Decoupage, les copies ne sont plus dans l'ordre
+Solution proposee avec les codeurs pour la version 3.2 : Sort en fonction de la hauteur le vecteur des points a decouper.
+
+Version de ScanCopie 3.2
+Test sur 5 copies differentes : Valide. ( Copies dans l'ordre)
+Test copie 1 (jaune-orange) : Multiples decoupes dans un point -> Augmenter la marge?
+Test copie 2 (Fond marron-orange) : Valide.
+Test copie 3 (Copie type) : Valide.
+Test copie 4 (Pastille tachee) : Multiples decoupes dans un point -> Detecter les changement de couleur peu etendus et ne pas les prendre en compte?
+Test copie 5 (Fond jaune clair + pastille) : Valide
+Test copie 6 (Pas de pastille) : Valide.
+Test copie 7 (Pastille allonge verticale) : Multiples decoupes
+
+Version de ScanCopie 3.3
+Test sur 5 copies differentes : Valide.
+Test copie 1 (jaune-orange) : Valide.
+Test copie 2 (Fond marron-orange) : Valide.
+Test copie 3 (Copie type) : Valide.
+Test copie 4 (Pastille tachee) : Multiples decoupes dans un point -> Detecter les changement de couleur peu etendus et ne pas les prendre en compte?
+Test copie 5 (Fond jaune clair + pastille) : Valide
+Test copie 6 (Pas de pastille) : Valide.
+Test copie 7 (Pastille allongee verticale) : Encore une decoupe.
+Test copie 8 (Fond forme rondes)  : Valide.
+Test copie 9 (Grosse pastille) : Valide.
+Test copie 10 (Pas de pastille) : Valide.
+
