@@ -66,6 +66,22 @@ if(!isset($_SESSION["id"])){
         <input id ="submit" formmethod="post" name="submit" type="submit" value="Envoyer" disabled=true><br>
       </p>
     </form>
+		<?php
+			if(isset($_POST["msg_object_res"])){
+		 ?>
+		 <script>
+		 	document.getElementById("msg_object").setAttribute('value', "<?php echo $_POST["msg_object_res"];?>");
+		 </script>
+		 <?php
+	 }
+	 if (isset($_POST["msg_dests_res"])) {
+		 ?>
+ 		<script>
+ 		 document.getElementById("msg_dests").setAttribute('value', "<?php echo $_POST["msg_dests_res"];?>");
+ 		</script>
+ 		<?php
+	 }
+		  ?>
     <script language="Javascript" type="text/Javascript">
       var ifrm = document.createElement("IFRAME");
       ifrm.setAttribute("id","send_script_frame");

@@ -49,14 +49,14 @@
 								<td>
 									<form action="../interface_web/index.php" method="post">
 										<input type="hidden" name="sendbox" value="sendbox">
-										<input type="hidden" name="msg_object_res" value=<?php echo("Re : ".$data["object"]); ?>>
-										<input type="hidden" name="msg_dests_res" value=<?php echo($d2["mfrom"]); ?>>
+										<input type="hidden" name="msg_object_res" value="<?php echo("Re : ".$data["object"]); ?>">
+										<input type="hidden" name="msg_dests_res" value="<?php echo($d2["mfrom"]); ?>">
 										<button  name="respond"  type="submit" > Répondre</button>
 									</form>
-									<form>
+									<form action="../interface_web/index.php" method="post">
 										<input type="hidden" name="sendbox" value="sendbox">
-										<input type="hidden" name="msg_object_res" value=<?php echo("Re : ".$data["object"]); ?>>
-										<input type="hidden" name="msg_dests_res" value=<?php echo($d2["mfrom"].";".$d2["dest"]); ?>>
+										<input type="hidden" name="msg_object_res" value="<?php echo("Re : ".$data["object"]); ?>">
+										<input type="hidden" name="msg_dests_res" value="<?php echo($d2["mfrom"].";".$d2["dest"]); ?>">
 										<button name="respondToAll" type="submit" style="padding-left:5px">Répondre à tous</button>
 									</form>
 									</td>
