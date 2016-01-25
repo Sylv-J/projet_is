@@ -17,6 +17,11 @@
 					</div>
 
 					<div class="form-group has-feedback">
+						<input class="form-control" type="text" name="anneeconcoursfiliere" placeholder="Epreuve">
+						<i class="glyphicon glyphicon-education form-control-feedback"></i>
+					</div>
+					
+					<div class="form-group has-feedback">
 						<input class="form-control" type="text" name="epreuve" placeholder="Epreuve">
 						<i class="glyphicon glyphicon-education form-control-feedback"></i>
 					</div>
