@@ -1,24 +1,25 @@
 <div class ="jumbotron">
     <div class = "container">
       <h2> Assignation Copies </h2>
-      <form action="index.php" method="post">
-            <div class="form-group col-md-5">
-                <div class="checkbox">
-                    <input type="checkbox" name="units[]" value="1"/>Exercice 1
-                    
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" name="units[]" value="1"/>Exercice 2
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" name="units[]" value="1"/>Exercice 3
-                    
-                </div>
-                <div class="checkbox">
-                    <input type="checkbox" name="units[]" value="1"/>Exercice 4
-                </div>
-            </div>
+      <form method="post" action="../interface_web/index.php">
+      <p>
+      <select name="unitsType">
+          <?php
+            include(../paquets_copies/paquets_copies.php)
+            $list = getUnits();
+            for (i=0;sizeof($list);i++) {
+              $value = $list[i];
+              echo "<option value=$value>$value</option>" ;
+            }
+            
+          ?>
+         
+      </select>
 
+      <input type="submit" value="Assigner" title="Valider pour assigner" />
+
+</p>
+</form>
         </form>
     </div>
 </div>

@@ -1,3 +1,5 @@
+25/01/16
+ 
 #AJOUTER UNE ACTION 
   - Dans le fichier "action.php" : ajouter l'action désirée dans la liste des actions associeés à chaque rôle.
       Ex : pour ajouter "Parler" à "secrétaire" : 'secretaire' => array('Scanner', 'Parler')
