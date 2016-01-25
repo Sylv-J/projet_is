@@ -53,8 +53,8 @@ function assignSons($localCorrector, $id_unit) {
   $db = masterDB::getDB();
   global $separator;
   
-	$result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
-	while($sons = $result->fetch()){
+  $result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
+  while($sons = $result->fetch()){
     foreach(array_unique($sons) as $son) {
       if(strpos($son,$separator)){
         $list = explode($separator, $son);
@@ -66,8 +66,8 @@ function assignSons($localCorrector, $id_unit) {
 
       } else {
 
-			// pas besoin de concaténer pour les fils : un seul correcteur a priori
-			$db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
+      // pas besoin de concaténer pour les fils : un seul correcteur a priori
+      $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$son.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$son.'"');
       }
@@ -83,12 +83,12 @@ assignSons(2, "test1");
 */
 
 function assignFathers($localCorrector, $id_unit) {
-	$db = masterDB::getDB();
+  $db = masterDB::getDB();
   global $separator;
   
-	$result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
-	while($fathers = $result->fetch()){
-    foreach(array_unique($fathers) as $father) {
+  $result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
+  while($fathers = $result->fetch()){
+  foreach(array_unique($fathers) as $father) {
       $req = $db->query('SELECT id_corrector FROM units WHERE id = "'.$father.'"');
       while($correctors = $req->fetch()){
         foreach(array_unique($correctors) as $correctorlist) {
@@ -107,7 +107,7 @@ function assignFathers($localCorrector, $id_unit) {
       } else {
         $res = $localCorrector;
       }
-			$db->query('UPDATE units SET id_corrector = "'.$res.'" WHERE id = "'.$father.'"');
+      $db->query('UPDATE units SET id_corrector = "'.$res.'" WHERE id = "'.$father.'"');
       $dateModif = date('Y/m/d h:i:s');
       $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id = "'.$father.'"');
 	  }
@@ -124,8 +124,8 @@ assignFathers(4, "test2");
 
 function findFather($id_unit){
   $db = masterDB::getDB();
-	$result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
-	while($fathers = $result->fetch()){
+  $result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
+  while($fathers = $result->fetch()){
     foreach(array_unique($fathers) as $father) {
       return $father;
     }
@@ -140,7 +140,7 @@ echo findFather('test3');
 */
 
 function updateDB($id_unit, $localCorrector) {
-	$db = masterDB::getDB();
+  $db = masterDB::getDB();
   global $separator;
   
   $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$id_unit.'"');
@@ -196,7 +196,7 @@ updateDB('test2', 6);
 function assignUnits($unitType) {
   $db = masterDB::getDB();
 
-	$listUNA = getUnitsUnassigned($unitType);
+  $listUNA = getUnitsUnassigned($unitType);
   // utile si unitType est de la forme 'Eleve_Maths1_Part1' (et dans ce cas il faut remplacer unitType par exam dans la requête sql)
   /*
   $name = explode('_', $unitType);
@@ -228,7 +228,7 @@ assignUnits('Physics');
 
 
 function punctualAssignment($id_corrector, $unitType) {
-	$db = masterDB::getDB();
+  $db = masterDB::getDB();
   $req = $db->query("SELECT id FROM units WHERE id_corrector IS NULL AND id LIKE '%{$unitType}%'");
   $list = array();
 	while($donnees = $req->fetch()){
@@ -240,7 +240,7 @@ function punctualAssignment($id_corrector, $unitType) {
     $unit = $list[0];
     echo $unit;
     updateDB($unit, $id_corrector);
- 	}
+  }
 
 }
 
@@ -248,6 +248,43 @@ function punctualAssignment($id_corrector, $unitType) {
 //////////TEST///////////////////
 punctualAssignment(2, 'Maths')
 /////////////////////////////////
+*/
+
+// réinitialiser le champ id_corrector d'une unité
+function freeUnit($id_unit){
+  $db = masterDB::getDB();
+  $db->query('UPDATE units SET id_corrector = NULL WHERE id="'.$id_unit.'"');
+}
+
+/*
+///////////TEST//////////////////////
+freeUnit('Eleve1_Maths1_Part1');
+//////////////////////////////////////
+*/
+
+// récupérer les différentes matières d'une épreuve (sous forme de tabeleau)
+function getSubjects(){
+  $db = masterDB::getDB();
+  
+  $result = $db->query('SELECT id FROM units WHERE id IS NOT NULL') ;
+  $res = array();
+  while($units = $result->fetch()){
+    foreach(array_unique($units) as $unit) {
+      $name = explode('_', $unit);
+      $exam = $name[1];
+      $exam = preg_replace('/[0-9]+/', '', $exam);
+      array_push($res, $exam);
+      $res = array_unique($res);
+    }
+  }
+  return $res;
+}
+
+/*
+////////TEST////////////////////////////
+$test = getSubjects();
+echo implode(' ', $test);
+//////////////////////////////////////
 */
 
 ?>
