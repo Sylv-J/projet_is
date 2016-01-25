@@ -13,7 +13,7 @@ $db = masterDB::getDB();
 <h3> : </h3>
 <p>
 
-		Nom Concours de forme MinesMP2016: <input type="text" name="nom_concours" required><br><br>
+		Nom Concours de forme 2016MinesMP: <input type="text" name="nom_concours" required><br><br>
 		Id élève : <input type="text" name="id_eleve" required><br><br>
        <label for="eleve">Veuillez inscrire l'élève à ses épreuves en respectant les consignes</label><br />
        <textarea name="eleve" rows="10" cols="50"></textarea>
