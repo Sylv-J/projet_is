@@ -173,7 +173,11 @@ class UniteDeCorrection
 			// Partie BDD
 			$res = UniteDeCorrection::fromId($arrayData['id']); // On crée l'entrée correspondant à l'élève sur la BDD
 			
-			$res->_idPere = implode('_',array($res->_id,$arrayData['epreuve']));// On récupère l'ID de son père
+			$idPere = explode('_',$res->_id);
+			$idPere = array_slice(0,count($idPere)-1);
+			$idPere = implode('_',$idPere);
+			
+			$res->_idPere = $idPere;// On récupère l'ID de son père
 			
 			$temp = UniteDeCorrection::getUnitById($res->_idPere); // On signale au père qu'il a un nouveau fils !
 			$temp->addSon($res->_id); // "
@@ -185,7 +189,6 @@ class UniteDeCorrection
 			
 			$target_dir = '/'.$arrayData['concoursfiliereannee'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
 			
-			$to_upload = explode($sep,$arrayData['path']);
 			foreach($_FILES as $cur)
 			{
 				$target_file = $cur["name"].basename($cur["name"],'.png'); // On remplace 'path/file_nbr.png' par 'file_nbr'
@@ -195,9 +198,9 @@ class UniteDeCorrection
 				
 				if(move_uploaded_file($cur["tmp_name"],$target_file)) // On tente d'upload
 				{
-					echo "Le fichier ".basename($to_upload)." a bien été copié sur le serveur <br>";
+					echo "Le fichier ".basename($target_file)." a bien été copié sur le serveur <br>";
 				} else {
-					echo "Une erreur s'est produite lors de l'upload de ".basename($to_upload)."<br>";
+					echo "Une erreur s'est produite lors de l'upload de ".basename($target_file)."<br>";
 				}
 			}
 		}
