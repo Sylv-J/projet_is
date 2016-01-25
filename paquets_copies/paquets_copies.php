@@ -172,7 +172,7 @@ function updateDB($id_unit, $localCorrector) {
   //$db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
 
   // appliquer les changements aux fils
-	assignSons($localCorrector, $id_unit);
+  assignSons($localCorrector, $id_unit);
 
   // appliquer les changements au père et au père du père etc... jusqu'à ce qu'on arrive au plus au niveau (plus de père)
   $unit = $id_unit;
@@ -203,9 +203,7 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
-  // ici, on suppose que le nom de l'épreuve est contenu quelque part dans user_group
-  // Par exemple, 'CorrectorMaths' ou 'CorrectorPhysics' (différents types de correcteurs pour différentes matières)
-  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%{$unitType}%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
@@ -220,12 +218,12 @@ function assignUnits($unitType) {
     }
 }
 
-
+/*
 ///////////TEST////////////////////////////
 assignUnits('Maths');
 assignUnits('Physics');
 //////////////////////////////////////////
-
+*/
 
 function punctualAssignment($id_corrector, $unitType) {
   $db = masterDB::getDB();
