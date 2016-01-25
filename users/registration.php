@@ -60,7 +60,7 @@ if($num <3){
 if($valid){
 	echo "<h2>L'inscription à bien été prise en compte </h2>";
 // Adds the user to the database
-	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:user_group)");
+	$req = $db->prepare("INSERT INTO users VALUES('',:username,:pwd,:mail,:user_group,'','')");
 	$req->execute(array(
 		"username" => strip_tags($_POST["username"]),
 		"pwd" => sha1($_POST["pwd1"]),

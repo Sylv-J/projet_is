@@ -8,6 +8,7 @@ class UniteDeCorrection
 	
 	const TIMEZONE = "Europe/London"; // Date GMT
 	const IDMAX = 2147483646; // 2147483647 = 2^(31) = la taille max d'un int
+	const SEPARATOR = ';';
 	
 	// ATTRIBUTS
 	
@@ -157,7 +158,7 @@ class UniteDeCorrection
 		if(!$images) // Remplissage "à la main"
 		{
 			$res->_idPere = $arrayData['id_father'];
-			$res->_idFils = explode(',',$arrayData['id_sons']);
+			$res->_idFils = explode(SEPARATOR,$arrayData['id_sons']);
 			$res->_niveau = $arrayData['level'];
 			$res->_note = $arrayData['mark']; // La note attribuÃ©e suite Ã  la correction -1 si l'unitÃ©e n'est pas corrigÃ©e
 			$res->_noteMax = $arrayData['max_mark']; // La note maximale que l'on peut obtenir (dÃ©finie par le barÃªme)
@@ -183,7 +184,7 @@ class UniteDeCorrection
 			
 			$target_dir = '/'.$arrayData['annee'].'/'.$arrayData['concours'].'/'.$arrayData['filiere'].'/'.$arrayData['id'].'/'.$arrayData['epreuve'].'/';
 			
-			$to_upload = explode(',',$arrayData['path']);
+			$to_upload = explode(SEPARATOR,$arrayData['path']);
 			foreach($_FILES as $cur)
 			{
 				$target_file = $cur["name"].basename($cur["name"],'.png'); // On remplace 'path/file_nbr.png' par 'file_nbr'
@@ -304,7 +305,10 @@ class UniteDeCorrection
 		return implode('_',$buff);
 	}
 	
-	
+	public function getImage() // Récupère l'image correspondant à l'unité. Si elle n'existe pas, on notifie l'utilisateur par une erreur.
+	{
+		
+	}
 	
 	public function delInts($string) // Retourn la partie lettrÃ©e d'une chaÃ®ne de type "abcdef123456" (non sensible Ã  la casse)
 	{
@@ -397,7 +401,7 @@ class UniteDeCorrection
 		
 		$req->bindValue(':id',$this->_id,PDO::PARAM_STR);
 		$req->bindValue(':id_father',$this->_idPere,PDO::PARAM_STR);
-		$req->bindValue(':id_sons',implode(',',$this->_idFils),PDO::PARAM_STR);
+		$req->bindValue(':id_sons',implode(SEPARATOR,$this->_idFils),PDO::PARAM_STR);
 		$req->bindValue(':data',$this->_data,PDO::PARAM_STR);
 		$req->bindValue(':level',$this->_niveau,PDO::PARAM_INT);
 		$req->bindValue(':mark',$this->_note,PDO::PARAM_INT);
