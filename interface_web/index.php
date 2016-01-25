@@ -51,6 +51,8 @@
         }
         elseif(isset($_POST["sendbox"])){
             include_once("../messenger/send_interface.php");
+        }elseif(isset($_POST["msg_read"])){
+          include_once("../messenger/msg_read.php");
         }
 		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
