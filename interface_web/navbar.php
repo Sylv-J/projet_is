@@ -21,6 +21,7 @@
                         <li>
                           <form action='index.php' method='post'>
                           <div class='list-group'>
+                            <input type="hidden" name="p" value="0"></input>
                           <button type='submit' name='inbox' value='inbox' class='btn'>Boite de reception</button>
                           </div></form>
                         </li>

@@ -73,6 +73,7 @@ if(isset($_POST["submit"])){
     // On enlève les eventuels espaces entrés par l'utilisateur lors de la
     // saisie des destinataires.
     $msg_dests = str_replace(' ', '', $msg_dests);
+    $msg_dests = rtrim($msg_dests,';');
     $msg_dests_array = explode(";",$msg_dests);
     $nb_dest = count($msg_dests_array);
     // On parcourt la liste des destinataires et on vérifie qu'ils sont bien

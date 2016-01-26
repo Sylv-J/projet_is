@@ -47,3 +47,9 @@ td {
 .msgbox form {
   display: inline;
 }
+
+#pages  form{
+  margin:auto;
+  padding:0;
+  display: inline-block;
+}
