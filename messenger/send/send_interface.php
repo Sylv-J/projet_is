@@ -80,8 +80,8 @@ if(!isset($_SESSION["id"])){
       ifrm.setAttribute("name","send_script_frame");
       // les dimensions (ci-dessous) de l'iframe sont mise toutes à 0 pour
       // que cette iframe ne soit pas visible à l'utilisateur
-      ifrm.style.width = "3000px";
-      ifrm.style.height = "300px";
+      ifrm.style.width = "0px";
+      ifrm.style.height = "0px";
       ifrm.style.border = "0";
       // On ajoute cet iframe à la page actuelle.
       document.body.appendChild(ifrm);
