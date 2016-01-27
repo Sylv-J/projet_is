@@ -53,3 +53,14 @@ td {
   padding:0;
   display: inline-block;
 }
+
+.sendbox_titles {
+  width: 15%;
+}
+
+.sendbox input, textarea{
+  width: 100% ;
+  border:0;
+  background-image: -webkit-linear-gradient(top, rgb(238, 238, 238) 1%, white 15%);
+	box-shadow: 0 0 2px rgba(0, 0, 0, .3);
+}
