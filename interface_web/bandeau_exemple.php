@@ -1,18 +1,47 @@
 <div class="container">
     <!-- Example row of columns -->
+    <?php
+    if ($_SESSION['group'] == 'correcteur'){
+        $req = $db->prepare("SELECT COUNT(mark) FROM units WHERE id_corrector = ?");
+        $req->execute(array($_SESSION["id"]));
+        $res = $req->fetch();
+        $unit_corrected=$res[0];
+
+        $req = $db->prepare("SELECT units_remaining FROM users WHERE id = ?");
+        $req->execute(array($_SESSION["id"]));
+        $res = $req->fetch();
+        $unit_remaining = $res[0];
+
+        $percentCorrectedByUser = round($unit_corrected / ($unit_corrected+$unit_remaining)*100, 1);
+
+        $req = $db->prepare("SELECT COUNT(mark) FROM units");
+        $req->execute(array($_SESSION["id"]));
+        $res = $req->fetch();
+        $total_unit_corrected=$res[0];
+
+
+        $req = $db->prepare("SELECT SUM(units_remaining) FROM users");
+        $req->execute(array($_SESSION["id"]));
+        $res = $req->fetch();
+        $total_unit_remaining = $res[0];
+
+        $percentTotalCorrected = round($total_unit_corrected / ($total_unit_corrected+$total_unit_remaining)*100, 1);
+
+    }
+    ?>
     <div class="row">
         <div class="col-md-4">
             <h2>Progression</h2>
-            <h3>Exercices corrigés</h3>
+            <h3>personnelle :</h3>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                    60%
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentCorrectedByUser ?>%;">
+                    <?php echo $percentCorrectedByUser ?>%
                 </div>
             </div>
-            <h3>Élèves évalués</h3>
+            <h3>totale :</h3>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;">
-                    20%
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentTotalCorrected ?>%;">
+                    <?php echo $percentTotalCorrected ?>%
                 </div>
             </div>
         </div>
