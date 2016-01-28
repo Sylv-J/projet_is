@@ -23,13 +23,13 @@
 							  <form action='index.php' method='post'>
 							  <div class='list-group'>
 								<input type="hidden" name="p" value="0"></input>
-							  <button type='submit' name='inbox' value='inbox' class='btn'>Boite de reception</button>
+							  <button type='submit' name='inbox' value='inbox' style = 'background:transparent' class='btn'>Boite de reception</button>
 							  </div></form>
 							</li>
 							<li>
 							  <form action='index.php' method='post'>
 							  <div class='list-group'>
-							  <button type='submit' name='sendbox' value='sendbox' class='btn'>Envoyer message</button>
+							  <button type='submit' name='sendbox' value='sendbox' style = 'background:transparent' class='btn'>Envoyer message</button>
 							  </div></form>
 							</li>
 						</ul>
@@ -44,13 +44,14 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon Compte<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="index.php">Ma page</a></li>
+								<li><a href="index.php">Mon Calendrier</a></li>
 								<li><a href="index.php">Aide</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a href="index.php">Paramètres</a></li>
 								<li>
 								  <form action='index.php' method='post'>
 								  <div class='list-group'>
-								  <button type='submit' name='page_to_load' value='logout' class='btn'>Déconnexion</button>
+								  <button type='submit' name='page_to_load' value='logout' style = 'background:transparent' class='btn'>Déconnexion</button>
 								  </div></form>
 								</li>
 							</ul>
