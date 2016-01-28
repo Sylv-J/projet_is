@@ -2,7 +2,7 @@
 //on teste si le fichier est lancé seul, ou depuis l'interface
 if(!isset($confirmationPage)) //lancé indépendamment
 {
-  $confirmationPage="users/login.php";
+  $confirmationPage="interface_web/index.php";
 }
 // si non la $confirmationPage a été définie dans l'interface et sera utilisée pour renvoyer la page après connexion
 
@@ -22,7 +22,7 @@ If it does, then it's a registered user and we can authenticate them*/
 			$valid = true;
 		}
 		else{
-			$error_msg = "Identifiants incorrects<br>";
+			$error_msg = "Identifiants incorrects, veuillez réessayer <br>";
 		}
 	}
  }
