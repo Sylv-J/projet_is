@@ -264,6 +264,17 @@ freeUnit('Eleve1_Maths1_Part1');
 //////////////////////////////////////
 */
 
+// réinitialiser les champs id_corrector de toutes les unités (utile pour tests notamment)
+function freeCorrectors(){
+  $db = masterDB::getDB();
+  $req = $db->query('SELECT id FROM units WHERE id_corrector IS NOT NULL');
+  while($array = $req->fetch()){
+    foreach(array_unique($array) as $element){
+      freeUnit($element);
+    }
+  }
+}
+
 // récupérer les différentes matières d'une épreuve (sous forme de tableau)
 function getSubjects(){
   $db = masterDB::getDB();
