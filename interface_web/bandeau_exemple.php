@@ -1,6 +1,9 @@
 <div class="container">
     <!-- Example row of columns -->
     <?php
+	$percentTotalCorrected = 0;
+	$percentCorrectedByUser = 0;
+	
     if ($_SESSION['group'] == 'correcteur'){
         $req = $db->prepare("SELECT COUNT(mark) FROM units WHERE id_corrector = ?");
         $req->execute(array($_SESSION["id"]));
@@ -30,21 +33,23 @@
     }
     ?>
     <div class="row">
-        <div class="col-md-4">
-            <h2>Progression</h2>
-            <h3>personnelle :</h3>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentCorrectedByUser ?>%;">
-                    <?php echo $percentCorrectedByUser ?>%
-                </div>
-            </div>
-            <h3>totale :</h3>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentTotalCorrected ?>%;">
-                    <?php echo $percentTotalCorrected ?>%
-                </div>
-            </div>
-        </div>
+		<?php if ($_SESSION['group'] == 'correcteur'){ ?>
+			<div class="col-md-4">
+				<h2>Progression</h2>
+				<h3>personnelle :</h3>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentCorrectedByUser ?>%;">
+						<?php echo $percentCorrectedByUser ?>%
+					</div>
+				</div>
+				<h3>totale :</h3>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentTotalCorrected ?>%;">
+						<?php echo $percentTotalCorrected ?>%
+					</div>
+				</div>
+			</div>
+		 <?php } ?>
         <div class="col-md-4">
             <h2>Informations</h2>
             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
