@@ -1,4 +1,4 @@
-Dernière mise à jour le 25/01/2016 par Mathilde
+Dernière mise à jour le 28/01/2016 par Mathilde
 
 Ce dossier /paquet_copies permet de gérer l'allocation des unités de correction pour les correcteurs.
 
@@ -11,5 +11,6 @@ Pour distribuer les unités non assignées:
 Fonctions utiles:
 getSubjects() : récupérer un tableau contenant toutes les matières
 listCorrectors() : tableau contenant tous les correcteurs auxquels on a assigné au moins une unité
+freeCorrectors(): réinitialiser le champ id_corrector de toutes les unités de la table units
 
 
