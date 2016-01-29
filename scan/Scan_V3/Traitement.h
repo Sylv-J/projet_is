@@ -20,7 +20,7 @@
 
 
 void detectCircles(QImage *qim, QVector <int> *divisionPoints);
-bool isValable(int minX, int minY, int maX, int maxY);
+bool isValable(int minX, int minY, int maX, int maxY, cv::Mat mat);
 
 
 cv::Mat QImageToCvMat(QImage const& src);

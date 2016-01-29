@@ -29,7 +29,7 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
 
 
-
+  cv::Mat blackWhiteMat = originalMat.clone();
 
 
 
@@ -54,8 +54,8 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
       maxY[i] = max(maxY[i], contours[i][j].y);
     }
     // pour l'instant on utilise que max et min Y pour découper la page, max et min X pourront etre utilisées à l'avenir pour augmenter la précision de l'analyse
-
-    if(isValable(minX[i], minY[i], maxX[i], maxY[i]))
+    rectangle(originalMat, Point(minX[i],minY[i]) , Point(maxX[i], maxY[i]), Scalar(255,0,0));
+    if(isValable(minX[i], minY[i], maxX[i], maxY[i], blackWhiteMat))
     {
       // la ligne suivante doit être testée attentivement (interface entre le code d'illias et le mien, erreurs de conversions possibles.)
       divisionPoints->push_back((maxY[i]+minY[i])/2);
@@ -73,21 +73,34 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 }
 
 
-bool isValable(int minX, int minY, int maxX, int maxY)
+bool isValable(int minX, int minY, int maxX, int maxY, cv::Mat mat)
 {
   bool res=true;
 
-  int diffX = maxX-minX;
-  int diffY = maxY-minY;
+  float diffX = maxX-minX;
+  float diffY = maxY-minY;
 
   // largeur hauteur disproportionnés
-  if(!(diffX/diffY>1/1.2 && diffX/diffY<1.2/1))
+  if(diffX==0 || diffY==0)
   {
     res=false;
   }
+  else
+  {
+    if(!(diffX/diffY>1/1.2 && diffX/diffY<1.2/1))
+    {
+      res=false;
+    }
 
-  //si l'aire correspond
-  
+  }
+
+  //si l'aire ne correspond pas
+  if(true)
+  {
+    // cv::Mat around_gomette = cv::Mat(mat, cv::Rect(minX, minY, maxX, maxY));
+    //
+    // std::cout << cv::sum(around_gomette).val[0] << std::endl;
+  }
 
 
   return res;
