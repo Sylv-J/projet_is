@@ -9,6 +9,7 @@
             <th> ID Correcteur </th>
             <th> Nombre de copies restantes </th>
             <th> Mail </th>
+            <th> Statistiques </th>
           </tr>
         </thead>
         <tbody>

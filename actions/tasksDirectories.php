@@ -17,7 +17,8 @@ $tasksDirectories = array(
   'Ajouter concours' => 'administrateur/formulaire_ajout_table.php',
   'register' => '../users/registration.php',
   'logout' => '../users/logout.php',
-  'Créer un compte' => '../users/registration.php'
+  'Créer un compte' => '../users/registration.php',
+  'Gestion' => 'chairman/gestion.php'
   );
 
 ?>
