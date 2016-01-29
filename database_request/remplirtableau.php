@@ -8,7 +8,7 @@
        $mail = $donnees["mail"];
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["units_remaining"];
-       $lienstats = MoyenneCorrecteur($username);
+       $lienstats = MoyenneCorrecteur($id);
        echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td><td> $lienstats </td></tr>";
 
   }

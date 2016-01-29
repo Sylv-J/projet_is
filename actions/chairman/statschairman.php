@@ -1,6 +1,20 @@
 <body>
   <div class ="jumbotron">
    <div class = "container">
+      <h2> Stats générales </h2>
+      <table class ="table">
+        <thead>
+          <tr>
+            <th> Nombres de copies restantes à corriger </th>
+            <th> Nombres de copies restantes à assigner </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+           include("../database_request/statsgenerales.php")
+           ?>
+        </tbody>
+      </table>
       <h2> Stats correcteur </h2>
       <table class ="table">
         <thead>
