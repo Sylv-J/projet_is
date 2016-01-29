@@ -69,7 +69,7 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
 
   // namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
-  // imshow( "Display window", originalMat );                   // Show our image inside it.
+  // imshow( "Display window", blackWhiteMat );                   // Show our image inside it.
 }
 
 
@@ -91,15 +91,25 @@ bool isValable(int minX, int minY, int maxX, int maxY, cv::Mat mat)
     {
       res=false;
     }
+    else
+    {
+      //test de l'aire
+      cv::Rect new_size(minX, minY, maxX, maxY);
+      cv::Rect imgBounds(0,0,mat.cols,mat.rows);
+      new_size = new_size & imgBounds;
+      // Now you can do the following without worrying
+      cv::Mat around_gomette = mat(new_size);
+      int sum = cv::sum(around_gomette).val[0];
 
-  }
+      int sumTheorique = 4*atan(1)*pow((maxX-minX)/2,2)*255;
+      if(abs(sum-sumTheorique)/sumTheorique>1.2 )
+      {
+        res=false;
+      }
+      std::cout << sum << std::endl;
+      std::cout << sumTheorique << std::endl;
+    }
 
-  //si l'aire ne correspond pas
-  if(true)
-  {
-    // cv::Mat around_gomette = cv::Mat(mat, cv::Rect(minX, minY, maxX, maxY));
-    //
-    // std::cout << cv::sum(around_gomette).val[0] << std::endl;
   }
 
 
