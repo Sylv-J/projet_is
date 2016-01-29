@@ -8,12 +8,7 @@
        $mail = $donnees["mail"];
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["units_remaining"];
-       $lienstats = <form action="statsperso.php" method="post" role="form">
-        <div>
-          <textarea name="$username"></texarea><br /><input type="submit"/>
-        </div>
-       </form>
-       <p><a href="statsperso.php">Stats correcteur</a></p>;
+       $lienstats = MoyenneCorrecteur($username);
        echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td><td> $lienstats </td></tr>";
 
   }
