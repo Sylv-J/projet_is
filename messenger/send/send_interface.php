@@ -20,18 +20,19 @@
 							<input form="sendform" id="msg_object" type="text" name="msg_object">
 						</td>
 					</tr>
-				<tr>
-					<td class="sendbox_titles">
-						<h>Destinataire(s) : </h>
-					</td>
-					<td>
-						<input form="sendform" id="msg_dests" type="text" name="msg_dests" value="">
-					</td>
-				</tr>
+					<tr>
+						<td class="sendbox_titles">
+							<h>Destinataire(s) : </h>
+						</td>
+						<td>
+							<input form="sendform" type="text" name="msg_dests">
+						</td>
+						
+					</tr>
 			</br>
 			<tr>
 				<td colspan="3">
-					<textarea id="msg_content" rows="10" cols="130" style="width:100%" name="msg_content" onfocus="show_button()"> Veuillez entrer votre message dans cette zone texte.</textarea>
+					<textarea id="msg_content" rows="10" cols="130" style="width:100%" name="msg_content" placeholder=" Veuillez entrer votre message dans cette zone texte." onfocus="show_button()"></textarea>
 				</td>
 			</tr>
 			<tr>
