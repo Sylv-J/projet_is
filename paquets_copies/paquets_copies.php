@@ -264,7 +264,7 @@ freeUnit('Eleve1_Maths1_Part1');
 //////////////////////////////////////
 */
 
-// réinitialiser les champs id_corrector de toutes les unités (utile pour tests notamment)
+// réinitialiser le champ id_corrector de toutes les unités et, inversement, le champ current_units des correcteurs (utile pour tests notamment)
 function freeCorrectors(){
   $db = masterDB::getDB();
   $req = $db->query('SELECT id FROM units WHERE id_corrector IS NOT NULL');
@@ -273,7 +273,17 @@ function freeCorrectors(){
       freeUnit($element);
     }
   }
+  $correctors = listCorrectors();
+  foreach(array_unique($correctors) as $corrector){
+      $db->query('UPDATE users SET current_units = NULL WHERE id="'.$corrector.'"');
+  }
+  
 }
+
+///////////TEST////////////////////////////
+//freeCorrectors();
+//////////////////////////////////////////
+
 
 // récupérer les différentes matières d'une épreuve (sous forme de tableau)
 function getSubjects(){
@@ -284,10 +294,12 @@ function getSubjects(){
   while($units = $result->fetch()){
     foreach(array_unique($units) as $unit) {
       // on suppose que le nom de l'unité est de la forme "Eleve1_Maths1_Part1..." (la matière est donc après le premier '_')
-      $name = explode('_', $unit);
-      $exam = $name[1];
-      $exam = preg_replace('/[0-9]+/', '', $exam);
-      array_push($res, $exam);
+      if(strpos($unit,'_')){
+        $name = explode('_', $unit);
+	$exam = $name[1];
+	$exam = preg_replace('/[0-9]+/', '', $exam);
+	array_push($res, $exam);
+      }
       $res = array_unique($res);
     }
   }
@@ -300,6 +312,19 @@ $test = getSubjects();
 echo implode(' ', $test);
 //////////////////////////////////////
 */
+
+// assigner en masse toutes les unités non assignées (de toutes les matières)
+function assignAll() {
+  $db = masterDB::getDB();
+  $subjects = getSubjects();
+  foreach($subjects as $subject){
+    assignUnits($subject);  
+  }
+}
+
+///////////TEST////////////////////////////
+//assignAll();
+//////////////////////////////////////////
 
 // tableau des correcteurs ayant au moins une unité assignée
 function listCorrectors(){
@@ -321,5 +346,26 @@ $liste_correcteurs = listCorrectors();
 echo implode($liste_correcteurs);
 ///////////////////////////////////////////////
 */
+
+// récupérer les unités d'un correcteur
+function unitsCorrector($id_corrector){
+  $db = masterDB::getDB();
+  $result = $db->query('SELECT current_units FROM users WHERE id="'.$id_corrector.'"') ;
+  $res = $result->fetch();
+  return array_unique($res); 
+  
+}
+
+/*
+////////TEST///////////////////////////////////
+$test = unitsCorrector(1);
+$test1 = unitsCorrector(2);
+$test2 = unitsCorrector(3);
+echo implode($test);
+echo implode($test1);
+echo implode($test2);
+///////////////////////////////////////////////
+*/
+
 
 ?>
