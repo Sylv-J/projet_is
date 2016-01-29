@@ -8,8 +8,8 @@
        $mail = $donnees["mail"];
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["units_remaining"];
-       $lienstats = MoyenneCorrecteur($id);
-       echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td><td> $lienstats </td></tr>";
+        
+       echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td> <td> <a href="statscorrecteur.php?id='.$id.'"> </td> </tr>";
 
   }
 
