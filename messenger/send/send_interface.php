@@ -10,13 +10,14 @@
 				include("../error/err.php");
 			}else{
 				?>
+				<center>
 				<table class="sendbox">
 				<form id="sendform" action="../messenger/send/send_script.php" method="post" enctype="multipart/form-data" target="send_script_frame">
 					<tr>
 						<td class="sendbox_titles">
 							<h><b>Objet : </b></h>
 						</td>
-						<td>
+						<td class="sendbox_inputs">
 							<input form="sendform" id="msg_object" type="text" name="msg_object">
 						</td>
 					</tr>
@@ -24,14 +25,14 @@
 					<td class="sendbox_titles">
 						<h>Destinataire(s) : </h>
 					</td>
-					<td>
+					<td class="sendbox_inputs">
 						<input form="sendform" id="msg_dests" type="text" name="msg_dests" value="">
 					</td>
 				</tr>
 			</br>
 			<tr>
-				<td colspan="3">
-					<textarea id="msg_content" rows="10" cols="130" style="width:100%" name="msg_content" onfocus="show_button()"> Veuillez entrer votre message dans cette zone texte.</textarea>
+				<td colspan="3" class="sendbox_inputs">
+					<textarea id="msg_content" rows="10" cols="130" style="width:100%" name="msg_content" placeholder=" Veuillez entrer votre message dans cette zone texte."onfocus="show_button()"></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -42,6 +43,7 @@
 			<input type="hidden" form="sendform" name='usergroup' value="<?php echo $_SESSION['group'];?>">
 		</form>
 	</table>
+</center>
 		<?php
 		if(isset($_POST["msg_object_res"])){
 			?>
@@ -77,9 +79,16 @@
 		}
 		$(function(){
 	    $('#msg_dests').tags({
-	      requireData:true,
+				// requireData mis à true => l'utilisateur n'a pas droit d'entrer des
+				// destinataires qui ne sont pas dans la liste data de la fonction
+				// autofill ci-dessous (c.f. lignes 85-86).
+				// unique : true => éviter la répetition des destinataires
+				requireData:true,
+				unique:true,
+
 	    }).autofill({
-	      data:["admin","chairmanA","correcteur1","secretaire"],
+				// data contient les destinataires que l'utilisateur peut entrer.
+	      data:["admin","chairman","correcteurs","secretaire"],
 	    });
 	  });
 		</script>

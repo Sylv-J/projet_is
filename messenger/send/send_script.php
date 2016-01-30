@@ -1,40 +1,37 @@
-
 <?php
 include_once("../../master_db.php");
+include_once("../../database_request/getUsers.php");
 $db = masterDB::getDB();
 ?>
 <?php
 function parseMailingList($destArray){
-  $newArray = array('');
-
+  $concourstable = getConcoursTablebyUser($_SESSION['username']);
+  $newArray = array();
   $nb_dest = count($destArray);
   for($i=0;$i<$nb_dest;$i++){
     switch ($destArray[$i]) {
       case 'chairman':
-      // TODO : function to fetch chairman from database
-      array_push($newArray,$destArray[$i]);
-      break;
-      case 'secretaire':
-      // TODO : function to fetch secretaire from database
-      array_push($newArray,$destArray[$i]);
-      break;
+        $chairman_user=getChairman($concourstable);
+        array_push($newArray,$chairman_user);
+        break;
+      case 'correcteurs':
+        $correctorsusernames = getCorrectorsByConcours($concourstable);
+        $newArray = array_merge($newArray,$correctorsusernames);
+        break;
       default:
-      array_push($newArray,$destArray[$i]);
-      break;
+        array_push($newArray,$destArray[$i]);
+        break;
     }
   }
   return $newArray;
 }
 ?>
-<!DOCTYPE html>
-<html>
-<body>
+<head>
   <!-- Encodage de la page-->
   <meta charset="utf-8">
   <!-- Chargement du Javascript pour pouvoir l'utiliser après -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-</body>
-</html>
+</head>
 <?php
 // Si l'utilisateur clique sur le boutton envoyer on procède à l'envoi des messages
 if(isset($_POST["submit"])){
@@ -55,6 +52,7 @@ if(isset($_POST["submit"])){
     });
     </script>
     <?php
+    exit();
   }
   // Vérification si l'utilisateur a saisi au moins un destinataire dans le champs dédié
   $msg_dests=$_POST["msg_dests"];
@@ -75,6 +73,7 @@ if(isset($_POST["submit"])){
     $msg_dests = str_replace(' ', '', $msg_dests);
     $msg_dests = rtrim($msg_dests,';');
     $msg_dests_array = explode(";",$msg_dests);
+    $msg_dests_array = parseMailingList($msg_dests_array);
     $nb_dest = count($msg_dests_array);
     // On parcourt la liste des destinataires et on vérifie qu'ils sont bien
     // dans notre base de données.
@@ -127,6 +126,7 @@ if(isset($_POST["submit"])){
       });
       </script>
       <?php
+      exit();
     }
     else{
       // On récupère l'indice du message qu'on vient d'insérer dans la table 'msg'
@@ -140,14 +140,6 @@ if(isset($_POST["submit"])){
           case 'chairman':
             $res = $req->execute(array(
               'mfrom' => "chairman" ,
-              'mto' =>$destsArray[$i],
-              'dest'=>$msg_dests,
-              'id_msg'=>$msg_id,
-            ));
-            break;
-          case 'secretaire':
-            $res = $req->execute(array(
-              'mfrom' => "secretaire" ,
               'mto' =>$destsArray[$i],
               'dest'=>$msg_dests,
               'id_msg'=>$msg_id,
