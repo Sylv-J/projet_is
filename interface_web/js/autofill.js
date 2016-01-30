@@ -73,7 +73,7 @@
 						});
 
 						// if no matches
-						if(!found) bg.value = "";
+						if(!found) bg.value = this.value;
 
 					// blank
 					} else {

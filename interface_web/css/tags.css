@@ -9,6 +9,7 @@
 	background:white;
 	overflow:hidden;
 	width:auto;
+	max-width: 700px;
 	background-image: -webkit-linear-gradient(top, rgb(238, 238, 238) 1%, white 15%);
 	box-shadow: 0 0 2px rgba(0, 0, 0, .3);
 }
