@@ -57,7 +57,7 @@
 										<input type="hidden" name="sendbox" value="sendbox">
 										<input type="hidden" name="msg_object_res" value="<?php echo("Re : ".$data["object"]); ?>">
 										<input type="hidden" name="msg_dests_res" value="<?php echo($d2["dest"]); ?>">
-										<button name="respondToAll" type="submit" style="padding-left:5px">Répondre à tous</button>
+										<button name="respondToAll" type="submit" >Répondre à tous</button>
 									</form>
 									</td>
 								</tr>

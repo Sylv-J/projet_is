@@ -1,9 +1,7 @@
-<head>
-	<link type="text/css" href="../messenger/css/messenger.css" rel="stylesheet">
-</head>
 <body>
 	<div class="jumbotron">
 		<div class="container">
+			<center>
 			<?php
 			include_once("../users/user_context.php");
 			if(!isset($_SESSION["id"])){
@@ -36,7 +34,7 @@
 				$req->execute(array($_SESSION["username"]));
 				?>
 				<h1><?php echo($names[$box]); ?></h1>
-				<table class="mailbox" style="width:60%">
+				<table class="mailbox" style="width:80%">
 					<tr>
 						<th ><?php echo($box = "inbox" ? "De" : "À:"); ?></th>
 						<th >Objet</th>
@@ -84,4 +82,5 @@
 						<?php } ?>
 					</div>
 				</div>
+			</center>
 			</body>
