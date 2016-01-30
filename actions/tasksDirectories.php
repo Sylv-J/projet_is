@@ -14,11 +14,10 @@ $tasksDirectories = array(
   'Statistiques' => 'chairman/statschairman.php',
   'Stats Correcteur' => 'chairman/bandeau_stats_chairman.php',
   'Assignation des copies' => 'chairman/assignationcopies.php',
+  'Gestion' => 'chairman/gestion.php',
+  'Modifier les droits' => '../users/registration.php',
   'Ajouter concours' => 'administrateur/formulaire_ajout_table.php',
-  'register' => '../users/registration.php',
-  'logout' => '../users/logout.php',
   'Créer un compte' => '../users/registration.php',
-  'Gestion' => 'chairman/gestion.php'
   );
 
 ?>
