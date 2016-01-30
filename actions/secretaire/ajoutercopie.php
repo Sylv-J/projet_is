@@ -2,25 +2,25 @@
 	<div class="jumbotron">
 		<div class="container">
 			<form action= "../database_request/multiplefile_upload.php" method="post" enctype="multipart/form-data" target="upload_iframe">
+				<br/><br/><br/><br/>
 				<p>
-					<br/>
-					<label for="fileToUpload">Ajouter image :</label><br/>
-					<input id="file" type="file" name="my_files[]" multiple><br/>
+					<label for="fileToUpload">Ajouter image :</label>
+					<input id="file" type="file" name="my_files[]" multiple><br/><br/><br/>
 				</p>
 				<p>
-					<label for="input_epreuve">AnnéeConcoursFilière : </label><br/>
-					<input id="input_epreuve" type="text" name="anneeconcoursfiliere"><br/>
+					<label for="input_epreuve">AnnéeConcoursFilière : </label>
+					<input id="input_epreuve" type="text" name="anneeconcoursfiliere"><br/><br/><br/>
 				</p>
 				<p>
-					<label for="input_epreuve">Epreuve : </label><br/>
-					<input id="input_epreuve" type="text" name="epreuve"><br/>
+					<label for="input_epreuve">Epreuve : </label>
+					<input id="input_epreuve" type="text" name="epreuve"><br/><br/><br/>
 				</p>
 				<p>
-					<label for="input_nb_exo">Nombre d'exercices: </label><br/>
-					<input id="input_nb_exo" type="text" name="nb_exo"><br/>
+					<label for="input_nb_exo">Nombre d'exercices: </label>
+					<input id="input_nb_exo" type="text" name="nb_exo"><br/><br/><br/>
 				</p>
 				<p>
-					<label for="input_id_copie">Identifiant de la copie : </label><br/>
+					<label for="input_id_copie">Identifiant de la copie : </label>
 					<input id="input_id_copie" type="int" name="id_copie"><br/><br/>
 				</p>
 				<p>
