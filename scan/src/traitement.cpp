@@ -4,13 +4,12 @@ using namespace cv;
 
 
 // Couleur theorique de la gomette
-int h=60, HTolerance=10;
+int h=62.5/2, HTolerance=6.5;  //h=60 puis h=h/2; //H 0->360 ,n'est informatiquement codé que entre 0 et 180
 int s=255, STolerance=50;
 int v=255, VTolerance=70;
 
 void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 {
-  h=h/2; //H 0->360 ,n'est informatiquement codé que entre 0 et 180
   cv::Scalar lowerBoundary(h-HTolerance, s-STolerance, v-VTolerance);
   cv::Scalar upperBoundary(h+HTolerance, s+STolerance, v+VTolerance);
 
@@ -30,7 +29,6 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
 
   cv::Mat blackWhiteMat = originalMat.clone();
-
 
 
 
@@ -93,21 +91,19 @@ bool isValable(int minX, int minY, int maxX, int maxY, cv::Mat mat)
     }
     else
     {
+      minX=std::max((int)(minX-0.5*diffX),0);
+      minY=std::max((int)(minY-0.5*diffY),0);
+      maxX=std::min((int)(maxX+0.5*diffX),mat.cols);
+      maxY=std::min((int)(maxY+0.5*diffY),mat.rows);
       //test de l'aire
-      cv::Rect new_size(minX, minY, maxX, maxY);
-      cv::Rect imgBounds(0,0,mat.cols,mat.rows);
-      new_size = new_size & imgBounds;
-      // Now you can do the following without worrying
-      cv::Mat around_gomette = mat(new_size);
-      int sum = cv::sum(around_gomette).val[0];
+      cv::Mat around_gomette = mat(cv::Rect(Point(minX,minY), Point(maxX, maxY)));
 
-      int sumTheorique = 4*atan(1)*pow((maxX-minX)/2,2)*255;
-      if(abs(sum-sumTheorique)/sumTheorique>1.2 )
+      double sum = cv::sum(around_gomette).val[0];
+      double sumTheorique = 4*atan(1)*pow((diffX+diffY)/4,2)*255;
+      if(sumTheorique==0 || abs(sum-sumTheorique)/sumTheorique>0.15 )
       {
         res=false;
       }
-      std::cout << sum << std::endl;
-      std::cout << sumTheorique << std::endl;
     }
   }
 
