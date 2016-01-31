@@ -9,7 +9,7 @@
        $username = $donnees["username"];
        $nbcopiesrestantes =$donnees["units_remaining"];
         
-       echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td> <td> <a href="statscorrecteur.php?id='.$id.'"> </td> </tr>";
+       echo "<tr> <td>$username</td> <td>$id</td> <td>$nbcopiesrestantes</td> <td>$mail</td> <td> <a href= "statscorrecteur.php"> </td> </tr>";
 
   }
 

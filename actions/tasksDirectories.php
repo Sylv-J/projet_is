@@ -18,7 +18,8 @@ $tasksDirectories = array(
   'register' => '../users/registration.php',
   'logout' => '../users/logout.php',
   'Créer un compte' => '../users/registration.php',
-  'Gestion' => 'chairman/gestion.php'
+  'Gestion' => 'chairman/gestion.php',
+  'Modifier les droits' => 'administrateur/gestion_droits.php'
   );
 
 ?>
