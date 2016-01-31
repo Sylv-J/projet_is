@@ -37,3 +37,6 @@ dans bandeau_stats_chairman :
 	deuxième partie : rentrer id du correcteur et l'id_father de l'exo 
 
 
+###################### Grégoire, le 31/01/2016
+udc_chairman est un copier-coller du code disponible dans Unités de Corrections (afin de pouvoir intégrer les bons chemins lors de l'utilisation de action_bareme_bis)
+Formulaire_bareme_concours et action_bareme_bis permettent de créer dans la database units le barême du concours, c'est à dire l'élève 0 avec ses dossiers fils. La syntaxe à entrer est la même Ajout élève
