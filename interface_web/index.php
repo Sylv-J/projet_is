@@ -25,7 +25,7 @@
   include_once("../users/user_context.php");
 
   // barre de navigation
-  include("navbar.php") ;
+  //include("navbar.php") ;
 
   //Si on est pas connecté, sauf si on a cliqué sur "register"!
   if(!isset($_SESSION["id"]) && (!isset($_POST["page_to_load"]) ||$_POST["page_to_load"]!='register'))
@@ -36,12 +36,11 @@
   //Si connecté
   else
 	{
-        if(isset($_POST["unitType"]) and isset($_POST["idcorr"])){
+        //Assignation des copies  
+        if(isset($_POST["unitsType"]) and $_SESSION["group"]=="chairman"){
             include_once("../paquets_copies/paquets_copies.php");
-            //punctualAssignment($_POST["idcorr"],$_POST["unitType"]);
-            assignUnits($_POST["unitType"]);
-            unset($_POST["unitType"]);
-            unset($_POST["idcorr"]);
+            assignUnits($_POST["unitsType"]);
+            unset($_POST["unitsType"]);
         }
         elseif(isset($_POST["inbox"])){
             include_once("../messenger/inbox.php");

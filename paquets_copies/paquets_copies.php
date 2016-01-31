@@ -207,7 +207,12 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
-  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  /*Modification de la requete sql car le champ epreuve n'existe pas, il faudra modifier la requete pour qu'elle 
+  prenne en compte les matières que le correcteur à le droit d'utiliser
+  signé antoine
+  */
+  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
