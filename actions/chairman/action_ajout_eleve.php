@@ -1,5 +1,6 @@
 <?php
-include_once("../master_db.php");
+header('Location: ../../interface_web/index.php');
+include_once("../../master_db.php");
 $db = masterDB::getDB();
 
 
@@ -20,7 +21,7 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 
 	$ligne = $tab[$i];
 	$ligne = trim($ligne);
-	$path = "../../$nomconcours/";
+	$path = "../../images/$nomconcours/";
 	for($k = 0; $k<strlen($tab[$i]) ; $k++){  // on parcourt chaque caractère de notre ligne
 		if($tab[$i][$k] == "@"){
 			$flag = 1;
@@ -62,9 +63,13 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 		echo $path;
 		echo ("<br>");
 		mkdir ($path, 0777, true );		// le true indique que le mkdir est récursif : créer les sous dossier implique création dossiers.
+
 	}
 
+
+
 }
+
 
 
 

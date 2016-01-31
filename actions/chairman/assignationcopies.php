@@ -23,7 +23,7 @@
           <input type="submit" value="Assigner" title="Valider pour assigner" />
         </form>
       </div>
-      
+
       <!--Tableau affichant les udc assigné aux correcteurs-->
       <div class="col-md-6">
         <table class="table">
@@ -35,16 +35,15 @@
             </tr>
           </thead>
           <tbody>
-            
-            <?php 
+
+            <?php
             $list = listCorrectors();
-            
+
             for ($i=0;$i <= sizeof($list);$i++){
               $corrector = $list[$i];
-              
-              echo "<tr> <td>$corrector</td> <td></td> <td></td></tr>"; } 
+              echo "<tr> <td>$corrector</td></tr>"; }
             ?>
-            
+
           </tbody>
 
         </table>

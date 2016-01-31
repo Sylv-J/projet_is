@@ -260,7 +260,12 @@ debug/moc_mywindow.cpp: C:/Qt/5.5/mingw492_32/include/QtWidgets/QApplication \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		../Scan_V3/displayer.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsScene \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsView \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsview.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsItem \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsitem.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistview.h \
@@ -279,7 +284,11 @@ debug/moc_mywindow.cpp: C:/Qt/5.5/mingw492_32/include/QtWidgets/QApplication \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QLineF \
-		../Scan_V3/Traitement.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsSceneMouseEvent \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicssceneevent.h \
+		../Scan_V3/myqgraphicslineitem.h \
+		../Scan_V3/myqgraphicsscene.h \
+		../Scan_V3/traitement.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGui \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGuiDepends \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QtCore \
@@ -638,7 +647,12 @@ debug/main.o: ../Scan_V3/main.cpp C:/Qt/5.5/mingw492_32/include/QtWidgets/QAppli
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		../Scan_V3/displayer.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsScene \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsView \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsview.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsItem \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsitem.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistview.h \
@@ -657,7 +671,11 @@ debug/main.o: ../Scan_V3/main.cpp C:/Qt/5.5/mingw492_32/include/QtWidgets/QAppli
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QLineF \
-		../Scan_V3/Traitement.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsSceneMouseEvent \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicssceneevent.h \
+		../Scan_V3/myqgraphicslineitem.h \
+		../Scan_V3/myqgraphicsscene.h \
+		../Scan_V3/traitement.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGui \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGuiDepends \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QtCore \
@@ -999,7 +1017,12 @@ debug/mywindow.o: ../Scan_V3/mywindow.cpp ../Scan_V3/mywindow.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		../Scan_V3/displayer.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGridLayout \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsScene \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsView \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsview.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsItem \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsitem.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistview.h \
@@ -1018,7 +1041,11 @@ debug/mywindow.o: ../Scan_V3/mywindow.cpp ../Scan_V3/mywindow.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QLineF \
-		../Scan_V3/Traitement.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsSceneMouseEvent \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicssceneevent.h \
+		../Scan_V3/myqgraphicslineitem.h \
+		../Scan_V3/myqgraphicsscene.h \
+		../Scan_V3/traitement.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGui \
 		C:/Qt/5.5/mingw492_32/include/QtGui/QtGuiDepends \
 		C:/Qt/5.5/mingw492_32/include/QtCore/QtCore \
@@ -1345,14 +1372,15 @@ debug/displayer.o: ../Scan_V3/displayer.cpp ../Scan_V3/displayer.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/qpainter.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/qtextoption.h \
 		C:/Qt/5.5/mingw492_32/include/QtGui/qpen.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGridLayout \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlayout.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
-		C:/Qt/5.5/mingw492_32/include/QtWidgets/QScrollArea \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsScene \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsscene.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsView \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsview.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qscrollarea.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qabstractscrollarea.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsItem \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicsitem.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QScrollArea \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlistview.h \
@@ -1370,7 +1398,16 @@ debug/displayer.o: ../Scan_V3/displayer.cpp ../Scan_V3/displayer.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qtabbar.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/5.5/mingw492_32/include/QtWidgets/qrubberband.h \
-		C:/Qt/5.5/mingw492_32/include/QtCore/QLineF
+		C:/Qt/5.5/mingw492_32/include/QtCore/QLineF \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qboxlayout.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlayout.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qlayoutitem.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgridlayout.h \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/QGraphicsSceneMouseEvent \
+		C:/Qt/5.5/mingw492_32/include/QtWidgets/qgraphicssceneevent.h \
+		../Scan_V3/myqgraphicslineitem.h \
+		../Scan_V3/myqgraphicsscene.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\displayer.o ..\Scan_V3\displayer.cpp
 
 debug/Traitement.o: ../Scan_V3/Traitement.cpp ../Scan_V3/Traitement.h \
