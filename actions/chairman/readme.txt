@@ -1,10 +1,10 @@
-Bonjour ! 			Fait par Alban le 25/01/2016
+Bonjour ! 			
 
 
 
-
-///////README formulaire Ajout élève\\\\\\\\\\\\\\\\\\\\\\\\
-
+  //////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////README formulaire Ajout élève\\\\\\\\\\\\\\\\\\\\\\\    Fait par Alban le 25/01/2016
+////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 Pour l'ajour d'un bareme remplir le texte comme suit :
 
@@ -30,6 +30,32 @@ projet_is > anneeconcoursfiliere > id eleve > Math > Math1 > Math1_sousepreuve1
 					    > Français 
 					    > Physique > Physique1
 
+  //////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////README formulaire Ajout correcteur\\\\\\\\\\\\\\\\\\    Mis à jour par Alban le 31/01/2016
+////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Donnez le nom du concours sans faute. Il sert à trouver le nom de la database
+Pour les correcteurs inserez un retour à la ligne entre chaque nom de correcteurs :
+ ---------------
+|jean 		|
+|michel		|
+|paul		|
+ ---------------
+
+De même pour les épreuves : 
+
+ ---------------
+|Mat_ex1	|
+|Mat_ex2	|
+|Physique	|
+ ---------------
+
+!!!!!Warning!!!!!! rien ici n'empêche les épreuves d'apparaitre en double
+
+
+  //////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+ ///////README bandeau stats chairman\\\\\\\\\\\\\\\\\\\\\\\
+////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ######################## Marion et Philippe le 25/01/2016
 dans bandeau_stats_chairman : 
