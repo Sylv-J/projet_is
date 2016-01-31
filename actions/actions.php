@@ -16,7 +16,7 @@ $rights = array(
 'admin' => array('Modifier les droits','Ajouter concours','Créer un compte'),
 'secretaire' => array('Scanner'),
 'correcteur' => array('Corriger', 'Voir mes Stats'),
-'chairman' => array('Statistiques','Assignation des copies', 'Stats Correcteur','Gestion')
+'chairman' => array('Statistiques','Assignation des copies', 'Stats Correcteur','Gestion','Ajouter Eleve')
 );
 
 	//Mise en place du style

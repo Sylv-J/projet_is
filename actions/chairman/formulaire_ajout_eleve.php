@@ -1,5 +1,5 @@
 <?php
-include_once("../../master_db.php");
+include_once("../master_db.php");
 $db = masterDB::getDB();
 
 
@@ -9,7 +9,7 @@ $db = masterDB::getDB();
 	{
 ?>
 <!-- HMTL code for the registration form -->
-<form action=<?php echo "../../actions/chairman/action_ajout_eleve.php" ?> method="post">
+<form action=<?php echo "../actions/chairman/action_ajout_eleve.php" ?> method="post">
 <h3> : </h3>
 <p>
 
