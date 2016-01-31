@@ -11,6 +11,7 @@
 #include <QtGui>
 #include <QLayout>
 
+#include <cmath>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -20,7 +21,7 @@
 
 
 void detectCircles(QImage *qim, QVector <int> *divisionPoints);
-bool isValable(int minX, int minY, int maX, int maxY);
+bool isValable(int minX, int minY, int maX, int maxY, cv::Mat mat);
 
 
 cv::Mat QImageToCvMat(QImage const& src);

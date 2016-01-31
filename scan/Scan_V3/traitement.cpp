@@ -1,4 +1,4 @@
-#include "Traitement.h"
+#include "traitement.h"
 
 using namespace cv;
 
@@ -29,7 +29,7 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
 
 
-
+  cv::Mat blackWhiteMat = originalMat.clone();
 
 
 
@@ -54,8 +54,8 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
       maxY[i] = max(maxY[i], contours[i][j].y);
     }
     // pour l'instant on utilise que max et min Y pour découper la page, max et min X pourront etre utilisées à l'avenir pour augmenter la précision de l'analyse
-
-    if(isValable(minX[i], minY[i], maxX[i], maxY[i]))
+    rectangle(originalMat, Point(minX[i],minY[i]) , Point(maxX[i], maxY[i]), Scalar(255,0,0));
+    if(isValable(minX[i], minY[i], maxX[i], maxY[i], blackWhiteMat))
     {
       // la ligne suivante doit être testée attentivement (interface entre le code d'illias et le mien, erreurs de conversions possibles.)
       divisionPoints->push_back((maxY[i]+minY[i])/2);
@@ -69,25 +69,47 @@ void detectCircles(QImage *qim, QVector <int> *divisionPoints)
 
 
   // namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.1
-  // imshow( "Display window", originalMat );                   // Show our image inside it.
+  // imshow( "Display window", blackWhiteMat );                   // Show our image inside it.
 }
 
 
-bool isValable(int minX, int minY, int maxX, int maxY)
+bool isValable(int minX, int minY, int maxX, int maxY, cv::Mat mat)
 {
   bool res=true;
 
-  int diffX = maxX-minX;
-  int diffY = maxY-minY;
+  float diffX = maxX-minX;
+  float diffY = maxY-minY;
 
   // largeur hauteur disproportionnés
-  if(!(diffX/diffY>1/1.2 && diffX/diffY<1.2/1))
+  if(diffX==0 || diffY==0)
   {
     res=false;
   }
+  else
+  {
+    if(!(diffX/diffY>1/1.2 && diffX/diffY<1.2/1))
+    {
+      res=false;
+    }
+    else
+    {
+      //test de l'aire
+      cv::Rect new_size(minX, minY, maxX, maxY);
+      cv::Rect imgBounds(0,0,mat.cols,mat.rows);
+      new_size = new_size & imgBounds;
+      // Now you can do the following without worrying
+      cv::Mat around_gomette = mat(new_size);
+      int sum = cv::sum(around_gomette).val[0];
 
-  //si l'aire correspond
-  
+      int sumTheorique = 4*atan(1)*pow((maxX-minX)/2,2)*255;
+      if(abs(sum-sumTheorique)/sumTheorique>1.2 )
+      {
+        res=false;
+      }
+      std::cout << sum << std::endl;
+      std::cout << sumTheorique << std::endl;
+    }
+  }
 
 
   return res;
