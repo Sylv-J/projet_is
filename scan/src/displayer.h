@@ -58,7 +58,7 @@ public :
     int getSceneHeight() const;
     void findSaveDir();
     QDir getSaveDir() const;
-    void setLineNumber();
+    void showLineNumber(bool show);
     void showLabelPos(bool show, qreal pos = 0);
     void addImages(const QVector<QImage *> &im_vect);
     void setSceneWidth(int width);

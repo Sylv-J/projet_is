@@ -201,3 +201,4 @@ void MyWindow::hideAllButtons()
     m_buttonSave->hide();
 
 }
+
