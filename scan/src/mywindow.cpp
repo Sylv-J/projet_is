@@ -73,7 +73,7 @@ void MyWindow::chooseImages()
     colNumbers = 0;
     rowNumbers = 0;
 
-    QSize currentImageSize = QSize();
+    QSize currentMaxSize = QSize(0, 0);
     for(int i = 0; i < filenames.size(); ++i)
     {
         QImage currentImage(filenames.at(i));
@@ -87,11 +87,17 @@ void MyWindow::chooseImages()
         QImage *newImage = new QImage(currentImage);
         chosenImages.push_back(newImage);
 
-        detectCircles(newImage, &splitPoints);
+        QVector <int> newPoints;
 
-        currentImageSize = chosenImages[i]->size();
-        colNumbers = fmax(colNumbers, currentImageSize.width());
-        rowNumbers += currentImageSize.height();
+        detectCircles(newImage, &newPoints);
+        for(int j = 0; j < newPoints.size(); j++)
+        {
+            splitPoints.push_back(rowNumbers + newPoints[j]);
+        }
+
+        currentMaxSize = chosenImages[i]->size();
+        colNumbers = fmax(colNumbers, currentMaxSize.width());
+        rowNumbers += currentMaxSize.height();
 
     }
 
