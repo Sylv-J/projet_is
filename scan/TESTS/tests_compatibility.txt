@@ -19,5 +19,9 @@ V3.4 : Computer that has QT but no OpenCV -> Doesn't work well (some crashes)
 V3.4 : QT and Open CV -> png 		  -> It works
 V3.4 : QT and Open CV -> jpg/jpeg 	  -> It works
 
+V3.6.debug : Computer that has no QT no OpenCV  -> It works 
+V3.6.debug : Computer that has QT but no OpenCV -> It works 
+V3.6.debug : QT and Open CV -> png 		  -> It works
+V3.6.debug : QT and Open CV -> jpg/jpeg 	  -> It works
 
 

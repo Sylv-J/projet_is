@@ -50,7 +50,43 @@ Test copie 22 (Sable seul) : Séparations dans le sable
 Test copie 23 (Multicolore + Sombre jaune) : Pastille sombre jaune Non acceptée (voir si elle devrait l'être)
 Test copie 24 (Trait Diagonal) : Pris en compte : Changer le rapport Hauteur/largeur
 Test copie 25 (Test pierre jaunatre + pastille) : Valide
-Test copie 26 (Test pastills assez sombres) : Seulement quelques endroits pris en compte
+Test copie 26 (Test pastilles assez sombres) : Seulement quelques endroits pris en compte
+
+
+Version de ScanCopie 3.6.debug
+Test sur 5 copies differentes : Ne marche pas sur plusieurs copies
+Test de découpe + enregistrement : Enregistre bien selon les découpes dans le fichier voulu. Il n'y a pas de marge supérieure/Inférieurs au niveau de la découpe
+Test de création de lignes : Valide.
+Test de déplacement de lignes : Valide. -> Rapprochement de deux lignes limité, est-ce volontaire?
+Test de suppression de lignes : Valide.
+Test interface/affichage : Problème d'affichage du nombre de lignes lors de la premiere ouverture ( plein ecran). Pas de bouton réduire/plein ecran?
+Test de l'option Nouveau choix : Ne marche pas sur la nouvelle image chargée
+Test copie 1 (jaune-orange) : Valide.
+Test copie 2 (Fond marron-orange) : Valide.
+Test copie 3 (Copie type) : Valide.
+Test copie 4 (Pastille tachee) : Valide. 
+Test copie 5 (Fond jaune clair + pastille) : Valide
+Test copie 6 (Pas de pastille) : Valide.
+Test copie 7 (Pastille allongee verticale) : Valide. 
+Test copie 8 (Fond forme rondes)  : Valide.
+Test copie 9 (Grosse pastille) : Valide.
+Test copie 10 (Pas de pastille) : Valide.
+Test copie 11 (Grosse pastille - Ronds ) : Valide.
+Test copie 12 (pastilles sous fonds de ronds) : Valide.
+Test copie 13 (Header,Copie quadrillées) : Exception en point flottant. 
+Test copie 14 (copie test) : Valide
+Test copie 15 (sans pastille) : Valide
+Test copie 16 (Pastille déformée) : Valide
+Test copie 17 (header, copie quadrillée avec pastille) : Exception en point flottant.
+Test copie 18 (Copie type) : Valide
+Test copie 19 (Bulles) : Valide
+Test copie 20 (Disposition horizontale) : Valide
+Test copie 21 (Pastille sur sable) : Exception en point flottant.
+Test copie 22 (Sable seul) :  Exception en point flottant.
+Test copie 23 (Multicolore + Sombre jaune) : Valide.
+Test copie 24 (Trait Diagonal) : Ne devrait pas etre pris en compte : Changer le rapport Hauteur/largeur
+Test copie 25 (Test pierre jaunatre + pastille) : Valide
+Test copie 26 (Test pastills assez sombres) :  Valide.
 
 
 
