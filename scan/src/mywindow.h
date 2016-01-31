@@ -31,11 +31,11 @@ class MyWindow : public QWidget
 
     MyWindow();
     void init();
+    void split();
 
     public slots:
 
     void chooseImages();
-    void split();
     void saveImages();
 
     private:

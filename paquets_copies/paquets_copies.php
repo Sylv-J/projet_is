@@ -99,8 +99,7 @@ function assignFathers($localCorrector, $id_unit) {
           $list = $correctorlist;
         }
       }
-      // Remarque : il faut changer le type du paramètre id_corrector en VARCHAR(255) (car possibilité de plusieurs correcteurs)
-      // ici, on suppose que les id des correcteurs sont séparés par le caractère '|'
+      // ici, on suppose que les id des correcteurs sont séparés par le caractère $separator
       if(isset($list)&&strpos($list,$separator)){
         $correctors = explode($separator, $list);
         array_push($correctors, $localCorrector);
@@ -196,7 +195,7 @@ updateDB('test2', 6);
 ///////////////////////////////////////////
 */
 
-// On suppose que unitType est de la forme "Maths" ou "Physics"...
+// On suppose que $unitType est de la forme "Maths" ou "Physics"...
 function assignUnits($unitType) {
   $db = masterDB::getDB();
 
@@ -207,7 +206,16 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
-  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  /*Modification de la requete sql car le champ epreuve n'existe pas, il faudra modifier la requete pour qu'elle 
+  prenne en compte les matières que le correcteur à le droit d'utiliser
+  signé antoine
+  */
+  /*Le champ "epreuves" existe (il a été rajouté récemment), tu peux le voir dans utils/tables_struct. Je pense qu'il faut que
+  tu pull et que tu re-build tes bases de données pour l'avoir.
+  Mathilde
+  */
+  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
@@ -229,6 +237,7 @@ assignUnits('Physics');
 //////////////////////////////////////////
 */
 
+// assigner une copie à un correcteur spécifique 
 function punctualAssignment($id_corrector, $unitType) {
   $db = masterDB::getDB();
   $req = $db->query("SELECT id FROM units WHERE id_corrector IS NULL AND id LIKE '%{$unitType}%'");
@@ -264,7 +273,8 @@ freeUnit('Eleve1_Maths1_Part1');
 //////////////////////////////////////
 */
 
-// réinitialiser les champs id_corrector de toutes les unités (utile pour tests notamment)
+// réinitialiser le champ id_corrector de toutes les unités et, inversement, le champ current_units des correcteurs 
+//(utile pour tests notamment)
 function freeCorrectors(){
   $db = masterDB::getDB();
   $req = $db->query('SELECT id FROM units WHERE id_corrector IS NOT NULL');
@@ -273,7 +283,16 @@ function freeCorrectors(){
       freeUnit($element);
     }
   }
+  $correctors = listCorrectors();
+  foreach(array_unique($correctors) as $corrector){
+      $db->query('UPDATE users SET current_units = NULL WHERE id="'.$corrector.'"');
+  }
+  
 }
+
+///////////TEST////////////////////////////
+//freeCorrectors();
+//////////////////////////////////////////
 
 // récupérer les différentes matières d'une épreuve (sous forme de tableau)
 function getSubjects(){
@@ -284,8 +303,9 @@ function getSubjects(){
   while($units = $result->fetch()){
     foreach(array_unique($units) as $unit) {
       // on suppose que le nom de l'unité est de la forme "Eleve1_Maths1_Part1..." (la matière est donc après le premier '_')
+      // Attention, si le nom de l'unité est d'une forme différente, il faut modifier la partie sélectionnée
       $name = explode('_', $unit);
-      $exam = $name[1];
+      $exam = $name[1]; 
       $exam = preg_replace('/[0-9]+/', '', $exam);
       array_push($res, $exam);
       $res = array_unique($res);
@@ -300,6 +320,19 @@ $test = getSubjects();
 echo implode(' ', $test);
 //////////////////////////////////////
 */
+
+// assigner en masse toutes les unités non assignées (de toutes les matières)
+function assignAll() {
+  $db = masterDB::getDB();
+  $subjects = getSubjects();
+  foreach($subjects as $subject){
+    assignUnits($subject);  
+  }
+}
+
+///////////TEST////////////////////////////
+//assignAll();
+//////////////////////////////////////////
 
 // tableau des correcteurs ayant au moins une unité assignée
 function listCorrectors(){
@@ -319,6 +352,26 @@ function listCorrectors(){
 ////////TEST///////////////////////////////////
 $liste_correcteurs = listCorrectors();
 echo implode($liste_correcteurs);
+///////////////////////////////////////////////
+*/
+
+// récupérer les unités d'un correcteur
+function unitsCorrector($id_corrector){
+  $db = masterDB::getDB();
+  $result = $db->query('SELECT current_units FROM users WHERE id="'.$id_corrector.'"') ;
+  $res = $result->fetch();
+  return array_unique($res); 
+  
+}
+
+/*
+////////TEST///////////////////////////////////
+$test = unitsCorrector(1);
+$test1 = unitsCorrector(2);
+$test2 = unitsCorrector(3);
+echo implode($test);
+echo implode($test1);
+echo implode($test2);
 ///////////////////////////////////////////////
 */
 

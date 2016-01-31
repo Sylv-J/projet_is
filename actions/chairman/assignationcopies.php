@@ -10,12 +10,11 @@
         <form method="post" action="../interface_web/index.php">
           <select name="unitsType">
               <?php
-                $list = array("Maths1","Physique");
-                //$list = getSubjects();
-                for ($i=0;$i<=sizeof($list);$i++) {
-                  $value = $list[$i];
-                  echo "<option value=$value>$value</option>" ;
-                }
+                //$list = array("Maths1","Physique");
+                $matieres = getSubjects();
+                foreach($matieres as $matiere):
+                      echo "<option value=$matiere>$matiere</option>" ;
+                endforeach;
               ?>
 
           </select>
@@ -37,11 +36,11 @@
           <tbody>
 
             <?php
-            $list = listCorrectors();
+            $correcteurs = listCorrectors();
 
-            for ($i=0;$i <= sizeof($list);$i++){
-              $corrector = $list[$i];
-              echo "<tr> <td>$corrector</td></tr>"; }
+            foreach ($correcteurs as $correcteur){
+               echo "<tr> <td>$correcteur</td></tr>";
+             }
             ?>
 
           </tbody>
