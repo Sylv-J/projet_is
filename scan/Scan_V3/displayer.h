@@ -56,6 +56,10 @@ public :
     QVector<MyQGraphicsLineItem*> &getLines();
     QGraphicsView* getView();
     int getSceneHeight() const;
+    void findSaveDir();
+    QDir getSaveDir() const;
+    void setLineNumber();
+    void showLabelPos(bool show, qreal pos = 0);
     void addImages(const QVector<QImage *> &im_vect);
     void setSceneWidth(int width);
     void drawLine(int posY);
@@ -78,6 +82,11 @@ private :
     QVector <QGraphicsPixmapItem*> items;
     int sceneHeight;
     int sceneWidth;
+    QLabel *lineNumber;
+    QLabel *selectedLine;
+    QLabel *position;
+    QLabel *save;
+    QDir saveDir;
 
 };
 

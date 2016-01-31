@@ -30,6 +30,7 @@ private:
     Displayer *displayer;
     MyQGraphicsLineItem *upperLine;
     MyQGraphicsLineItem *lowerLine;
+    bool move;
 
 };
 

@@ -15,7 +15,7 @@ void MyWindow::init()
 
 {
 
-    this->resize(1024, 512);
+    this->showMaximized();
 
     displayer = new Displayer(this, "display zone");
 
@@ -158,29 +158,34 @@ void MyWindow::saveImages()
 
     this->split();
 
-    QString filePath = QDir::toNativeSeparators(QString("%1%2%3%4.png").arg(QDir::currentPath()).arg("/images/").arg("image_"));
+    QDir saveDir = displayer->getSaveDir();
 
-    bool totalFail = true;
-    bool fail = false;
+    bool pathCreation = saveDir.mkpath(saveDir.path());
+
+    if(!pathCreation)
+    {
+        QMessageBox::critical(this, "Erreur", "La création du dossier d'enregistrement des images a échoué.");
+    }
+
+    QString filePath = QDir::toNativeSeparators(QString("%1%2%3.png").arg(saveDir.path()).arg("/image_"));
+
+    int fail = 0;
 
     for(int i = 0; i < splittedImages.size(); i++)
     {
         bool save = splittedImages[i]->save(filePath.arg(i+1, 2, 10, QChar('0')), FORMAT);
-        totalFail = totalFail && !save;
-        fail = fail || !save;
+        if(!save)
+        {
+            fail++;
+        }
     }
 
-    if(fail && !totalFail)
+    if(fail > 0)
     {
-        QMessageBox::critical(this, "Erreur", "Une erreur s'est produite lors de la tentative de sauvegarde de certaines images.");
+        QMessageBox::critical(this, "Erreur", QString("Echec de l'enregistrement de %1 image(s).").arg(fail));
     }
 
-    if(totalFail)
-    {
-        QMessageBox::critical(this, "Erreur", QString("Echec de l'enregistrement des images. Vérifiez qu'il existe un dossier \"images\" à l'endroit suivant :\n%1").arg(QDir::currentPath()));
-    }
-
-    displayer->clean(!fail);
+    displayer->clean(fail == 0);
 
     hideAllButtons();
     m_buttonChooseImages->setText("&Choix des images");

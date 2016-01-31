@@ -8,9 +8,13 @@ SOURCES += \
     main.cpp \
     mywindow.cpp \
     displayer.cpp \
-    Traitement.cpp
+    myqgraphicslineitem.cpp \
+    myqgraphicsscene.cpp \
+    traitement.cpp
 
 HEADERS += \
     mywindow.h \
     displayer.h \
-    Traitement.h
+    myqgraphicslineitem.h \
+    myqgraphicsscene.h \
+    traitement.h

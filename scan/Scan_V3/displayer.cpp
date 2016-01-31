@@ -1,6 +1,9 @@
 #include "displayer.h"
 
 
+using namespace std;
+
+
 Couple::Couple(qreal r, int im_number)
 
 {
@@ -42,14 +45,42 @@ Displayer::Displayer(QWidget *parent, QString name) : QWidget(parent)
     informations->setAlignment(Qt::AlignCenter);
     informations->setFont(QFont("Times", 15, 3));
 
+    save = new QLabel;
+    save->setAlignment(Qt::AlignCenter);
+    save->setFont(QFont("Times", 15, 3));
+
     leftLayout->addWidget(informations);
     leftLayout->addWidget(view);
+    leftLayout->addWidget(save);
+    save->hide();
+
+    lineNumber = new QLabel;
+    position = new QLabel;
+
+    lineNumber->setAlignment(Qt::AlignCenter);
+    lineNumber->setFont(QFont("Times", 13, 4));
+    position->setAlignment(Qt::AlignCenter);
+    position->setFont(QFont("Times", 13, 4));
+    position->setMinimumHeight(40);
+
+    rightLayout->addStretch();
+    rightLayout->addWidget(lineNumber);
+    rightLayout->addSpacing(20);
+    rightLayout->addWidget(position);
+    rightLayout->addStretch();
+    lineNumber->hide();
+    position->hide();
 
     mainLayout->addLayout(leftLayout);
+    mainLayout->addLayout(rightLayout);
 
     empty = true;
     sceneHeight = 0;
     sceneWidth = 0;
+
+
+    saveDir = QDir(QDir::toNativeSeparators(QString("%1%2").arg(QDir::currentPath()).arg("/images/temp")));
+    saveDir.removeRecursively();
 
 }
 
@@ -61,6 +92,58 @@ QVector<MyQGraphicsLineItem*> &Displayer::getLines() { return lines; }
 QGraphicsView* Displayer::getView() { return view; }
 
 int Displayer::getSceneHeight() const { return sceneHeight; }
+
+
+void Displayer::findSaveDir()
+
+{
+
+    bool success = false;
+
+    for(int i = 1; i < 100; i++)
+    {
+
+        QDir d(QDir::toNativeSeparators(QString("%1%2%3").arg(QDir::currentPath()).arg("/images/images_").arg(i, 2, 10, QChar('0'))));
+        if(!d.exists())
+        {
+            success = true;
+            saveDir = QDir(d);
+            break;
+        }
+
+    }
+
+    if(!success)
+    {
+        QMessageBox::warning(this, "Attention", "Le dossier d'enregistrement des images est plein. En attendant qu'il soit vidé, les prochains enregistrements s'effectueront dans un dossier temporaire qui sera supprimé ultérieurement.");
+    }
+
+}
+
+
+QDir Displayer::getSaveDir() const { return saveDir; }
+
+
+void Displayer::setLineNumber()
+
+{
+    lineNumber->setText(QString("nombre de lignes :\n%1").arg(lines.size()));
+}
+
+
+void Displayer::showLabelPos(bool show, qreal pos)
+
+{
+    if(show)
+    {
+        position->setText(QString("positionnement :\n%1").arg(pos));
+        position->show();
+    }
+    else
+    {
+        position->hide();
+    }
+}
 
 
 void Displayer::addImages(const QVector<QImage*> &im_vect)
@@ -94,6 +177,15 @@ void Displayer::addImages(const QVector<QImage*> &im_vect)
     scene->setSceneRect(0, 0, sceneWidth, sceneHeight);
 
     informations->setText("Appuyer sur enregistrer pour diviser l'image au niveau des lignes et sauvegarder le résultat.\nDouble cliquez pour ajouter une ligne.\nDéplacer une ligne avec le bouton gauche de la souris.\nSupprimer une ligne avec le bouton droit de la souris.");
+
+    this->findSaveDir();
+    save->setText(QString("Les images seront enregistrées dans :\n%1").arg(saveDir.path()));
+    save->show();
+
+    this->setLineNumber();
+
+    lineNumber->show();
+    position->show();
 
 }
 
@@ -153,6 +245,8 @@ void Displayer::drawLine(int posY)
 
     }
 
+    this->setLineNumber();
+
 
 }
 
@@ -178,6 +272,8 @@ void Displayer::removeLine(MyQGraphicsLineItem *line)
     lines.remove(lines.indexOf(line));
 
     delete line;
+
+    this->setLineNumber();
 
 }
 
@@ -245,9 +341,15 @@ void Displayer::clean(bool saveSuccess)
     sceneHeight = 0;
     sceneWidth = 0;
 
+    lineNumber->hide();
+    position->hide();
+
+    saveDir = QDir(QDir::toNativeSeparators(QString("%1%2").arg(QDir::currentPath()).arg("/images/temp")));
+    save->hide();
+
     if(saveSuccess)
     {
-        informations->setText("Les images ont été enregistrées avec succès. Choisissez les nouvelles images à traiter.");
+        informations->setText("Les images ont été enregistrées avec succès.\nChoisissez les nouvelles images à traiter.");
     }
     else
     {

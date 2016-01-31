@@ -1,5 +1,4 @@
 #include "myqgraphicslineitem.h"
-#include <iostream>
 
 
 MyQGraphicsLineItem::MyQGraphicsLineItem(const QLineF &line, Displayer *disp) : QGraphicsLineItem(line)
@@ -9,6 +8,7 @@ MyQGraphicsLineItem::MyQGraphicsLineItem(const QLineF &line, Displayer *disp) : 
     displayer = disp;
     upperLine = NULL;
     lowerLine = NULL;
+    move = false;
     this->setPen(QPen(Qt::black, 2));
     this->setAcceptHoverEvents(true);
 
@@ -49,6 +49,8 @@ void MyQGraphicsLineItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
     if(event->button() == Qt::LeftButton)
     {
         this->setPen(QPen(Qt::green, 2));
+        displayer->showLabelPos(true, this->scenePos().ry());
+        move = true;
     }
 
 }
@@ -58,7 +60,12 @@ void MyQGraphicsLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 {
 
-    qreal lastPosY = event->lastScenePos().ry();
+    if(!move)
+    {
+        this->ungrabMouse();
+        return;
+    }
+
     qreal newPosY = event->scenePos().ry();
 
     bool stop = false;
@@ -77,12 +84,17 @@ void MyQGraphicsLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         this->setPos(0, newPosY);
     }
 
+    displayer->showLabelPos(true, this->scenePos().ry());
+
 }
 
 
 void MyQGraphicsLineItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 {
+
+    move = false;
+    displayer->showLabelPos(false);
 
     if(event->button() == Qt::LeftButton)
     {
