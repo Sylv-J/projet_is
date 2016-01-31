@@ -44,21 +44,23 @@ Displayer::Displayer(QWidget *parent, QString name) : QWidget(parent)
     informations = new QLabel("Choisissez les images à traiter.");
     informations->setAlignment(Qt::AlignCenter);
     informations->setFont(QFont("Times", 15, 3));
+    informations->setMinimumHeight(130);
 
     save = new QLabel;
     save->setAlignment(Qt::AlignCenter);
     save->setFont(QFont("Times", 15, 3));
+    save->setMinimumHeight(70);
 
     leftLayout->addWidget(informations);
     leftLayout->addWidget(view);
     leftLayout->addWidget(save);
-    save->hide();
 
     lineNumber = new QLabel;
     position = new QLabel;
 
     lineNumber->setAlignment(Qt::AlignCenter);
     lineNumber->setFont(QFont("Times", 13, 4));
+    lineNumber->setMinimumWidth(130);
     position->setAlignment(Qt::AlignCenter);
     position->setFont(QFont("Times", 13, 4));
     position->setMinimumHeight(40);
@@ -68,8 +70,6 @@ Displayer::Displayer(QWidget *parent, QString name) : QWidget(parent)
     rightLayout->addSpacing(20);
     rightLayout->addWidget(position);
     rightLayout->addStretch();
-    lineNumber->hide();
-    position->hide();
 
     mainLayout->addLayout(leftLayout);
     mainLayout->addLayout(rightLayout);
@@ -124,10 +124,17 @@ void Displayer::findSaveDir()
 QDir Displayer::getSaveDir() const { return saveDir; }
 
 
-void Displayer::setLineNumber()
+void Displayer::showLineNumber(bool show)
 
 {
-    lineNumber->setText(QString("nombre de lignes :\n%1").arg(lines.size()));
+    if(show)
+    {
+        lineNumber->setText(QString("nombre de lignes :\n%1").arg(lines.size()));
+    }
+    else
+    {
+        lineNumber->setText(QString());
+    }
 }
 
 
@@ -137,11 +144,10 @@ void Displayer::showLabelPos(bool show, qreal pos)
     if(show)
     {
         position->setText(QString("positionnement :\n%1").arg(pos));
-        position->show();
     }
     else
     {
-        position->hide();
+        position->setText(QString());
     }
 }
 
@@ -182,10 +188,7 @@ void Displayer::addImages(const QVector<QImage*> &im_vect)
     save->setText(QString("Les images seront enregistrées dans :\n%1").arg(saveDir.path()));
     save->show();
 
-    this->setLineNumber();
-
-    lineNumber->show();
-    position->show();
+    this->showLineNumber(true);
 
 }
 
@@ -245,7 +248,7 @@ void Displayer::drawLine(int posY)
 
     }
 
-    this->setLineNumber();
+    this->showLineNumber(true);
 
 
 }
@@ -273,7 +276,7 @@ void Displayer::removeLine(MyQGraphicsLineItem *line)
 
     delete line;
 
-    this->setLineNumber();
+    this->showLineNumber(true);
 
 }
 
@@ -341,11 +344,11 @@ void Displayer::clean(bool saveSuccess)
     sceneHeight = 0;
     sceneWidth = 0;
 
-    lineNumber->hide();
-    position->hide();
+    this->showLineNumber(false);
+    this->showLabelPos(false);
 
     saveDir = QDir(QDir::toNativeSeparators(QString("%1%2").arg(QDir::currentPath()).arg("/images/temp")));
-    save->hide();
+    save->setText(QString());
 
     if(saveSuccess)
     {
@@ -357,3 +360,5 @@ void Displayer::clean(bool saveSuccess)
     }
 
 }
+
+
