@@ -10,34 +10,76 @@
 #include <QVector>
 #include <QLabel>
 #include <QPainter>
-#include <QGridLayout>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsItem>
 #include <QScrollArea>
 #include <QListWidget>
 #include <QLineF>
+#include <QVBoxLayout>
+#include <QGraphicsSceneMouseEvent>
+
+#include "myqgraphicslineitem.h"
+#include "myqgraphicsscene.h"
+
+class MyQGraphicsLineItem;
+class MyQGraphicsScene;
+class Couple;
+
+class Couple
+
+{
+
+public:
+
+    Couple(qreal r, int im_number);
+    qreal getRow() const;
+    int getImageNumber() const;
+    void setRow(qreal r);
+    void setImageNumber(int im_number);
+
+private:
+
+    qreal row;
+    int imageNumber;
+
+};
 
 class Displayer : public QWidget
 
 {
 
-    public :
+public :
 
     Displayer(QWidget *parent, QString name = QString());
-    QScrollArea *getScrollArea();
-    void addImage(QImage *image);
+    bool isEmpty();
+    QVector<MyQGraphicsLineItem*> &getLines();
+    QGraphicsView* getView();
+    int getSceneHeight() const;
     void addImages(const QVector<QImage *> &im_vect);
-    void drawDivLines(const QVector <QLineF*> &divisionLines);
-    void clean();
+    void setSceneWidth(int width);
+    void drawLine(int posY);
+    void removeLine(MyQGraphicsLineItem *line);
+    void drawDivLines(const QVector<int> &splitPoints);
+    void getSplitPoints(QVector<Couple *> *splitPoints);
+    void clean(bool saveSuccess = false);
 
-    private :
+private :
 
-    QVBoxLayout *layout;
-    QScrollArea *scrollArea;
-
-    QVector <QImage*> images;
-    QVector <QLabel*> labels;
-
-    QLabel *emptyLabel;
+    QHBoxLayout *mainLayout;
+    QVBoxLayout *leftLayout;
+    QVBoxLayout *rightLayout;
+    QLabel *informations;
+    MyQGraphicsScene *scene;
+    QGraphicsView *view;
+    bool empty;
+    QGraphicsTextItem *emptyItem;
+    QVector <MyQGraphicsLineItem*> lines;
+    QVector <QGraphicsPixmapItem*> items;
+    int sceneHeight;
+    int sceneWidth;
 
 };
+
 
 #endif // DISPLAYER_H
