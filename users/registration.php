@@ -69,7 +69,8 @@ if($valid){
 			$_POST["group"]
 	));
 
-
+// On prévient l'utilisateur en lui envoyant un email contenant ses identifiants.
+include_once("../messenger/send/notifyUserAccount.php");
 
 }
 else{
