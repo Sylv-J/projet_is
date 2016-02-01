@@ -306,7 +306,7 @@ function getSubjects(){
       // Attention, si le nom de l'unité est d'une forme différente, il faut modifier la partie sélectionnée
       $name = explode('_', $unit);
       $exam = $name[1]; 
-      $exam = preg_replace('/[0-9]+/', '', $exam);
+      //$exam = preg_replace('/[0-9]+/', '', $exam);
       array_push($res, $exam);
       $res = array_unique($res);
     }
