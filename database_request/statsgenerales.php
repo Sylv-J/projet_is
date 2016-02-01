@@ -2,7 +2,9 @@
   include_once("../master_db.php");
   $db = masterDB::getDB();
   $req = $db->query("SELECT units_remaining FROM users WHERE user_group = 'correcteur' ");
-  $req2 = $db->query("SELECT id_sons FROM units WHERE id_sons is NULL and id_corrector is null");
+  $req2 = $db->query("SELECT id_sons FROM units WHERE id_sons is NULL AND id_corrector is NULL");
+
+
   $nbcopies=0;
   $nbassignes=0;
   while($donnees = $req->fetch()){
