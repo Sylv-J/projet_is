@@ -174,6 +174,8 @@ function getUsers(){
   }
 
 function changeRights($username,$rights){
+  /* Cette fonction change les droits d'un utilisateur 
+  */
   $db = masterDB::getDB();
   $req = $db->prepare(
               "UPDATE users SET user_group = :droits WHERE username = :name"
