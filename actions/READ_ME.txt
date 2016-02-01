@@ -14,8 +14,13 @@
     
     - "remplirtableau.php" : Séries de requêtes SQL allant chercher les différentes données dans la base 'units' et 'users'.
     
+    - "gestion.php" : Permet d'allouer ponctuellement une copie à un correcteur après une assignation automatique et d'ajouter un concours
+    
 #ACTIONS SECRETAIRE
     - "ajoutercopie.php" : Permet d'ajouter une copie à l'aide d'un formulaire.
+    
+#ACTIONS ADMINISTRATEUR
+  - Gestion des droits : Permet de changer les droits d'un utilisateur (ie son "user_group")
 
 
 Personnes en charge de cette partie (CHAIRMAN/SECRETAIRE) : Antoine Jubin & Bao-Vi Defaux
