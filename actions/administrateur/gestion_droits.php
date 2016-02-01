@@ -1,19 +1,51 @@
-<?php
-  include_once("../master_db.php");
-  $db = masterDB::getDB();
+<body>
+  <div class="jumbotron">
+    <div class="container">
+    <h2> Changement de droits </h2>
+      <?php
+        include_once("../master_db.php");
+        $db = masterDB::getDB();
   
-  //exécution de la requête:
-  $req = $db->query( "SELECT user_group FROM users") ;
- 
-  //affichage des données:
-  if( $result = mysql_fetch_object( $requete ) ) {
-  <form action='gestion_droits.php' method='post'>
-    <select name=Droit>
-      <OPTION value=Administrateur>Administrateur</OPTION>
-      <OPTION value=Correcteur>Correcteur</OPTION>
-      <OPTION value=Chairman>Chairman</OPTION>
-      <OPTION value=Secrétaire>Secrétaire</OPTION>
-      </select><input type='submit' value='Valider'>
+        $res = $db->query('SELECT id FROM users') ;
+        $res = array();
+         // while($units = $result->fetch()){
+           // foreach(array_unique($units) as $unit) {
+            //  $res = array_unique($res);
+           // }
+         // }
+       // return $res;
+      ?>
+      
+      <div class="col-md-3">
+        <form method="post" action="../interface_web/index.php">
+          <select name="user">
+              <?php
+                $id = $res;
+                foreach($id as $id):
+                      echo "<option value=$id>$id</option>" ;
+                endforeach;
+              ?>
+
+          </select>
+          <input type="hidden" name="page_to_load" value="Test Admin"/>
+        </form>
+      </div>
+      
+    <form action="../interface_web/index.php" method="post">
+    
+    <select name="Droits">
+    <option value=""> ----- Choisir ----- </option>
+    <option value="administrateur"> Administrateur </option>
+    <option value="chairman"> Chairman </option>
+    <option value="correcteur"> Correcteur </option>
+    <option value="secretaire"> Secrétaire </option>
+    </select>
+    <input type="submit" value="Modifier" title="Valider pour assigner" />
   </form>
-  }
-?>
+    <?php
+      echo $_POST['user'];
+      echo $_POST['Droits'];
+    ?> 
+  </div>
+  </div>
+</body>
