@@ -49,7 +49,15 @@
             include_once("../messenger/send/send_interface.php");
         }elseif(isset($_POST["msg_read"])){
           include_once("../messenger/read/msg_read.php");
-        }
+        }elseif(isset($_POST["user"]) && isset($_POST["droits"])) {
+            include_once("../database_request/getUsers.php");
+            changeRights($_POST["user"],$_POST["droits"]);
+            unset($_POST["user"]);
+            unset($_POST["droits"]);
+            }
+        
+        
+        
 		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
 		}
@@ -102,3 +110,5 @@
 <script src="js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
+
+

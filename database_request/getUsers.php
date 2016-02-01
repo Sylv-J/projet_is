@@ -1,5 +1,5 @@
 <?php
-include_once("../../master_db.php");
+include_once("../master_db.php");
 
 // fonction pour l'instant non utilisée. ça pourra nous servir après !
 function getCorrectorbyUnit($unit,$concours=''){
@@ -159,5 +159,27 @@ function getConcoursTablebyUser($username){
 	}
   // On retourne par défaut la table 'users' qui contient tout les utilisateurs.
 	return 'users';
+}
+
+function getUsers(){
+  /*  Cette fonction retourne la liste des utilisateurs du site
+  */
+  $db = masterDB::getDB();
+  $req = $db->query(
+        " SELECT username
+          FROM users "
+        );
+  // On retourne le résultat.
+  return $req;
+  }
+
+function changeRights($username,$rights){
+  $db = masterDB::getDB();
+  $req = $db->prepare(
+              "UPDATE users SET user_group = :droits WHERE username = :name"
+              );
+              $req->bindParam(":droits",$rights, PDO::PARAM_STR);
+              $req->bindParam(":name",$username,PDO::PARAM_STR);
+              $req->execute(); 
 }
 ?>
