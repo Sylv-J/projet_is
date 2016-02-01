@@ -17,9 +17,20 @@
 include_once("../master_db.php");
 include_once("./multiplefile_upload_DB.php");
 
-$dir = "../images/"; // $dir contient le nom du dossier où seront uploader les images.
-if(!is_dir($dir)){ // On fait un test pour savoir si le dossier exist déjà
-  mkdir($dir); // S'il n'éxiste pas on le crée avec mkdir()
+$acf =  $_POST ["anneeconcoursfiliere"];
+$epreuve = $_POST["epreuve"];
+
+$dir = "../images/$acf/$epreuve/"; // $dir contient le nom du dossier où seront uploader les images.
+if(!is_dir($dir)){ // On fait un test pour savoir si le dossier existe déjà
+  $msg = "Il y a un problème avec l'inscritption de cet élève.";
+        ?>
+        <script>
+        // notifier la secrétaire que le dossier n'existe pas (càd que cet élève n'est pas inscrit à ce concours/epreuve.
+        $( document ).ready(function() {
+          window.parent.$.notify("<?php echo $msg; ?>", "error");
+        });
+        </script>
+        <?php
 }
 if (isset($_FILES['my_files'])) {
   $myFiles = $_FILES['my_files'];
@@ -92,6 +103,9 @@ for ($i = 0; $i < $fileCount; $i++) {
           // On met à jour la base de donnée en ajoutant l'unité à l'id récupéré
           // par find_unset_entry
           updateDB($idUnite);
+          
+          $udc = UniteDeCorrection::fromID($idUnite); //on crée en local l'unité de correction correspondant au barême qui vient d'être crée
+          $udc->upload(); // on l'upload sur la BDD 
 
           $msg = "le fichier ". $fileinfo["filename"]. " a été bien envoyé.";
           ?>
