@@ -214,8 +214,8 @@ function assignUnits($unitType) {
   tu pull et que tu re-build tes bases de données pour l'avoir.
   Mathilde
   */
-  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
-  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
