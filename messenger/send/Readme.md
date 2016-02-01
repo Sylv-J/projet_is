@@ -66,14 +66,14 @@ Si tout ce passe bien on affiche à l'utilisateur un petit message confirmant le
 On envoie un email à l'utilisateur contenant ses identifiants.
 Ce script utilise les packages Mail et Net_SMTP du framework PEAR de ph.
 Pour l'installation veuillez installer PEAR tout d'abord en suivant les instructions sur le lien suivant :
-[a link](https://pear.php.net/manual/en/installation.getting.php)
+[Installation PEAR](https://pear.php.net/manual/en/installation.getting.php)
 Une fois le framework installé il faut installer les deux packages cités ci-dessus. Ce en éxecutant dans votre shell/bash (selon votre OS) les deux instructions suivantes :
 ```
 * pear install Mail
 * pear install Net_SMTP
 ```
 Il faut éventuellement changer l'include_path dans votre fichier php.ini.
-Plus de détails sur le lien suivant : [a link](https://pear.php.net/manual/en/installation.checking.php)
+Plus de détails sur le lien suivant : [Modification include_path](https://pear.php.net/manual/en/installation.checking.php)
 
 
 ## Built With
