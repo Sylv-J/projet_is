@@ -3,19 +3,19 @@ Bonjour !
 
 
   //////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
- ///////README formulaire Ajout élève\\\\\\\\\\\\\\\\\\\\\\\    Fait par Alban le 25/01/2016
+ ///////README formulaire Ajout élève\\\\\\\\\\\\\\\\\\\\\\\    MaJ par Alban le 01/02/2016
 ////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 Pour l'ajour d'un bareme remplir le texte comme suit :
 
 Math
-*Math1
-**Math1_sousepreuve1@
-**Math1_sousepreuve2@
-*Math2@
+*Math_Math1
+**Math_Math1_sousepreuve1@
+**Math_Math1_sousepreuve2@
+*Math_Math2@
 Français@
 Physique
-*Physique1@
+*Physique_Physique1@
 
 ainsi que les champs anneeconcoursfiliere et id élèves
 
@@ -24,11 +24,11 @@ càd ceux qui n'ont contiendront directement des fichiers et sans autres sous dos
 
 Cela créé DANS LE DOSSIER projet_is dans cet ordre :
  
-projet_is > anneeconcoursfiliere > id eleve > Math > Math1 > Math1_sousepreuve1
-							   > Math1_sousepreuve2
-						    > Math2 
+projet_is > anneeconcoursfiliere > id eleve > Math > Math_Math1 > Math_Math1_sousepreuve1
+							  	> Math_Math1_sousepreuve2
+						   > Math_Math2 
 					    > Français 
-					    > Physique > Physique1
+					    > Physique > Physique_Physique1
 
   //////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
  ///////README formulaire Ajout correcteur\\\\\\\\\\\\\\\\\\    Mis à jour par Alban le 31/01/2016
