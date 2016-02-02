@@ -15,6 +15,7 @@
            ?>
         </tbody>
       </table>
+      <br><br>
       <h2> Stats correcteur </h2>
       <table class ="table">
         <thead>

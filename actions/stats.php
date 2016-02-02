@@ -141,7 +141,30 @@
 					return $nb_cop ;
 				}
 			}
-			
+
+			function quartiles($values){
+
+				sort($values);
+				$count = count($values);
+				$first = .25 * ( $count ) - 1;
+				if (round($first, 0, PHP_ROUND_HALF_DOWN)==$first){
+					$first = $values[$first];
+				}
+				else{
+					$first=1/2*($values[$first]+$values[$first+1]);
+				}
+				$second = ($count % 2 == 0) ? ($values[($count / 2) - 1] + $values[$count / 2]) / 2 : $second = $values[($count) / 2];
+				$third = .75 * ( $count );
+
+				if (round($third, 0, PHP_ROUND_HALF_DOWN)==$third){
+					$third = $values[$third];
+				}
+				else{
+					$third=1/2*($values[$third]+$values[$third+1]);
+				}
+				return [$first,$third,$values[0],$values[$count-1],$second];
+			}
+
 			?>
 
 
@@ -229,8 +252,24 @@
 							}
 							$moyenneGlissante[] = $sum/$nb_copies;
 						}
-						echo "<br/>";
+						echo '<br/>';
+						echo "Graphiques représentant votre moyenne glissante, la boîte à moustache caractérisant vos notes (au-dessus) et l'ensemble des notes (en-dessous) :";
+						echo '<br/>';
 						echo '<img src="../actions/graph.php?ydata1='.urlencode(serialize($moyenneGlissante)).'" border="0" alt="img.php" align="left">';
+						//$test = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+						$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? ORDER BY date_modif DESC ");
+						$req->execute(array($_POST['id_exo2']));
+
+						while($res = $req->fetch()){
+							//echo $res[0];
+							$notes_tot[] = $res[0];
+						}
+
+						$quartiles = array_merge([0,0,0,0,0], quartiles($notes), quartiles($notes_tot));
+
+						echo '<img src="../actions/box.php?ydata1='.urlencode(serialize($quartiles)).'" border="0" alt="img.php" align="left">';
+
 					}
 				}
 					
@@ -250,9 +289,37 @@
 						<p>
 						<?php
 						echo "\n La moyenne globale de tous les correcteurs est de : " ;
-						echo MoyenneTresGlobale();?> 
-						
-						<?php
+						echo MoyenneTresGlobale();
+
+						$req = $db->prepare("SELECT mark FROM units WHERE id_corrector = ? ORDER BY date_modif DESC ");
+						$req->execute(array($_POST["id_correcteur"]));
+
+						while($res = $req->fetch()){
+							$notes[] = $res[0];
+						}
+
+						echo '<br/>';
+						echo "Graphique représentant la boîte à moustache caractérisant les notes données par " .$_POST["id_correcteur"]. " (au-dessus) et l'ensemble des notes (en-dessous) :";
+						echo '<br/>';
+
+
+						$req = $db->prepare("SELECT mark FROM units ORDER BY date_modif DESC ");
+						$req->execute();
+
+						while($res = $req->fetch()){
+							//echo $res[0];
+							$notes_tot[] = $res[0];
+						}
+
+						$quartiles = array_merge([0,0,0,0,0], quartiles($notes), quartiles($notes_tot));
+
+						echo '<img src="../actions/box.php?ydata1='.urlencode(serialize($quartiles)).'" border="0" alt="img.php" align="left">';
+
+
+
+					?>
+
+					<?php
 					}
 									
 								?>		
@@ -273,7 +340,33 @@
 						echo "\n La moyenne globale des correcteurs sur l'exercice " ;
 						echo $_POST["id_exo3"];
 						echo " est de : " ;
-						echo MoyenneGlobale($_POST["id_exo3"]);?> 
+						echo MoyenneGlobale($_POST["id_exo3"]);
+
+						$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? AND id_corrector = ? ORDER BY date_modif DESC ");
+						$req->execute(array($_POST["id_exo3"], $_POST["id_correcteur2"]));
+
+						while($res = $req->fetch()){
+							$notes[] = $res[0];
+						}
+
+						echo '<br/>';
+						echo "Graphique représentant la boîte à moustache caractérisant les notes données par " .$_POST["id_correcteur2"]. " (au-dessus) et l'ensemble des notes (en-dessous) :";
+						echo '<br/>';
+
+
+						$req = $db->prepare("SELECT mark FROM units WHERE id_father = ? ORDER BY date_modif DESC ");
+						$req->execute(array($_POST["id_exo3"]));
+
+						while($res = $req->fetch()){
+							$notes_tot[] = $res[0];
+						}
+
+						$quartiles = array_merge([0,0,0,0,0], quartiles($notes), quartiles($notes_tot));
+
+						echo '<img src="../actions/box.php?ydata1='.urlencode(serialize($quartiles)).'" border="0" alt="img.php" align="left">';
+
+
+						?>
 						
 						<?php
 					}

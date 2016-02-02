@@ -214,8 +214,8 @@ function assignUnits($unitType) {
   tu pull et que tu re-build tes bases de données pour l'avoir.
   Mathilde
   */
-  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
-  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
+  $res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%' AND epreuves LIKE '%{$unitType}%'");
+  //$res = $db->query("SELECT id FROM users WHERE user_group LIKE '%corrector%'");
   $list = array();
   while($correctors = $res->fetch()){
     array_push($list, $correctors[0]);
@@ -306,7 +306,7 @@ function getSubjects(){
       // Attention, si le nom de l'unité est d'une forme différente, il faut modifier la partie sélectionnée
       $name = explode('_', $unit);
       $exam = $name[1]; 
-      $exam = preg_replace('/[0-9]+/', '', $exam);
+      //$exam = preg_replace('/[0-9]+/', '', $exam);
       array_push($res, $exam);
       $res = array_unique($res);
     }
