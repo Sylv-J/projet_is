@@ -15,7 +15,7 @@ $db = masterDB::getDB();
 		Nom Concours de forme 2016MinesMP: <input type="text" name="nom_concours" required><br><br>
        <label for="bareme">Veuillez inscrire le bareme en respectant les consignes</label><br />
        <textarea name="bareme" id="ameliorer" rows="10" cols="50"></textarea>
-	   <label for="eleves">Veuillez inscrire les élèves en respectant les consignes</label><br />
+	   <label for="eleves">Veuillez inscrire les eleves en respectant les consignes</label><br />
        <textarea name="eleves" id="ameliorer" rows="10" cols="50"></textarea>
 	   <input type="submit" value="Envoyer" ></code>
    </p>

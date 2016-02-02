@@ -8,14 +8,14 @@ Bonjour !
 
 Pour l'ajout d'un élève remplir le texte comme suit :
 
-Math
-*Math_Math1
-**Math_Math1_sousepreuve1@
-**Math_Math1_sousepreuve2@
-*Math_Math2@
-Français@
-Physique
-*Physique_Physique1@
+*Math
+**Math_Math1
+***Math_Math1_sousepreuve1@
+***Math_Math1_sousepreuve2@
+**Math_Math2@
+*Français@
+*Physique
+**Physique_Physique1@
 
 ainsi que les champs anneeconcoursfiliere et id élèves
 

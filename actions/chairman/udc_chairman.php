@@ -1,4 +1,6 @@
 <?php
+
+// Ceci est un copier coller de Unite_de_correction. Il est ici pour permettre d'utiliser les fonctions, sans restriction de pathfinding vers master_db.php
 include_once("../../master_db.php");
 $db = masterDB::getDB();
 
