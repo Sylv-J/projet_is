@@ -1,5 +1,5 @@
 <?php
-/// tests en cours (pour le moment, tests locaux)
+
 include_once("../master_db.php");
 $separator = ';';
 
@@ -29,16 +29,6 @@ function getUnitsUnassigned($unitType){
   while($donnees = $req->fetch()){
     array_push($list, $donnees[0]);
   }
-
-  // pas utilisé pour le moment car tests avec petit nombre d'unités
-  /*
-  $nbUnits = sizeof($list);
-  if($nbUnits<=10){
-    return null;
-  }else{
-    return array_slice($list, 0, $nbUnits-10);
-  }
-  */
   return $list;
 }
 
@@ -150,7 +140,6 @@ function updateDB($id_unit, $localCorrector) {
   $dateModif = date('Y/m/d h:i:s');
   $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$id_unit.'"');
   
-  
   // mettre à jour la liste des unités assignées au correcteur
   $req = $db->query('SELECT current_units FROM users WHERE id = "'.$localCorrector.'"');
   while($unit = $req->fetch()){
@@ -171,8 +160,6 @@ function updateDB($id_unit, $localCorrector) {
         $res = $id_unit;
   }
   $db->query('UPDATE users SET current_units = "'.$res.'" WHERE id="'.$localCorrector.'"');
-  
-  //$db->query('UPDATE users SET current_units = "'.$id_unit.'" WHERE id="'.$localCorrector.'"');
 
   // appliquer les changements aux fils
   assignSons($localCorrector, $id_unit);
@@ -321,7 +308,7 @@ echo implode(' ', $test);
 //////////////////////////////////////
 */
 
-// assigner en masse toutes les unités non assignées (de toutes les matières)
+// assigner en masse toutes les unités non assignées (toutes les matières)
 function assignAll() {
   $db = masterDB::getDB();
   $subjects = getSubjects();
