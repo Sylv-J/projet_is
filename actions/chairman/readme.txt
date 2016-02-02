@@ -89,3 +89,10 @@ projet_is > images > anneeconcoursfiliere > id eleve > Math > Math_Math1 > Math_
 						   	    > Math_Math2 
 					    	     > Français 
 					    	     > Physique > Physique_Physique1
+
+Pour les élèves inserez un retour à la ligne entre chaque id d'élève : (0156,1564 et 24 sont des id d'élèves)
+ ---------------
+|0156		|
+|1564		|
+|24		|
+ ---------------
