@@ -4,7 +4,7 @@ include_once("udc_chairman.php");
 $db = masterDB::getDB();
 
 $texte = $_POST['bareme'];
-
+$tab = preg_split("/[\n]/",$texte); // convertit les données rentrées en une table triée par ligne. CETTE LIGNE EST AJOUTEE POUR ALBAN
 //
 //
 //Traitement des données vers un format déja connu :
@@ -73,19 +73,89 @@ for($j=0;$j<$nbre_lignes;$j++){
 	}
 }
 
-echo($texte);
+//echo($texte);
 
 
 //
 //
 //
-//Fin de traitement
+//Fin de traitement concernant ke barème
+//DEBUT AJOUT ALBAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Reutilisation de action ajout élèves
+// Traitement gestion élèves
+$nomconcours = $_POST['nom_concours'];
+$elev = $_POST['eleves'];
+$tabeleves = preg_split("/[\n]/",$elev); // convertit les données rentrées en une table triée par lignes.
+
+$id = array("futurideleve");
+$tab_ligne = array("futurideleve");
+//$db->query("INSERT INTO minesunits (id, id_father) VALUES ('$id[0]',-1)");
+
+
+
+for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenant chaque lignes
+	$flag = 0;
+	$count = -1;            // Je commmence à -1 pour adapter mon code à la notation de gregoire qui ajoutait une étoile de plus que moi
+
+	$ligne = $tab[$i];
+	$ligne = trim($ligne);
+	
+	for($k = 0; $k<strlen($tab[$i]) ; $k++){  // on parcourt chaque caractère de notre ligne
+		if($tab[$i][$k] == "@"){
+			$flag = 1;
+			$ligne = rtrim ($ligne, "0..9");
+			$ligne = rtrim ($ligne, "@");		//on supprime les @
+			echo("flag 1 tkt");
+
+
+		}
+		if($tab[$i][$k] == "*"){
+			$count++;
+			$ligne = ltrim ($ligne, "*");		//on supprime les *
+
+		}
+	}										// maintenant on sait comment est notre ligne
+	for($j = (count($tab_ligne)-1); $j>$count;$j--){
+				//echo $tab_ligne[$j];
+				//unset($tab_ligne[$j]);
+	}
+
+	$tab_ligne[$count+1] = $ligne;
+
+
+
+
+	
+	if($flag == 1){					//l'@ indique lorsque on est en dossier sans sous dossier
+		for($z=0; $z<count($tabeleves);$z++){
+			$tab_ligne[0] = trim($tabeleves[$z]);
+			$path = "../../images/$nomconcours/";
+			for($l = 0; $l<$count+2;$l++){
+
+				$path = $path.$tab_ligne[$l].'/';
+			}
+		//echo $path;
+		
+		
+
+		//echo $i;
+
+			echo("je créé tkt");
+			mkdir ($path, 0777, true );		// le true indique que le mkdir est récursif : créer les sous dossier implique création dossiers.
+		}
+	}
+}
+
+
+
+
+// FIN AJOUT ALBAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 try
 {
 udc_chairman::generateBareme($texte);
 } catch(Exception $e){
-	//echo "Erreur au moment de la création du barême :  \n".$e->getTraceAsString();
+	echo "Erreur au moment de la création du barême :  \n".$e->getTraceAsString();
 	echo($e->getMessage());
 }
 
