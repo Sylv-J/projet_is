@@ -18,6 +18,10 @@
 #include <QLineF>
 #include <QVBoxLayout>
 #include <QGraphicsSceneMouseEvent>
+#include <QCursor>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QFormLayout>
 
 #include "myqgraphicslineitem.h"
 #include "myqgraphicsscene.h"
@@ -51,13 +55,15 @@ class Displayer : public QWidget
 
 public :
 
-    Displayer(QWidget *parent, QString name = QString());
+    Displayer(QWidget *parent, QString config);
     bool isEmpty();
     QVector<MyQGraphicsLineItem*> &getLines();
     QGraphicsView* getView();
     int getSceneHeight() const;
     void findSaveDir();
     QDir getSaveDir() const;
+    QString getTestName() const;
+    int getID() const;
     void showLineNumber(bool show);
     void showLabelPos(bool show, qreal pos = 0);
     void addImages(const QVector<QImage *> &im_vect);
@@ -73,6 +79,7 @@ private :
     QHBoxLayout *mainLayout;
     QVBoxLayout *leftLayout;
     QVBoxLayout *rightLayout;
+    QFormLayout *formLayout;
     QLabel *informations;
     MyQGraphicsScene *scene;
     QGraphicsView *view;
@@ -85,8 +92,11 @@ private :
     QLabel *lineNumber;
     QLabel *selectedLine;
     QLabel *position;
-    QLabel *save;
     QDir saveDir;
+    QSpinBox *save_id;
+    QLabel *Lsave_id;
+    QLineEdit *testName;
+    QLabel *LtestName;
 
 };
 

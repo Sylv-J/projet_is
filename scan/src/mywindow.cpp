@@ -1,6 +1,10 @@
 #include "mywindow.h"
+#include <iostream>
+#include <fstream>
 
 #define FORMAT "PNG"
+
+using namespace std;
 
 MyWindow::MyWindow() : QWidget()
 
@@ -17,7 +21,7 @@ void MyWindow::init()
 
     this->showMaximized();
 
-    displayer = new Displayer(this, "display zone");
+    displayer = new Displayer(this, this->getConfig());
 
     m_buttonClose = new QPushButton("&Fermer");
     m_buttonChooseImages = new QPushButton("&Choix des images");
@@ -46,6 +50,40 @@ void MyWindow::init()
 
     hideAllButtons();
     m_buttonChooseImages->show();
+
+}
+
+
+QString MyWindow::getConfig() const
+
+{
+
+    ifstream file("config.txt", ios::in);
+
+    if(!file) return QString();
+
+    string line;
+    getline(file, line);
+
+    file.close();
+
+    return QString(line.c_str());
+
+}
+
+
+void MyWindow::setConfig(QString config)
+
+{
+
+    ofstream file("config.txt", ios::out | ios::trunc);
+
+    if(file)
+    {
+        file << config.toStdString();
+
+        file.close();
+    }
 
 }
 
@@ -171,9 +209,18 @@ void MyWindow::saveImages()
     if(!pathCreation)
     {
         QMessageBox::critical(this, "Erreur", "La création du dossier d'enregistrement des images a échoué.");
+        return;
     }
 
-    QString filePath = QDir::toNativeSeparators(QString("%1%2%3.png").arg(saveDir.path()).arg("/image_"));
+    QString testName = displayer->getTestName();
+    this->setConfig(testName);
+    if(testName.isEmpty())
+    {
+        testName = QString("inconnue");
+    }
+    int save_id = displayer->getID();
+
+    QString filePath = QDir::toNativeSeparators(QString("%1/%2_%3_%4.png").arg(saveDir.path()).arg(save_id, 9, 10, QChar('0')).arg(testName));
 
     int fail = 0;
 

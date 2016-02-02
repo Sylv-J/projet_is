@@ -22,11 +22,9 @@ void Couple::setRow(qreal r) { row = r; }
 void Couple::setImageNumber(int im_number) { imageNumber = im_number; }
 
 
-Displayer::Displayer(QWidget *parent, QString name) : QWidget(parent)
+Displayer::Displayer(QWidget *parent, QString config) : QWidget(parent)
 
 {
-
-    this->setObjectName(name);
 
     mainLayout = new QHBoxLayout;
     leftLayout = new QVBoxLayout;
@@ -41,19 +39,30 @@ Displayer::Displayer(QWidget *parent, QString name) : QWidget(parent)
     emptyItem = scene->addText("VIDE", QFont("Arial", 10, QFont::Bold));
     scene->setSceneRect(emptyItem->sceneBoundingRect());
 
-    informations = new QLabel("Choisissez les images à traiter.");
+    informations = new QLabel("Renseignez le nom de l'épreuve et choisissez les images à traiter.");
     informations->setAlignment(Qt::AlignCenter);
     informations->setFont(QFont("Times", 15, 3));
     informations->setMinimumHeight(130);
 
-    save = new QLabel;
-    save->setAlignment(Qt::AlignCenter);
-    save->setFont(QFont("Times", 15, 3));
-    save->setMinimumHeight(70);
+    testName = new QLineEdit(config);
+    LtestName = new QLabel("Intitulé de l'épreuve :");
+    save_id = new QSpinBox;
+    save_id->setMaximum(2000000);
+    Lsave_id = new QLabel("numéro d'identifiant du candidat :");
+
+    formLayout = new QFormLayout;
+    formLayout->addRow(LtestName, testName);
+    formLayout->addRow(Lsave_id, save_id);
+//    save->setAlignment(Qt::AlignCenter);
+//    save->setFont(QFont("Times", 15, 3));
+//    save->setMinimumHeight(70);
+
+    save_id->hide();
+    Lsave_id->hide();
 
     leftLayout->addWidget(informations);
+    leftLayout->addLayout(formLayout);
     leftLayout->addWidget(view);
-    leftLayout->addWidget(save);
 
     lineNumber = new QLabel;
     position = new QLabel;
@@ -92,6 +101,10 @@ QVector<MyQGraphicsLineItem*> &Displayer::getLines() { return lines; }
 QGraphicsView* Displayer::getView() { return view; }
 
 int Displayer::getSceneHeight() const { return sceneHeight; }
+
+QString Displayer::getTestName() const { return testName->text(); }
+
+int Displayer::getID() const { return save_id->value(); }
 
 
 void Displayer::findSaveDir()
@@ -185,8 +198,11 @@ void Displayer::addImages(const QVector<QImage*> &im_vect)
     informations->setText("Appuyer sur enregistrer pour diviser l'image au niveau des lignes et sauvegarder le résultat.\nDouble cliquez pour ajouter une ligne.\nDéplacer une ligne avec le bouton gauche de la souris.\nSupprimer une ligne avec le bouton droit de la souris.");
 
     this->findSaveDir();
-    save->setText(QString("Les images seront enregistrées dans :\n%1").arg(saveDir.path()));
-    save->show();
+
+    testName->hide();
+    LtestName->hide();
+    save_id->show();
+    Lsave_id->show();
 
     this->showLineNumber(true);
 
@@ -344,20 +360,25 @@ void Displayer::clean(bool saveSuccess)
     sceneHeight = 0;
     sceneWidth = 0;
 
+    save_id->hide();
+    Lsave_id->hide();
+    testName->show();
+    LtestName->show();
+
     this->showLineNumber(false);
     this->showLabelPos(false);
 
-    saveDir = QDir(QDir::toNativeSeparators(QString("%1%2").arg(QDir::currentPath()).arg("/images/temp")));
-    save->setText(QString());
 
     if(saveSuccess)
     {
-        informations->setText("Les images ont été enregistrées avec succès.\nChoisissez les nouvelles images à traiter.");
+        informations->setText(QString("Les images ont été enregistrées avec succès dans :\n%1.\nChoisissez les nouvelles images à traiter.").arg(saveDir.path()));
     }
     else
     {
-        informations->setText("Choisissez les images à traiter.");
+        informations->setText("Renseignez le nom de l'épreuve et choisissez les images à traiter.");
     }
+
+    saveDir = QDir(QDir::toNativeSeparators(QString("%1%2").arg(QDir::currentPath()).arg("/images/temp")));
 
 }
 

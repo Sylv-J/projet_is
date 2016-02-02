@@ -32,6 +32,8 @@ class MyWindow : public QWidget
     MyWindow();
     void init();
     void split();
+    QString getConfig() const;
+    void setConfig(QString config);
 
     public slots:
 

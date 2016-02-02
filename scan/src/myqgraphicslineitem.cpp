@@ -66,6 +66,8 @@ void MyQGraphicsLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         return;
     }
 
+
+    qreal lastPosY = event->lastScenePos().ry();
     qreal newPosY = event->scenePos().ry();
 
     bool stop = false;
@@ -74,6 +76,7 @@ void MyQGraphicsLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     {
         stop = true;
     }
+
     if((lowerLine != NULL && newPosY > lowerLine->pos().ry() - 10) || newPosY > displayer->getSceneHeight())
     {
         stop = true;
@@ -82,6 +85,12 @@ void MyQGraphicsLineItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if(!stop)
     {
         this->setPos(0, newPosY);
+    }
+
+    else
+    {
+        QCursor::setPos(event->lastScreenPos());
+        this->setPos(0, lastPosY);
     }
 
     displayer->showLabelPos(true, this->scenePos().ry());
