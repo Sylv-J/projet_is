@@ -23,14 +23,34 @@ mkdir("../../images/".$_POST['NomConcours']);
 $db->query("INSERT INTO $nomtableunits (id, id_father) VALUES ('0','-1')");
 
 
+$pwdGenerated=generateRandomString();
 $req = $db->prepare("INSERT INTO users (username, pwd, mail, user_group) VALUES(?,?,?,?)");
 $req->execute(array(
 			strip_tags($_POST['NomConcours']),
-			sha1(generateRandomString()),
+			sha1($pwdGenerated),
 			$_POST["mail"],
 			"chairman"
 		));
+  $CreationAuto=1;
+    // On prévient l'utilisateur en lui envoyant un email contenant ses identifiants.
 
-// On prévient l'utilisateur en lui envoyant un email contenant ses identifiants.
-    include_once("../../messenger/send/notifyUserAccount.php");
+$to      = 	$_POST["mail"];
+$subject = 'le sujet';
+$message =
+'Bonjour,
+Madame, Monsieur,
+Noous sommes ravis de vous acceuilir parmi nous.
+Veuillez récupérer vos identifiants pour la correction du concours.
+Votre login :'.$_POST['NomConcours'].'
+Mot de passe:' .$pwdGenerated.'
+à bientôt,
+
+Administrateur Correction Concours.
+ProjetIS
+Mines Nancy';
+$headers = 'From: noreply@mines-nancy.fr' . "\r\n" .
+'Reply-To: noreply@mines-nancy.fr' . "\r\n" .
+'X-Mailer: PHP/' . phpversion();
+mail($to, $subject, $message, $headers);
+header('Location: ../../interface_web/index.php');
 ?>
