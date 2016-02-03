@@ -2,6 +2,7 @@
 	<div class="jumbotron">
 		<div class="container">
 <?php
+if(isset($_SESSION["id"]) && $_SESSION["group"]=="admin"){
 include_once("../master_db.php");
 $db = masterDB::getDB();
 $valid = true;
@@ -95,6 +96,7 @@ echo $error_msg
 </p>
 </form>
 <?php
+}
 }
 ?>
 </div>
