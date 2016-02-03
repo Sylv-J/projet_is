@@ -25,7 +25,9 @@ if (isset($_FILES['my_files'])) {
   $fileCount = count($myFiles["name"]);
 }
 
-$nomsansextension = explode('.',$myFiles["name"][0])[0]; //Attention à respecter le format car si il y a un autre point, tout bug
+$filetoupload = $myFiles["name"][0]; // Entrer ici le résultat du rassemblement des copies. Pour le moment c'est le premier fichier qui est mis.
+
+$nomsansextension = explode('.',$filetoupload)[0]; //Attention à respecter le format car si il y a un autre point, tout bug
 $arborescence = explode('_',$nomsansextension); 
 //Arborescence est un tableau contenant dans chaque case une string
 //exemple Concours_Eleve_Epreuve.png donne $arborescence[0]="Concours", $arborescence[2]="Epreuve"
