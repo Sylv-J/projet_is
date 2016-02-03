@@ -17,25 +17,35 @@
 include_once("../master_db.php");
 include_once("./multiplefile_upload_DB.php");
 
-$acf =  $_POST ["anneeconcoursfiliere"];
-$epreuve = $_POST["epreuve"];
 
-$dir = "../images/$acf/$epreuve/"; // $dir contient le nom du dossier où seront uploader les images.
+
+
+if (isset($_FILES['my_files'])) {
+  $myFiles = $_FILES['my_files'];
+  $fileCount = count($myFiles["name"]);
+}
+
+$nomsansextension = explode('.',$myFiles["name"][0])[0]; //Attention à respecter le format car si il y a un autre point, tout bug
+$arborescence = explode('_',$nomsansextension); 
+//Arborescence est un tableau contenant dans chaque case une string
+//exemple Concours_Eleve_Epreuve.png donne $arborescence[0]="Concours", $arborescence[2]="Epreuve"
+
+
+$dir = "../images/$arborescence[0]/$arborescence[1]/$arborescence[2]/"; // $dir contient le nom du dossier où seront uploader les images.
 if(!is_dir($dir)){ // On fait un test pour savoir si le dossier existe déjà
-  $msg = "Il y a un problème avec l'inscritption de cet élève.";
-        ?>
+	$msg = "Il y a un problème avec l'inscription de cet élève. Le dossier $dir n'existe pas.";
+	?>
         <script>
-        // notifier la secrétaire que le dossier n'existe pas (càd que cet élève n'est pas inscrit à ce concours/epreuve.
+        // notifier la secrétaire que le dossier n'existe pas (càd que cet élève n'est pas inscrit à ce concours/épreuve.
         $( document ).ready(function() {
           window.parent.$.notify("<?php echo $msg; ?>", "error");
         });
         </script>
         <?php
 }
-if (isset($_FILES['my_files'])) {
-  $myFiles = $_FILES['my_files'];
-  $fileCount = count($myFiles["name"]);
-}
+
+
+$myFiles['name'];
 
 for ($i = 0; $i < $fileCount; $i++) {
 
