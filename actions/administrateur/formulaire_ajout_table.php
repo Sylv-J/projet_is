@@ -11,9 +11,13 @@ $db = masterDB::getDB();
 			<p>
 				Nom concours : <input type="text" name="NomConcours" required><br><br>
 
-			</select><br><br>
-			<input type="submit" name='submit' value='register'><br>
 		</p>
+		<p>
+			Mail du chairman : <input type="text" name="mail" required><br><br>
+
+		</select><br><br>
+		<input type="submit" name='submit' value='Ajouter'><br>
+	</p>
 	</form>
 </div>
 </div>
