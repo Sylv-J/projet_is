@@ -20,7 +20,8 @@ $tasksDirectories = array(
   'logout' => '../users/logout.php',
   'Créer un compte' => '../users/registration.php',
   'Gestion' => 'chairman/gestion.php',
-  'Modifier les droits' => 'administrateur/gestion_droits.php'
+  'Modifier les droits' => 'administrateur/gestion_droits.php',
+  'Ajouter épreuve' =>'chairman/ajout_epreuve.php'
   );
 
 ?>
