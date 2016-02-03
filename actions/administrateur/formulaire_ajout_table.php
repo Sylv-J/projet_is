@@ -6,7 +6,7 @@ $db = masterDB::getDB();
 <!-- HMTL code for the registration form -->
 <div class="jumbotron">
 	<div class="container">
-		<form action="../database_request/action_ajout_table.php" method="post">
+		<form action="../actions/administrateur/action_ajout_table.php" method="post">
 			<h3>Inscription : </h3>
 			<p>
 				Nom concours : <input type="text" name="NomConcours" required><br><br>
