@@ -1,10 +1,12 @@
 <?php
 header('Location: ../../interface_web/index.php');
 include_once("../../master_db.php");
+include_once("../../users/user_context.php");
 $db = masterDB::getDB();
 
 
-$nomconcours = $_POST['nom_concours'];
+$nomconcours = $_SESSION["username"];
+echo $nomconcours;
 $tableauBareme = $_POST['bareme'];
 $tab = preg_split("/[\n]/",$tableauBareme); // convertit les données rentrées en une table triée par ligne.
 
@@ -19,7 +21,7 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 	$count = 0;
 
 	$ligne = trim($tab[$i]);
-	$path = "../../images/$nomconcours/";
+	$path = "../../images/"."$nomconcours"."/";
 	for($k = 0; $k<strlen($tab[$i]) ; $k++){  // on parcourt chaque caractère de notre ligne
 		if($tab[$i][$k] == "@"){
 			$flag = 1;

@@ -7,12 +7,6 @@
 
 				<!-- Formulaire -->
 				<form method="post" action="index.php" role="form">
-<h3>Nom du concours :</h3>
-					<div class="form-group has-feedback">
-
-						<input class="form-control" type="text" name="nom_concours" >
-						<i class="glyphicon glyphicon-education form-control-feedback"></i>
-					</div>
 <h3>Organisation des exercices :</h3>
 					<div class="form-group has-feedback">
 
