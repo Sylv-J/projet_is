@@ -53,16 +53,10 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 
 			$path = $path.$tab_ligne[$l].'/';
 		}
-		//echo $path;
 
-		//echo $i;
-		echo ("<br>");
-		echo ("creation du dossier");
-		echo ("<br>");
-		echo $path;
-		echo ("<br>");
 		mkdir ($path, 0777, true );		// le true indique que le mkdir est récursif : créer les sous dossier implique création dossiers.
 
 	}
 }
+
 ?>
