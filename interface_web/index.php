@@ -36,7 +36,7 @@
   //Si connecté
   else
 	{
-        //Assignation des copies  
+        //Assignation des copies
         if(isset($_POST["unitsType"]) and $_SESSION["group"]=="chairman"){
             include_once("../paquets_copies/paquets_copies.php");
             assignUnits($_POST["unitsType"]);
@@ -55,9 +55,15 @@
             unset($_POST["user"]);
             unset($_POST["droits"]);
             }
-        
-        
-        
+
+    elseif(isset($_POST["id_right_exo"])){ // correcteur vient de renommer l'image
+      include_once("../actions/correcteur/bandeau_correction.php");
+      include_once("../actions/correcteur/renommer.php");
+    }
+    elseif(isset($_POST["rename"])){ // correcteur sélectionne l'option renommer
+      include_once("../actions/correcteur/bandeau_correction.php");
+      unset($_POST["rename"]);
+    }
 		elseif(isset($_POST["id_exo"]) and $_SESSION["group"] == "correcteur"){
 			include_once("../actions/correcteur/bandeau_stats_correcteur.php");
 		}
@@ -86,6 +92,7 @@
 
 		}
 		else
+    // cas ou on a la tâche de destination dans le post
 		{
 			include("../actions/tasksDirectories.php");
 			include("../actions/".$tasksDirectories[$_POST["page_to_load"]]);
@@ -110,5 +117,3 @@
 <script src="js/ie10-viewport-bug-workaround.js"></script>
 </body>
 </html>
-
-

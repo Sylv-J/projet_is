@@ -13,6 +13,7 @@
 
             //Recherche dans la db d'une unité de correction non assignée
             $req = $db->prepare('SELECT current_units FROM users WHERE id = "'.$_SESSION["id"].'"');
+            // dans la table correcteur, sélectionne current_units assignée au correcteur d'identifiant id
             $req->execute();
             $res = $req->fetch();
 
@@ -27,10 +28,11 @@
                     <h2>À corriger :</h2>
 
 
-                    <?php
-                    $path=explode('_',$id);
-                    //Affichage de l'unité de correction
-                    echo '<img src="../images/'.$path[0].'/'.$path[1].'/'.$path[2].'/'.$id.'.jpg" alt="'.$id.'" />';
+		                <?php
+                      $path= explode('_',$id);
+                      //Affichage de l'unité de correction
+  		                $src_image = "../images/".$path[0]."/".$path[1]."/".$path[2]."/".$id.".jpg";
+                      //echo '<img src='.$src_image.' alt="'.$id.'" />';
                     ?>
 
                 </div>
@@ -38,21 +40,50 @@
                 <div class="col-md-4">
 
                     <!-- Affichage du formulaire d evaluation -->
+                    <?php
+                      if (!isset($_POST['rename'])) {
+                    ?>
 
                     <h2>Évaluation : </h2>
-
                     <form method="post" action= "index.php" role="form">
-
                         <div class="form-group">
-                            <input type="number" placeholder="Note" name="mark_submit" class="form-control" required>
+                            <input type="number" placeholder="Note" name="mark_submit" class=form-control>
                         </div>
                         <?php
                             //Nécessaire pour mettre la note dans la db
                             echo '<input type="hidden" name="unit_id" value='.$id.'>';
                         ?>
                         <input type="submit" value="Valider" class="btn btn-success">
+                      </form>
+                      <br/>
+                      <form method="post" action= "index.php" role="form">
+                        <!-- bouton "renommer copie" dans le cas où le fichier image ne correspond pas au nom du fichier-->
+                        <button type='submit' name='rename' value='true' class='btn btn-default'>Renommer copie</button>
+                      </form>
 
-                    </form>
+                    <?php
+                      } else {
+                    ?>
+                          <!-- version simple : on renomme un exercice avec le nom d'un autre fichier qui n'existait pas...
+                           -> pas de gestion de conflits entre exercices -->
+                      <h2>Changement de nom : </h2>
+                      <form method="post" action= "index.php" role="form">
+                        <div class="form-group">
+                            <input placeholder="No de l'exercice" name="id_right_exo" type="number" class=form-control>
+				                        <?php
+            		                    //Nécessaire pour garder en mémoire la valeur de l'image à renommer
+            		                    echo '<input type="hidden" name="src_image" value='.$src_image.'>';
+		                            ?>
+                        </div>
+                        <?php
+                            //Nécessaire pour mettre la note dans la db
+                            echo '<input type="hidden" name="id_unit" value='.$id.'>';
+                        ?>
+                        <input type="submit" value="Valider" class="btn btn-success">
+                      </form>
+                        <?php
+                          }
+                        ?>
 
                 </div>
 
