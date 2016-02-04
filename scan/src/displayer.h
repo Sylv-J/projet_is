@@ -55,7 +55,7 @@ class Displayer : public QWidget
 
 public :
 
-    Displayer(QWidget *parent, QString config);
+    Displayer(QWidget *parent, QStringList config);
     bool isEmpty();
     QVector<MyQGraphicsLineItem*> &getLines();
     QGraphicsView* getView();
@@ -63,6 +63,7 @@ public :
     void findSaveDir();
     QDir getSaveDir() const;
     QString getTestName() const;
+    QString getExamName() const;
     int getID() const;
     void showLineNumber(bool show);
     void showLabelPos(bool show, qreal pos = 0);
@@ -97,6 +98,8 @@ private :
     QLabel *Lsave_id;
     QLineEdit *testName;
     QLabel *LtestName;
+    QLineEdit *examName;
+    QLabel *LexamName;
 
 };
 

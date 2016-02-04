@@ -54,25 +54,40 @@ void MyWindow::init()
 }
 
 
-QString MyWindow::getConfig() const
+QStringList MyWindow::getConfig() const
 
 {
 
+    QStringList config;
+
     ifstream file("config.txt", ios::in);
 
-    if(!file) return QString();
+    if(file)
+    {
 
-    string line;
-    getline(file, line);
+        string examLine, testLine;
+        getline(file, examLine);
+        getline(file, testLine);
 
-    file.close();
+        config.push_back(QString(examLine.c_str()));
+        config.push_back(QString(testLine.c_str()));
 
-    return QString(line.c_str());
+        file.close();
+
+    }
+
+    else
+    {
+        config.push_back(QString());
+        config.push_back(QString());
+    }
+
+    return config;
 
 }
 
 
-void MyWindow::setConfig(QString config)
+void MyWindow::setConfig(QStringList config)
 
 {
 
@@ -80,7 +95,9 @@ void MyWindow::setConfig(QString config)
 
     if(file)
     {
-        file << config.toStdString();
+        file << config[0].toStdString();
+        file << "\n";
+        file << config[1].toStdString();
 
         file.close();
     }
@@ -213,14 +230,22 @@ void MyWindow::saveImages()
     }
 
     QString testName = displayer->getTestName();
-    this->setConfig(testName);
+    QString examName = displayer->getExamName();
+    QStringList config;
+    config.push_back(examName);
+    config.push_back(testName);
+    this->setConfig(config);
     if(testName.isEmpty())
     {
         testName = QString("inconnue");
     }
+    if(examName.isEmpty())
+    {
+        examName = QString("inconnue");
+    }
     int save_id = displayer->getID();
 
-    QString filePath = QDir::toNativeSeparators(QString("%1/%2_%3_%4.png").arg(saveDir.path()).arg(save_id, 9, 10, QChar('0')).arg(testName));
+    QString filePath = QDir::toNativeSeparators(QString("%1/%2_%3_%4_%5.png").arg(saveDir.path()).arg(examName).arg(save_id).arg(testName));
 
     int fail = 0;
 

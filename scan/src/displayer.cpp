@@ -22,7 +22,7 @@ void Couple::setRow(qreal r) { row = r; }
 void Couple::setImageNumber(int im_number) { imageNumber = im_number; }
 
 
-Displayer::Displayer(QWidget *parent, QString config) : QWidget(parent)
+Displayer::Displayer(QWidget *parent, QStringList config) : QWidget(parent)
 
 {
 
@@ -44,13 +44,17 @@ Displayer::Displayer(QWidget *parent, QString config) : QWidget(parent)
     informations->setFont(QFont("Times", 15, 3));
     informations->setMinimumHeight(130);
 
-    testName = new QLineEdit(config);
+    examName = new QLineEdit(config[0]);
+    LexamName = new QLabel("nom du concours :");
+    testName = new QLineEdit(config[1]);
     LtestName = new QLabel("Intitulé de l'épreuve :");
     save_id = new QSpinBox;
-    save_id->setMaximum(2000000);
+    save_id->setMaximum(255);
+    save_id->setMinimum(1);
     Lsave_id = new QLabel("numéro d'identifiant du candidat :");
 
     formLayout = new QFormLayout;
+    formLayout->addRow(LexamName, examName);
     formLayout->addRow(LtestName, testName);
     formLayout->addRow(Lsave_id, save_id);
 //    save->setAlignment(Qt::AlignCenter);
@@ -103,6 +107,8 @@ QGraphicsView* Displayer::getView() { return view; }
 int Displayer::getSceneHeight() const { return sceneHeight; }
 
 QString Displayer::getTestName() const { return testName->text(); }
+
+QString Displayer::getExamName() const { return examName->text(); }
 
 int Displayer::getID() const { return save_id->value(); }
 
@@ -201,6 +207,8 @@ void Displayer::addImages(const QVector<QImage*> &im_vect)
 
     testName->hide();
     LtestName->hide();
+    examName->hide();
+    LexamName->hide();
     save_id->show();
     Lsave_id->show();
 
@@ -364,6 +372,8 @@ void Displayer::clean(bool saveSuccess)
     Lsave_id->hide();
     testName->show();
     LtestName->show();
+    examName->show();
+    LexamName->show();
 
     this->showLineNumber(false);
     this->showLabelPos(false);
