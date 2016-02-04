@@ -2,6 +2,7 @@
 header('Location: ../../interface_web/index.php');
 include_once("../../master_db.php");
 include_once("../../users/user_context.php");
+include_once("../../unite_de_correction/UniteDeCorrection.php");
 $db = masterDB::getDB();
 
 
@@ -53,16 +54,45 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 
 			$path = $path.$tab_ligne[$l].'/';
 		}
-		//echo $path;
 
-		//echo $i;
-		echo ("<br>");
-		echo ("creation du dossier");
-		echo ("<br>");
-		echo $path;
-		echo ("<br>");
 		mkdir ($path, 0777, true );		// le true indique que le mkdir est récursif : créer les sous dossier implique création dossiers.
 
 	}
 }
+
+
+function nombre($string)
+{
+	if(preg_match("/\*/",$string)){
+		return strrpos($string,"*")+1;
+	}
+	else{
+		return (int) 0;
+	}
+}
+
+// creation de l'unite de correction dans la DB
+
+$route=$id;
+$nb_et=-1;
+$res="";
+
+for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenant chaque lignes
+	$nb_etoilei=nombre($tab[$i]);
+	if($nb_etoilei>$nb_et){
+		$nb_et=$nb_etoilei;
+		$route=$route.'_'.$tab[$i];
+	}
+	if($tab[$i][strlen($tab[$i])] == "@"){
+		$res=$res.$route.'[\n]';
+		$tab_tempo=explode('_',$route);
+		$route="";
+		for($k=0; $k<(count($tab_tempo)-1); $k++){
+			$route=$route.$tab_tempo[$k];
+		}
+	}
+}
+
+UniteDeCorrection::generateBareme($res);
+
 ?>
