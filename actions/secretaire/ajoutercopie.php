@@ -8,20 +8,8 @@
 					<input id="file" type="file" name="my_files[]" multiple><br/><br/><br/>
 				</p>
 				<p>
-					<label for="input_epreuve">AnnéeConcoursFilière : </label>
-					<input id="input_epreuve" type="text" name="anneeconcoursfiliere"><br/><br/><br/>
-				</p>
-				<p>
-					<label for="input_epreuve">Epreuve : </label>
-					<input id="input_epreuve" type="text" name="epreuve"><br/><br/><br/>
-				</p>
-				<p>
 					<label for="input_nb_exo">Nombre d'exercices: </label>
 					<input id="input_nb_exo" type="text" name="nb_exo"><br/><br/><br/>
-				</p>
-				<p>
-					<label for="input_id_copie">Identifiant de la copie : </label>
-					<input id="input_id_copie" type="int" name="id_copie"><br/><br/>
 				</p>
 				<p>
 					<input formmethod="post" name="submit" type="submit" value="Soumettre" align ="right"><br>

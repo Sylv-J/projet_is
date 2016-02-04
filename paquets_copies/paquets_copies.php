@@ -5,7 +5,7 @@ $separator = ';';
 
 function randomCorrector($correctors){
   $rand = rand(0,sizeof($correctors)-1);
-  return $correctors[$rand];          
+  return $correctors[$rand];
 }
 /*
 ///////////////TEST///////////////////////////////////////
@@ -42,7 +42,7 @@ echo implode(' ', $test1);
 function assignSons($localCorrector, $id_unit) {
   $db = masterDB::getDB();
   global $separator;
-  
+
   $result = $db->query('SELECT id_sons FROM units WHERE id ="'.$id_unit.'"');
   while($sons = $result->fetch()){
     foreach(array_unique($sons) as $son) {
@@ -79,7 +79,7 @@ assignSons(2, "test1");
 function assignFathers($localCorrector, $id_unit) {
   $db = masterDB::getDB();
   global $separator;
-  
+
   $result = $db->query('SELECT id_father FROM units WHERE id = "'.$id_unit.'"') ;
   while($fathers = $result->fetch()){
   foreach(array_unique($fathers) as $father) {
@@ -135,11 +135,11 @@ echo findFather('test3');
 function updateDB($id_unit, $localCorrector) {
   $db = masterDB::getDB();
   global $separator;
-  
+
   $db->query('UPDATE units SET id_corrector = "'.$localCorrector.'" WHERE id ="'.$id_unit.'"');
   $dateModif = date('Y/m/d h:i:s');
   $db->query('UPDATE units SET date_modif = "'.$dateModif.'" WHERE id ="'.$id_unit.'"');
-  
+
   // mettre à jour la liste des unités assignées au correcteur
   $req = $db->query('SELECT current_units FROM users WHERE id = "'.$localCorrector.'"');
   while($unit = $req->fetch()){
@@ -193,7 +193,7 @@ function assignUnits($unitType) {
   $exam = $name[1];
   $exam = preg_replace('/[0-9]+/', '', $exam);
   */
-  /*Modification de la requete sql car le champ epreuve n'existe pas, il faudra modifier la requete pour qu'elle 
+  /*Modification de la requete sql car le champ epreuve n'existe pas, il faudra modifier la requete pour qu'elle
   prenne en compte les matières que le correcteur à le droit d'utiliser
   signé antoine
   */
@@ -224,7 +224,7 @@ assignUnits('Physics');
 //////////////////////////////////////////
 */
 
-// assigner une copie à un correcteur spécifique 
+// assigner une copie à un correcteur spécifique
 function punctualAssignment($id_corrector, $unitType) {
   $db = masterDB::getDB();
   $req = $db->query("SELECT id FROM units WHERE id_corrector IS NULL AND id LIKE '%{$unitType}%'");
@@ -260,7 +260,7 @@ freeUnit('Eleve1_Maths1_Part1');
 //////////////////////////////////////
 */
 
-// réinitialiser le champ id_corrector de toutes les unités et, inversement, le champ current_units des correcteurs 
+// réinitialiser le champ id_corrector de toutes les unités et, inversement, le champ current_units des correcteurs
 //(utile pour tests notamment)
 function freeCorrectors(){
   $db = masterDB::getDB();
@@ -274,7 +274,7 @@ function freeCorrectors(){
   foreach(array_unique($correctors) as $corrector){
       $db->query('UPDATE users SET current_units = NULL WHERE id="'.$corrector.'"');
   }
-  
+
 }
 
 ///////////TEST////////////////////////////
@@ -284,7 +284,7 @@ function freeCorrectors(){
 // récupérer les différentes matières d'une épreuve (sous forme de tableau)
 function getSubjects(){
   $db = masterDB::getDB();
-  
+
   $result = $db->query('SELECT id FROM units WHERE id IS NOT NULL') ;
   $res = array();
   while($units = $result->fetch()){
@@ -292,7 +292,7 @@ function getSubjects(){
       // on suppose que le nom de l'unité est de la forme "Eleve1_Maths1_Part1..." (la matière est donc après le premier '_')
       // Attention, si le nom de l'unité est d'une forme différente, il faut modifier la partie sélectionnée
       $name = explode('_', $unit);
-      $exam = $name[1]; 
+      $exam = $name[1];
       //$exam = preg_replace('/[0-9]+/', '', $exam);
       array_push($res, $exam);
       $res = array_unique($res);
@@ -313,7 +313,8 @@ function assignAll() {
   $db = masterDB::getDB();
   $subjects = getSubjects();
   foreach($subjects as $subject){
-    assignUnits($subject);  
+    $subject = preg_replace('/[0-9]+/', '', $subject);  
+    assignUnits($subject);
   }
 }
 
@@ -347,8 +348,8 @@ function unitsCorrector($id_corrector){
   $db = masterDB::getDB();
   $result = $db->query('SELECT current_units FROM users WHERE id="'.$id_corrector.'"') ;
   $res = $result->fetch();
-  return array_unique($res); 
-  
+  return array_unique($res);
+
 }
 
 /*

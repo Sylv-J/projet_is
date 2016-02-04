@@ -1,6 +1,8 @@
 
 <?php
 include_once("udc_chairman.php");
+include_once("../../users/user_context.php");
+$nom_concours = $_SESSION["username"];
 $db = masterDB::getDB();
 
 $texte = $_POST['bareme'];
@@ -13,7 +15,7 @@ $tab = preg_split("/[\n]/",$texte); // convertit les données rentrées en une t
 
 $table = preg_split("/[\n]/",$texte); // convertit les données rentrées en une table triée par ligne.
 
-//print_r(array_values($table)); //test 
+//print_r(array_values($table)); //test
 
 //Cette fonction compte le nombre d'étoiles dans une chaîne de caractères.
 function nombre($string)
@@ -82,13 +84,12 @@ for($j=0;$j<$nbre_lignes;$j++){
 //Fin de traitement concernant ke barème
 //DEBUT AJOUT ALBAN !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Reutilisation de action ajout élèves
 // Traitement gestion élèves
-$nomconcours = $_POST['nom_concours'];
 $elev = $_POST['eleves'];
 $tabeleves = preg_split("/[\n]/",$elev); // convertit les données rentrées en une table triée par lignes.
 
 $id = array("futurideleve");
 $tab_ligne = array("futurideleve");
-//$db->query("INSERT INTO minesunits (id, id_father) VALUES ('$id[0]',-1)");
+$db->query("INSERT INTO $nom_concours.units (id, id_father) VALUES ('$id[0]',-1)");
 
 
 
@@ -98,7 +99,7 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 
 	$ligne = $tab[$i];
 	$ligne = trim($ligne);
-	
+
 	for($k = 0; $k<strlen($tab[$i]) ; $k++){  // on parcourt chaque caractère de notre ligne
 		if($tab[$i][$k] == "@"){
 			$flag = 1;
@@ -124,18 +125,18 @@ for($i =0 ; $i<count($tab) ; $i++){         //on parcourt notre tableau contenan
 
 
 
-	
+
 	if($flag == 1){					//l'@ indique lorsque on est en dossier sans sous dossier
 		for($z=0; $z<count($tabeleves);$z++){
 			$tab_ligne[0] = trim($tabeleves[$z]);
-			$path = "../../images/$nomconcours/";
+			$path = "../../images/$nom_concours/";
 			for($l = 0; $l<$count+2;$l++){
 
 				$path = $path.$tab_ligne[$l].'/';
 			}
 		//echo $path;
-		
-		
+
+
 
 		//echo $i;
 

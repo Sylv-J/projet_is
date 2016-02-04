@@ -28,8 +28,9 @@
 
 
                     <?php
+                    $path=explode('_',$id);
                     //Affichage de l'unité de correction
-                    echo '<img src="../images/'.$id.'.jpg" alt="'.$id.'" />';
+                    echo '<img src="../images/'.$path[0].'/'.$path[1].'/'.$path[2].'/'.$id.'.jpg" alt="'.$id.'" />';
                     ?>
 
                 </div>

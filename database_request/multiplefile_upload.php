@@ -28,7 +28,7 @@ if (isset($_FILES['my_files'])) {
 $filetoupload = $myFiles["name"][0]; // Entrer ici le résultat du rassemblement des copies. Pour le moment c'est le premier fichier qui est mis.
 
 $nomsansextension = explode('.',$filetoupload)[0]; //Attention à respecter le format car si il y a un autre point, tout bug
-$arborescence = explode('_',$nomsansextension); 
+$arborescence = explode('_',$nomsansextension);
 //Arborescence est un tableau contenant dans chaque case une string
 //exemple Concours_Eleve_Epreuve.png donne $arborescence[0]="Concours", $arborescence[2]="Epreuve"
 
@@ -49,7 +49,15 @@ if(!is_dir($dir)){ // On fait un test pour savoir si le dossier existe déjà
 
 $myFiles['name'];
 
-for ($i = 0; $i < $fileCount; $i++) {
+$nb_file=$_POST["nb_exo"];
+
+for ($i = 0; $i < $nb_file; $i++) {
+
+  $filetoupload = $myFiles["name"][$i];
+
+  $nomsansextension = explode('.',$filetoupload)[0]; //Attention à respecter le format car si il y a un autre point, tout bug
+  $arborescence = explode('_',$nomsansextension);
+
 
   $file = $dir . basename($myFiles["name"][$i]);
   $uploadOk = 1; // Variable pour controler l'upload des fichiers
@@ -100,13 +108,13 @@ for ($i = 0; $i < $fileCount; $i++) {
       paramètre. Si une erreur survient la fonction retourne false.
       */
       // On test si le fichier existe déjà sur le serveur.
-      $id_copie= $_POST ["id_copie"];
-
+      //$id_copie= $_POST["anneeconcoursfiliere"].'_'.$_POST ["id_copie"].'_'.$_POST["epreuve"];
+      $id_copie=explode('.',$filetoupload)[0];
       $fileinfo = pathinfo($file);
       // On cherche une entrée libre sur la table "units" dans notre BDD et
       // on récupère son id
-      // on ajoute i afin de differencier les differentes copies !
-      $idUnite = $id_copie.$i;
+
+      $idUnite = $id_copie;
       // On fait en sorte que l'id soit le nom de l'unité sur le dossier /Images
       $uploadImageID = $dir.$idUnite.'.'.$fileinfo['extension'];
       if(!file_exists($uploadImageID)){
@@ -114,10 +122,11 @@ for ($i = 0; $i < $fileCount; $i++) {
         if (move_uploaded_file($myFiles["tmp_name"][$i], $uploadImageID)) {
           // On met à jour la base de donnée en ajoutant l'unité à l'id récupéré
           // par find_unset_entry
+          //$idUnite = $dir.$id_copie.$i
           updateDB($idUnite);
-          
+
           $udc = UniteDeCorrection::fromID($idUnite); //on crée en local l'unité de correction correspondant au barême qui vient d'être crée
-          $udc->upload(); // on l'upload sur la BDD 
+          $udc->upload(); // on l'upload sur la BDD
 
           $msg = "le fichier ". $fileinfo["filename"]. " a été bien envoyé.";
           ?>
